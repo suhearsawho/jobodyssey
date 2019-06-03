@@ -1,8 +1,10 @@
-from flask import Flask, render_template
+from flask import Blueprint, Flask, render_template
+from server.api import api_views
 import requests
 
 def create_app():
     app = Flask(__name__, static_folder='../static/dist', template_folder='../static/templates')
+    app.register_blueprint(api_views)
 
     @app.route('/')
     def index():
