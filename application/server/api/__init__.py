@@ -6,4 +6,4 @@ from flask import Blueprint
 
 
 api_views = Blueprint('api_views', __name__, url_prefix='/api')
-# IMPORT OUR API FILES HERE
+from api.user import *

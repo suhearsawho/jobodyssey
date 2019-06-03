@@ -1,5 +1,5 @@
 from flask import Blueprint, Flask, render_template
-from server.api import api_views
+from api import api_views
 import requests
 
 def create_app():
