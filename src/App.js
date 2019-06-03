@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
+import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import Main from './components/Main'
@@ -9,10 +10,10 @@ import JobSearch from './components/JobSearch'
 const theme = createMuiTheme({
   palette: {
     secondary: {
-      main: "#f9d585"
+      main: "#8a2387"
     },
     primary: {
-      main: "#c6ffdd"
+      main: "#e94057"
     }
   },
   typography: {
@@ -25,7 +26,7 @@ class App extends Component {
     return (
       <Router>
         <MuiThemeProvider theme={ theme }>
-          <p> Place common elements here </p>
+          <CssBaseline />
           
           <Route exact path='/' component={ Main } />
           <Route exact path='/jobs' component = { JobSearch } />
