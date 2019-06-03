@@ -1,5 +1,5 @@
 from flask import Blueprint, Flask, render_template
-from api import api_views
+from server.api import api_views
 import requests
 
 def create_app():
@@ -18,4 +18,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)
+    app.run(debug=True, port=8895)

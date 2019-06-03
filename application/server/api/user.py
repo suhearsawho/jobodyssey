@@ -2,7 +2,7 @@
 """
 Flask route that returns json response for user
 """
-from api import api_views
+from server.api import api_views
 from flask import abort, jsonify, request
 
 
