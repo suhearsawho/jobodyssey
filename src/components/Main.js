@@ -24,6 +24,14 @@ const styles = theme => ({
     position: "absolute",
     top: "35%",
   },
+  warning: {
+    paddingLeft: "1rem",
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: "4rem"
+    },
+    position: "absolute",
+    bottom: "15%",
+  },
   title: {
     fontWeight: 400,
   },
@@ -46,16 +54,16 @@ class Main extends Component {
   
   render() {
     const { classes } = this.props;
-
+    
     return (
       <React.Fragment>
         <div className={ classes.main }>
           <div className={ classes.opening }>
             <h3 className={ classes.title }>
-              Your Job Adventure Begins Here:
+              Gamify Your Job Search Here:
             </h3>
             <h1 className={ classes.title }>
-              Jobsomething
+              jobsomething
             </h1>
           </div>
           <div className={ classes.buttonContainer }>
@@ -63,6 +71,12 @@ class Main extends Component {
               Login with Github
             </Button>
           </div>
+          { this.props.redirect && (
+              <div className={ classes.warning }>
+                <h3 className={ classes.title }>You are not logged in!</h3>
+              </div>
+            )
+          }
         </div>
       </React.Fragment> 
     )
