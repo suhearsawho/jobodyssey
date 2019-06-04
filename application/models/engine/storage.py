@@ -6,8 +6,8 @@ Database engine
 from os import getenv
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base
-from models import base_model, user, level, reward
+from application.models.base_model import Base
+from application.models import base_model, user, level, reward
 
 
 class Storage:

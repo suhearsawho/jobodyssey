@@ -2,9 +2,9 @@
 """
 Flask route that returns json response for user
 """
-from server.api import api_views
-from models import storage, CLASS_DICT
-from models.user import User
+from application.server.api import api_views
+from application.models import storage, CLASS_DICT
+from application.models.user import User
 from flask import abort, jsonify, request
 
 
