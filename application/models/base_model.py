@@ -5,7 +5,7 @@ Base Model Class of Models Module
 
 
 import json
-import models
+from application import models
 from uuid import uuid4, UUID
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base

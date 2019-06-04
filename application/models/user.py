@@ -4,7 +4,7 @@ User Class from Models Module
 """
 import hashlib
 import os
-from models.base_model import BaseModel, Base
+from application.models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String, Float, ForeignKey,\
     MetaData, Table
