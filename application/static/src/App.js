@@ -34,7 +34,7 @@ class App extends Component {
 
   handleOAuth() {
     let ipAddress = window.location.hostname;
-    let url = 'http://' + ipAddress + ':5000/login';
+    let url = 'http://' + ipAddress + ':8000/login';
     $.ajax({
       type: 'GET',
       url: url,
