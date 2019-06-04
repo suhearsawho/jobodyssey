@@ -8,6 +8,7 @@ from application.models import database
 
 app = Flask(__name__, static_folder='../static/dist', template_folder='../static/templates')
 app.url_map.strict_slashes = False
+app.config.from_mapping(SECRET_KEY='dev')
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -37,4 +38,4 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)

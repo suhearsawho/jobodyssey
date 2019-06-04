@@ -33,7 +33,7 @@ class User(BaseModel, Base):
     __tablename__ = 'users'
     user_name = Column(String(128), nullable=True)
     currency = Column(Integer, default=0)
-    level_id = Column(String(60), ForeignKey('levels.id'), nullable=False)
+    level_id = Column(String(60), ForeignKey('levels.id'), nullable=True)
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
 
     def __init__(self, *args, **kwargs):
@@ -41,3 +41,4 @@ class User(BaseModel, Base):
         instantiates user object
         """
         super().__init__(*args, **kwargs)
+
