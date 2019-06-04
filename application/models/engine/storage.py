@@ -28,7 +28,7 @@ class Storage:
         initialize the engine
         """
         self.__engine = create_engine(
-            'mysql+mysqldb://{}:{}@{}/{}'.format(
+            'mysql+pymysql://{}:{}@{}/{}'.format(
                 getenv('JO_MYSQL_USER'),
                 getenv('JO_MYSQL_PWD'),
                 getenv('JO_MYSQL_HOST'),
