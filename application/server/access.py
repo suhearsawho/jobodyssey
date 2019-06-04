@@ -1,4 +1,4 @@
-from flask import Blueprint, g, render_template, redirect, request
+from flask import Blueprint, session, render_template, redirect, request
 import requests
 import os
 
@@ -18,8 +18,9 @@ def homepage():
         headers = {'Accept': 'application/json'}
         r = requests.post(github_url, data=data, headers=headers)
         results = r.json()
-        g.username = get_username(results.get('access_token'))
-        g.code = request.args.get('code')
+        session['username'] = get_username(results.get('access_token'))
+        session['code'] = request.args.get('code')
+        # Import the user model and create a new instance of the object
 
         return render_template('user.html')
 
