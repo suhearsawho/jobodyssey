@@ -4,6 +4,7 @@ import os
 
 client_id = os.environ.get('GITHUB_CLIENT_ID')
 client_secret = os.environ.get('GITHUB_CLIENT_SECRET')
+from models import database
 
 def create_app():
     app = Flask(__name__, static_folder='../static/dist', template_folder='../static/templates')
@@ -26,6 +27,10 @@ def create_app():
             return redirect(github_url)
 
         return render_template('index.html')
+
+    @app.route('/hi')
+    def hi():
+        return database.all()
 
     @app.errorhandler(404)
     def page_not_found(e):
