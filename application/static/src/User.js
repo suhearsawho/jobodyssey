@@ -41,7 +41,7 @@ class User extends Component {
           <CssBaseline />
           <TopBar isLoggedIn={this.state.isLoggedIn} color={ true } /> 
             <React.Fragment>
-              <Route exact path='/' component={ UserHomepage } />
+              <Route exact path='/user' component={ UserHomepage } />
               <Route exact path='/jobs' component={ JobSearch } />
             </React.Fragment>
         </MuiThemeProvider>

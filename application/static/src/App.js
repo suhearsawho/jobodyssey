@@ -34,16 +34,17 @@ class App extends Component {
 
   handleOAuth() {
     let ipAddress = window.location.hostname;
+    let url = 'http://' + ipAddress + ':5000/login';
     $.ajax({
-      type: 'POST',
-      url: '',
-      success: function (result, statusCode) {
-        console.log("This is the result");
-        console.log(statusCode, result);
+      type: 'GET',
+      url: url,
+      dataType: 'json',
+      success: function(data, textStatus) {
+        console.log('DATA REDIRECT STATUS', data.redirect);
         if (data.redirect) {
           window.location.href = data.redirect;
         }
-      },
+      }
     });
   }
 

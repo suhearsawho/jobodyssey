@@ -13,7 +13,10 @@ def users(user_id=None):
     """
     testing things
     """
+    print(request.data)
     test_dict = {'name': 'Susan'}
     test = User(**test_dict)
     print(test)
     return jsonify(test.to_json())
+
+

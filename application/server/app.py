@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, render_template, redirect, request
+from flask import Blueprint, Flask, render_template, redirect, request, url_for, jsonify, g
 from flask_cors import CORS, cross_origin
 import os
 
@@ -20,12 +20,12 @@ app.register_blueprint(access.bp)
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
-    github_url = 'https://github.com/login/oauth/authorize?client_id={}'.format(client_id);
-    if request.method == 'POST':
-        print('request.method')
-        return redirect(github_url)
-
     return render_template('index.html')
+
+@app.route('/login')
+def github_login():
+    github_url = 'https://github.com/login/oauth/authorize?client_id={}'.format(client_id);
+    return jsonify({'redirect': github_url});
 
 @app.route('/hi')
 def hi():
@@ -37,5 +37,4 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True, port=8000)
