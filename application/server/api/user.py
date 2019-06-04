@@ -3,6 +3,8 @@
 Flask route that returns json response for user
 """
 from server.api import api_views
+from models import storage, CLASS_DICT
+from models.user import User
 from flask import abort, jsonify, request
 
 
@@ -11,4 +13,7 @@ def users(user_id=None):
     """
     testing things
     """
-    return jsonify({})
+    test_dict = {'name': 'Susan'}
+    test = User(**test_dict)
+    print(test)
+    return jsonify(test.to_json())

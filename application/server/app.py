@@ -1,5 +1,6 @@
 from flask import Blueprint, Flask, render_template
 from server.api import api_views
+from models import database
 import requests
 
 def create_app():
@@ -9,6 +10,10 @@ def create_app():
     @app.route('/')
     def index():
         return render_template('index.html')
+
+    @app.route('/hi')
+    def hi():
+        return database.all()
 
     @app.errorhandler(404)
     def page_not_found(e):
