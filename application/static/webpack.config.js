@@ -4,7 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
   entry: {
     app: __dirname + '/src/index.js',
-    error: __dirname + '/src/error.js',
+    error: __dirname + '/src/error-index.js',
+    user: __dirname + '/src/user-index.js',
   },
   output: {
     path: __dirname + '/dist',

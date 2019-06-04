@@ -53,8 +53,8 @@ const styles = theme => ({
 class Main extends Component {
   
   render() {
-    const { classes } = this.props;
-    console.log(this.props); 
+    const { handleOAuth, classes } = this.props;
+    console.log(this.props, handleOAuth);
     return (
       <React.Fragment>
         <div className={ classes.main }>
@@ -63,11 +63,15 @@ class Main extends Component {
               Gamify Your Job Search Here:
             </h3>
             <h1 className={ classes.title }>
-              jobsomething
+              jobodyssey
             </h1>
           </div>
           <div className={ classes.buttonContainer }>
-            <Button variant="outlined" className={ classes.button }>
+            <Button 
+              variant="outlined"
+              className={ classes.button }
+              onClick={ handleOAuth } 
+            >
               Login with Github
             </Button>
           </div>

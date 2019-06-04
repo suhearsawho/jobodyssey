@@ -29,14 +29,14 @@ const useStyles = makeStyles(theme => ({
     color: "white",
   }
 }));
-export default function TopBar({ isLoggedIn }) {
+export default function TopBar({ isLoggedIn, color }) {
   const classes = useStyles();
 
   return (
-      <AppBar position="fixed" className={ isLoggedIn ? classes.color: classes.noColor }>
+      <AppBar position="fixed" className={ color ? classes.color: classes.noColor }>
         <Toolbar>
           <Typography variant="h6" className={ classes.title }>
-            jobsomething
+            jobodyssey
           </Typography>
           <div className={ classes.info }>
             { isLoggedIn && (

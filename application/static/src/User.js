@@ -25,39 +25,24 @@ const theme = createMuiTheme({
   }
 });
 
-class App extends Component {
+class User extends Component {
   constructor(props) {
     super(props);
-
-    this.handleOAuth = this.handleOAuth.bind(this);
-  }
-
-  handleOAuth() {
-    let ipAddress = window.location.hostname;
-    $.ajax({
-      type: 'POST',
-      url: '',
-      success: function (result, statusCode) {
-        console.log("This is the result");
-        console.log(statusCode, result);
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        }
-      },
-    });
+    this.state = {
+      isLoggedIn: true,
+    };
   }
 
   render() {
+    console.log('in user')
     return (
       <Router>
         <MuiThemeProvider theme={ theme }>
           <CssBaseline />
-          <TopBar isLoggedIn={ false } color={ false } /> 
+          <TopBar isLoggedIn={this.state.isLoggedIn} color={ true } /> 
             <React.Fragment>
-              <Route 
-                exact path='/' 
-                render={ (props) => <Main {...props} handleOAuth= { this.handleOAuth } />} 
-              />
+              <Route exact path='/' component={ UserHomepage } />
+              <Route exact path='/jobs' component={ JobSearch } />
             </React.Fragment>
         </MuiThemeProvider>
       </Router>
@@ -65,4 +50,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default User;
