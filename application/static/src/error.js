@@ -1,6 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import ErrorPage from './ErrorPage';
+import React, { Component } from 'react';
+import TopBar from './components/TopBar';
+import ErrorMessage from './components/ErrorMessage';
 
-ReactDOM.render(<ErrorPage />, document.getElementById('root'));
+function Error() {
+  return (
+    <div>
+      <TopBar color={ true } />
+      <ErrorMessage />
+    </div>
+  )
+};
+
+export default Error;
+    
