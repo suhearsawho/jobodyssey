@@ -23,7 +23,7 @@ app.register_blueprint(access.bp)
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if session.get('username'):
-        return redirect(url_for('user'))
+        return redirect(url_for('user.homepage'))
     return render_template('index.html')
 
 @app.route('/login')
