@@ -30,11 +30,34 @@ class User extends Component {
     super(props);
     this.state = {
       isLoggedIn: true,
+      username: '',
+      currency: '',
+      jobsApplied: [],
+      jobsInterested: [],
+      levelId: '',
+      rewards: [],
     };
   }
 
   updateValues() {
+    let domain = window.location.hostname;
+    let update = {}
+    $.ajax({
+      type: 'GET',
+      url: 'http://' + domain + '/user',
+      success: function(result) {
+        update = {
+          username: 'Bob',
+          currency: '100',
+          jobsApplied: [Apple, Google],
+          jobsInterested: [Amazon],
+          levelId: 'Entry Level',
+          rewards: [Dog, Cat]
+        }
+        this.setState(update)
+      }
     /* make an api call here and populate values */
+    });
   }
 
   componentDidMount() {
@@ -49,7 +72,10 @@ class User extends Component {
           <CssBaseline />
           <TopBar isLoggedIn={this.state.isLoggedIn} color={ true } /> 
             <React.Fragment>
-              <Route exact path='/user' component={ UserHomepage } />
+              <Route 
+                path='/user'
+                render={(props) => <UserHomepage {...props} userData={ this.state } />}
+              />
               <Route exact path='/jobs' component={ JobSearch } />
             </React.Fragment>
         </MuiThemeProvider>

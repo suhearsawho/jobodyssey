@@ -7,14 +7,15 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 const styles = theme => ({
   body: {
-    display: 'flex',
+    flexGrow: 1,
     position: 'relative',
     top: '12%',
-    width: '100%',
-    justifyContent: 'center',
+    padding: '2%'
   },
   left: {
     width: '40%',
@@ -30,48 +31,59 @@ const styles = theme => ({
   profilePicture: {
     padding: '5%',
     borderRadius: '30px',
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
   }
 });
 
 class UserHomepage extends Component {
   
   render() {
-    const { classes } = this.props;
+    const { userData, classes } = this.props;
+    console.log(userData);
     return (
       <div className={ classes.body }>
-        <div className={ classes.left }>
-          <Card className={ classes.card }>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                alt="Profile Picture"
-                height="260"
-                image="https://avatars2.githubusercontent.com/u/2894642?s=400&v=4"
-                title="Profile Picture"
-                className={ classes.profilePicture }
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Username here
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  Seeking a job in python
-                </Typography> 
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        </div>
-        <div className={ classes.right }>
-          <Card className={ classes.card }>
-            <CardActionArea>
-            <CardContent>
-              <Typography variant="body2">
-                Jobs
-              </Typography>
-            </CardContent>
-            </CardActionArea>
-          </Card>
-        </div>
+        <Grid container spacing={ 3 }>
+          <Grid item xs={ 12 } sm={ 6 }>
+            <Paper className={ classes.paper }>
+              <Card>
+                <CardActionArea>
+                  <CardMedia
+                    component="img"
+                    alt="Profile Picture"
+                    height="260"
+                    image="https://avatars2.githubusercontent.com/u/2894642?s=400&v=4"
+                    title="Profile Picture"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      { userData.username }
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      Seeking a job in python
+                    </Typography> 
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Paper>
+          </Grid>
+          <Grid item xs={ 12 } sm={ 6 }>
+            <div>
+              <Card>  
+                <CardActionArea>
+                <CardContent>
+                  <Typography variant="body2">
+                    Jobs
+                  </Typography>
+                </CardContent>
+                </CardActionArea>
+              </Card>
+            </div>
+          </Grid>
+        </Grid>  
       </div>
     )
   }
