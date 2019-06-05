@@ -29,7 +29,9 @@ def homepage():
                 return render_template('user.html')
         new_user = User(**({'user_name': session.get('username'), 'level_id': 0}))
         new_user.save()
+        return render_template('user.html')
 
+    if 'username' in session:
         return render_template('user.html')
 
 def get_username(access_token):
