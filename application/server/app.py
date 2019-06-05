@@ -20,6 +20,13 @@ app.register_blueprint(api_views)
 from application.server import access
 app.register_blueprint(access.bp)
 
+@app.teardown_appcontext
+def teardown_db(exception):
+    """
+    teardown current SQLAlchemy session with each request
+    """
+    database.close()
+
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if session.get('username'):

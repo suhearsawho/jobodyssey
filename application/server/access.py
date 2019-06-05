@@ -32,10 +32,11 @@ def github_auth():
         for user in users.values():
             if user.user_name == session['username']:
                 return redirect(url_for('user.homepage'))
-        new_user = User(**({'user_name': session.get('username'), 'level_id': 0}))
+        print(session.get('username'))
+        new_user = User(**({'user_name': session.get('username'), 'level_id': '100'}))
         new_user.save()
         return redirect(url_for('user.homepage'))
-    
+
 def get_username(access_token):
     github_url = 'https://api.github.com/user'
     headers = {'Authorization': 'token {}'.format(access_token),
