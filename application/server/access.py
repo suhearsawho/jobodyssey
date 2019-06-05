@@ -1,4 +1,4 @@
-from flask import Blueprint, session, render_template, redirect, request
+from flask import Blueprint, session, render_template, redirect, request, url_for
 from application.models.user import User
 from application.models import database
 import requests
@@ -11,6 +11,11 @@ client_secret = os.environ.get('GITHUB_CLIENT_SECRET')
 
 @bp.route('/', methods=('GET', 'POST'))
 def homepage():
+    if 'username' in session:
+        return render_template('user.html')
+
+@bp.route('/auth', methods=('GET', 'POST'))
+def github_auth():
     if 'code' in request.args:
         github_url = 'https://github.com/login/oauth/access_token'
         data = {'client_id': client_id,
@@ -26,14 +31,11 @@ def homepage():
         users = database.all('User')
         for user in users.values():
             if user.user_name == session['username']:
-                return render_template('user.html')
+                return redirect(url_for('user.homepage'))
         new_user = User(**({'user_name': session.get('username'), 'level_id': 0}))
         new_user.save()
-        return render_template('user.html')
-
-    if 'username' in session:
-        return render_template('user.html')
-
+        return redirect(url_for('user.homepage'))
+    
 def get_username(access_token):
     github_url = 'https://api.github.com/user'
     headers = {'Authorization': 'token {}'.format(access_token),

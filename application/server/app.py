@@ -31,23 +31,14 @@ def github_login():
     github_url = 'https://github.com/login/oauth/authorize?client_id={}'.format(client_id);
     return jsonify({'redirect': github_url});
 
-@app.route('/profile')
-def profile():
-    return jsonify(requests.get('http://127.0.0.1:8000/api/user/').json())
-
-@app.route('/listing')
-def listing():
-    # git jobs api call and list
-    return render_template('index.html')
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html'), 404
 
 
 if __name__ == '__main__':
-    #if os.environ.get('PROD'):
-    host = '0.0.0.0'
-    #else:
-    #    host = '127.0.0.1'
+    if os.environ.get('DEV'):
+        host = '127.0.0.1'
+    else:
+        host = '0.0.0.0'
     app.run(debug=True, host=host, port=8000)
