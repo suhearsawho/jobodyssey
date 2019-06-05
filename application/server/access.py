@@ -24,7 +24,9 @@ def homepage():
         # Import the user model and create a new instance of the object
         new_user = User(**({'user_name' : session.get('username')}))
         new_user.save()
+        return render_template('user.html')
 
+    if 'username' in session:
         return render_template('user.html')
 
 def get_username(access_token):
