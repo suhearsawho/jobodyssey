@@ -1,6 +1,7 @@
 from flask import Blueprint, Flask, render_template, redirect, request, url_for, jsonify, g
 from flask_cors import CORS, cross_origin
 import os
+import requests
 
 client_id = os.environ.get('GITHUB_CLIENT_ID')
 client_secret = os.environ.get('GITHUB_CLIENT_SECRET')
@@ -28,9 +29,14 @@ def github_login():
     github_url = 'https://github.com/login/oauth/authorize?client_id={}'.format(client_id);
     return jsonify({'redirect': github_url});
 
-@app.route('/hi')
-def hi():
-    return database.all()
+@app.route('/profile')
+def profile():
+    return jsonify(requests.get('http://127.0.0.1:8000/api/user/').json())
+
+@app.route('/listing')
+def listing():
+    # git jobs api call and list
+    return render_template('index.html')
 
 @app.errorhandler(404)
 def page_not_found(e):
