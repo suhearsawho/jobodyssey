@@ -38,8 +38,8 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    if os.environ.get('IP'):
-        host = os.environ.get('IP')
+    if os.environ.get('PROD'):
+        host = '0.0.0.0'
     else:
         host = '127.0.0.1'
     app.run(debug=True, host=host, port=8000)
