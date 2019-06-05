@@ -35,7 +35,7 @@ class User(BaseModel, Base):
     currency = Column(Integer, default=0)
     jobs_applied = Column(JSON, nullable=True)
     jobs_interested = Column(JSON, nullable=True)
-    level_id = Column(String(60), ForeignKey('levels.id'), nullable=True)
+    level_id = Column(String(60), ForeignKey('levels.id'))
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
 
     """ Dictionary of all keys in our JSON of jobs applied """

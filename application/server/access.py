@@ -1,5 +1,6 @@
 from flask import Blueprint, session, render_template, redirect, request
 from application.models.user import User
+from application.models import database
 import requests
 import os
 
@@ -22,7 +23,11 @@ def homepage():
         session['username'] = get_username(results.get('access_token'))
         session['code'] = request.args.get('code')
         # Import the user model and create a new instance of the object
-        new_user = User(**({'user_name' : session.get('username')}))
+        users = database.all('User')
+        for user in users.values():
+            if user.user_name == session['username']:
+                return render_template('user.html')
+        new_user = User(**({'user_name': session.get('username'), 'level_id': 0}))
         new_user.save()
 
         return render_template('user.html')

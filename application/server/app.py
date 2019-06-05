@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, render_template, redirect, request, url_for, jsonify, g
+from flask import Blueprint, Flask, render_template, redirect, request, url_for, jsonify, session
 from flask_cors import CORS, cross_origin
 import os
 import requests
@@ -22,6 +22,8 @@ app.register_blueprint(access.bp)
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
+    if session.get('username'):
+        return redirect(url_for('user'))
     return render_template('index.html')
 
 @app.route('/login')
@@ -44,8 +46,8 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    if os.environ.get('PROD'):
-        host = '0.0.0.0'
-    else:
-        host = '127.0.0.1'
+    #if os.environ.get('PROD'):
+    host = '0.0.0.0'
+    #else:
+    #    host = '127.0.0.1'
     app.run(debug=True, host=host, port=8000)
