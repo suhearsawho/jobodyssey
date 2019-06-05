@@ -17,7 +17,7 @@ const theme = createMuiTheme({
     },
     primary: {
       main: "#e94057",
-      contrastText: "white"
+      contrastText: "white",
     }
   },
   typography: {
@@ -28,44 +28,47 @@ const theme = createMuiTheme({
 class User extends Component {
   constructor(props) {
     super(props);
+    console.log("in the constructor")
     this.state = {
       isLoggedIn: true,
       username: '',
       currency: '',
       jobsApplied: [],
       jobsInterested: [],
-      levelId: '',
+      title: 'Entry Level Software Engineer',
       rewards: [],
     };
   }
 
-  updateValues() {
+  componentDidMount() {
     let domain = window.location.hostname;
+    if (domain.trim() === '127.0.0.1'.trim()) {
+      domain = domain.concat(':8000');
+    }
+    console.log('new domain', domain);
     let update = {}
+    console.log('i am mounting!')
     $.ajax({
       type: 'GET',
-      url: 'http://' + domain + '/user',
-      success: function(result) {
-        update = {
-          username: 'Bob',
+      url: 'http://' + domain + '/api/user',
+      success: (data) => {
+        console.log(data);
+        this.setState({
+          username: data.username,
           currency: '100',
-          jobsApplied: [Apple, Google],
-          jobsInterested: [Amazon],
+          jobsApplied: ['Apple', 'Google'],
+          jobsInterested: ['Amazon'],
           levelId: 'Entry Level',
-          rewards: [Dog, Cat]
-        }
-        this.setState(update)
+          rewards: ['Dog', 'Cat']
+        });
+        console.log('after state change', this.state);
       }
     /* make an api call here and populate values */
     });
   }
 
-  componentDidMount() {
-    this.updateValues()
-  }
-
   render() {
-    console.log('in user')
+    console.log('IN render function', this.state);
     return (
       <Router>
         <MuiThemeProvider theme={ theme }>

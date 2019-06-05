@@ -26,8 +26,8 @@ def user_info():
     return user info in order to populate user page
     """
     users = database.all('User')
-    for user in users:
-        username = user.get('user_name')
+    for user in users.values():
+        username = user.user_name
         if username is not None and username == session.get('username'): # need to decide how we are going to grab information
             return jsonify(user.to_json())
-    return jsonify({})
+    return jsonify({'username': 'French Fries'})

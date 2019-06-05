@@ -14,8 +14,12 @@ const styles = theme => ({
   body: {
     flexGrow: 1,
     position: 'relative',
-    top: '12%',
-    padding: '2%'
+    top: '10%',
+    [theme.breakpoints.up('sm')]: {
+      top: '8%',
+    },
+    padding: '2%',
+    maxHeight: '80%',
   },
   left: {
     width: '40%',
@@ -36,6 +40,12 @@ const styles = theme => ({
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
+  },
+  rewards: {
+    marginBottom: '4%',
+  },
+  border: {
+    borderRadius: '30px',
   }
 });
 
@@ -43,27 +53,26 @@ class UserHomepage extends Component {
   
   render() {
     const { userData, classes } = this.props;
-    console.log(userData);
     return (
       <div className={ classes.body }>
         <Grid container spacing={ 3 }>
           <Grid item xs={ 12 } sm={ 6 }>
-            <Paper className={ classes.paper }>
-              <Card>
+            <Paper className={ classes.paper, classes.border }>
+              <Card className={ classes.border }>
                 <CardActionArea>
                   <CardMedia
                     component="img"
                     alt="Profile Picture"
-                    height="260"
                     image="https://avatars2.githubusercontent.com/u/2894642?s=400&v=4"
                     title="Profile Picture"
+                    className={ classes.profilePicture }
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       { userData.username }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      Seeking a job in python
+                      { userData.title }
                     </Typography> 
                   </CardContent>
                 </CardActionArea>
@@ -72,16 +81,27 @@ class UserHomepage extends Component {
           </Grid>
           <Grid item xs={ 12 } sm={ 6 }>
             <div>
-              <Card>  
+              <Card className={ classes.rewards }>  
                 <CardActionArea>
                 <CardContent>
-                  <Typography variant="body2">
-                    Jobs
+                  <Typography variant="h6">
+                    Earned Rewards
                   </Typography>
                 </CardContent>
                 </CardActionArea>
               </Card>
             </div>
+            <div>
+              <Card>  
+                <CardActionArea>
+                <CardContent>
+                  <Typography variant="h6">
+                    Job Summary
+                  </Typography>
+                </CardContent>
+                </CardActionArea>
+              </Card>
+            </div> 
           </Grid>
         </Grid>  
       </div>
