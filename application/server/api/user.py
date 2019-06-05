@@ -20,11 +20,14 @@ def users(user_id=None):
     print(test)
     return jsonify(test.to_json())
 
-@api_views.route('/user/', methods=['GET'])
+@api_views.route('/user/', methods=['GET']) #feed in user id if we are doing this by user id
 def user_info():
     """
     return user info in order to populate user page
     """
-    print(type(database.all()))
-    print(session.__dict__)
-    return jsonify(user.to_json())
+    users = database.all('User')
+    for user in users:
+        username = user.get('user_name')
+        if username is not None and username == session.get('username'): # need to decide how we are going to grab information
+            return jsonify(user.to_json())
+    return jsonify({})

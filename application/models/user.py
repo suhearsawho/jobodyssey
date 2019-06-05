@@ -52,6 +52,8 @@ class User(BaseModel, Base):
         """
         returns a csv formatted version of jobs applied
         """
+        if self.jobs_applied is None:
+            return ''
         csv_applied = self.sheets_columns
         for i in self.jobs_applied.get('data'):
             for val in i:
