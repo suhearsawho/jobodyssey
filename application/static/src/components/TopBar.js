@@ -7,6 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
+import ResponsiveDrawer from './ResponsiveDrawer';
+
 const useStyles = makeStyles(theme => ({
   noColor: {
     backgroundColor: "rgba(0, 0, 0, 0)",
@@ -29,25 +31,31 @@ const useStyles = makeStyles(theme => ({
     color: "white",
   }
 }));
+
 export default function TopBar({ isLoggedIn, color }) {
   const classes = useStyles();
 
   return (
       <AppBar position="fixed" className={ color ? classes.color: classes.noColor }>
         <Toolbar>
+          { isLoggedIn && (
+            <ResponsiveDrawer />
+          )}
           <Typography variant="h6" className={ classes.title }>
             jobodyssey
           </Typography>
           <div className={ classes.info }>
             { isLoggedIn && (
-              <IconButton
-                aria-label="Account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+              <React.Fragment>
+                <IconButton
+                  aria-label="Account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </React.Fragment>
               )
             }
             { !isLoggedIn && (

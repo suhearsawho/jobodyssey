@@ -33,6 +33,14 @@ class User extends Component {
     };
   }
 
+  updateValues() {
+    /* make an api call here and populate values */
+  }
+
+  componentDidMount() {
+    this.updateValues()
+  }
+
   render() {
     console.log('in user')
     return (
