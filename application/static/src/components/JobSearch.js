@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 
 const styles = theme => ({
-  test: {
+  nonList: {
     position: 'relative',
     top: '16%',
+  },
+  list: {
+    flex: '1',
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+    top: '20%'
   }
 });
 
@@ -14,8 +21,7 @@ class JobSearch extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      job_listings: [],
-      classes: props.classes
+      job_listings: []
     };
   }
 
@@ -28,19 +34,21 @@ class JobSearch extends Component {
     let ipAddress = window.location.hostname;
     let url;
     if (ipAddress === '127.0.0.1')
-    	url = 'http://' + ipAddress + ':8000/api/users';
+    	url = 'http://' + ipAddress + ':8000/api/job_search';
     else
-	    url = 'http://' + ipAddress + '/api/users';
+	    url = 'http://' + ipAddress + '/api/job_search';
     fetch(url)
       .then(res => res.json())
       .then(
         (result) => {
+          console.log(result)
 	        this.setState({
 	          isLoaded: true,
-            items: result
+            items: result.items
 	        });
 	      },
 	      (error) => {
+          console.log(res)
           this.setState({
 	          isLoaded: true,
 	          error
@@ -50,43 +58,38 @@ class JobSearch extends Component {
   }
 
   render() {
-    const { error, isLoaded, items, classes } = this.state;
-    console.log(classes.test)
+    const { classes } = this.props
+    const { error, isLoaded, items } = this.state;
     if (error) {
       console.log('IN 1')
       return (
-        <React.Fragment>
-          <div className={ classes.test }>Error: {error.message}</div>
-        </React.Fragment>
+        <div className={ classes.nonList }>Error: {error.message}</div>
       )
     } else if (!isLoaded) {
       return (
-        <React.Fragment>
-          <div className={ classes.test }>Loading... Hang Tight</div>
-        </React.Fragment>
+        <div className={ classes.nonList }>Loading... Hang Tight</div>
       )
     } else {
       console.log('IN 3')
       console.log(items)
       return (
         <React.Fragment>
-          <div className={ classes.test }>
+        <div className={ classes.list }>
           <ul>
-	          {Object.keys(items).map(key => (
-	           <li key={key}>
-	             {items[key]}
-	           </li>
+            {items.map(item => (
+              <li key={ item.id }>
+                { item.company } - { item.title }
+                <ul>
+                  <li>{ item.location }</li> 
+                  <li><a href={ item.url }>{ item.url }</a></li>
+                </ul>
+              </li>
             ))}
           </ul>
-          </div>
+        </div>
         </React.Fragment>
       )
     }
-    return(
-      <React.Fragment>
-        <div className={ classes.test }>why?!</div>
-      </React.Fragment>
-    )
   }
   // TODO: Include a POST api request to update the database
   // with the indicated jobs when saved to jobs interested
