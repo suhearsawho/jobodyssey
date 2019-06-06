@@ -6,7 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import ResponsiveDrawer from './ResponsiveDrawer';
 
 const useStyles = makeStyles(theme => ({
@@ -34,6 +35,18 @@ const useStyles = makeStyles(theme => ({
 
 export default function TopBar({ isLoggedIn, handleClick, color }) {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+	const open = Boolean(anchorEl);
+
+  function handleMenu(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose(event) {
+    console.log(event);
+    setAnchorEl(null);
+  }
+
   return (
       <AppBar position="fixed" className={ color ? classes.color: classes.noColor }>
         <Toolbar>
@@ -51,9 +64,28 @@ export default function TopBar({ isLoggedIn, handleClick, color }) {
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
                   color="inherit"
+                  onClick={ handleMenu }
                 >
                   <AccountCircle />
                 </IconButton>
+							 	<Menu
+									id="menu-appbar"
+									anchorEl={ anchorEl }
+									anchorOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									keepMounted
+									transformOrigin={{
+										vertical: 'top',
+										horizontal: 'right',
+									}}
+									open={ open }
+									onClose={ handleClose }
+								>
+									<MenuItem onClick={ handleClose }>My Account</MenuItem>
+									<MenuItem onClick={ handleClose }>Logout</MenuItem>
+								</Menu> 
               </React.Fragment>
               )
             }

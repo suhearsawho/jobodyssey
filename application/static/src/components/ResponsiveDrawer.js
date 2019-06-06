@@ -4,15 +4,19 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
+import GroupIcon from '@material-ui/icons/Group';
 import Hidden from '@material-ui/core/Hidden';
+import HistoryIcon from '@material-ui/icons/History';
+import HomeIcon from '@material-ui/icons/Home';
 import IconButton from '@material-ui/core/IconButton';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
+import SearchIcon from '@material-ui/icons/Search';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -50,6 +54,9 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  linkStyle: {
+    textDecoration: 'none'
+  }
 }));
 
 
@@ -59,20 +66,44 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const jobKeys = ['Job Search', 'Saved Jobs', 'Job History'];
-
+  const userKeys = ['Home', 'Community', 'Challenge Mode'];
+  
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
   }
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
+      <div className={ classes.toolbar } />
       <Divider />
       <List>
-        <Link to='/jobs'>
+        <Link to='/user' className={ classes.linkStyle }>
+          <ListItem button key={ userKeys[0] }>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary={ userKeys[0] } />
+          </ListItem>
+        </Link>
+        <ListItem button key={ userKeys[1] }>
+          <ListItemIcon>
+            <GroupIcon />
+          </ListItemIcon>
+          <ListItemText primary={ userKeys[1] } />
+        </ListItem>
+        <ListItem button key={ userKeys[2] }>
+          <ListItemIcon>
+            <PlayCircleOutlineIcon />
+          </ListItemIcon>
+          <ListItemText primary={ userKeys[2] } />
+        </ListItem>
+      </List>
+      <Divider />
+      <List>
+        <Link to='/jobs' className={ classes.linkStyle }>
           <ListItem button key={ jobKeys[0] }>
             <ListItemIcon>
-              <InboxIcon />
+              <SearchIcon />
             </ListItemIcon>
             <ListItemText primary={ jobKeys[0] } />
           </ListItem>
@@ -85,19 +116,10 @@ function ResponsiveDrawer(props) {
         </ListItem>
         <ListItem button key={ jobKeys[2] }>
           <ListItemIcon>
-            <InboxIcon />
+            <HistoryIcon />
           </ListItemIcon>
           <ListItemText primary={ jobKeys[2] } />
         </ListItem>
-      </List>
-      <Divider />
-      <List>
-        {['Community', 'Challenge Mode'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
       </List>
     </div>
   );
@@ -113,7 +135,7 @@ function ResponsiveDrawer(props) {
 			>
 				<MenuIcon />
     	</IconButton>
-		    <nav className={classes.drawer} aria-label="Mailbox folders">
+		    <nav className={classes.drawer} aria-label="Links">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden implementation="css">
           <Drawer
@@ -122,6 +144,7 @@ function ResponsiveDrawer(props) {
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={mobileOpen}
             onClose={handleDrawerToggle}
+            onClick={handleDrawerToggle}
             classes={{
               paper: classes.drawerPaper,
             }}
