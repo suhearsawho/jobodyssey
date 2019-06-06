@@ -20,6 +20,9 @@ app.register_blueprint(api_views)
 from application.server import access
 app.register_blueprint(access.bp)
 
+from application.server import jobs
+app.register_blueprint(jobs.bp)
+
 @app.route('/', methods=('GET', 'POST'))
 def index():
     if session.get('username'):
@@ -34,7 +37,6 @@ def github_login():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html'), 404
-
 
 if __name__ == '__main__':
     if os.environ.get('DEV'):

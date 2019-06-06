@@ -38,6 +38,12 @@ class User extends Component {
       title: 'Entry Level Software Engineer',
       rewards: [],
     };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    console.log('hi');
   }
 
   componentDidMount() {
@@ -45,9 +51,6 @@ class User extends Component {
     if (domain.trim() === '127.0.0.1'.trim()) {
       domain = domain.concat(':8000');
     }
-    console.log('new domain', domain);
-    let update = {}
-    console.log('i am mounting!')
     $.ajax({
       type: 'GET',
       url: 'http://' + domain + '/api/user',
@@ -63,7 +66,6 @@ class User extends Component {
         });
         console.log('after state change', this.state);
       }
-    /* make an api call here and populate values */
     });
   }
 
@@ -73,7 +75,7 @@ class User extends Component {
       <Router>
         <MuiThemeProvider theme={ theme }>
           <CssBaseline />
-          <TopBar isLoggedIn={this.state.isLoggedIn} color={ true } /> 
+          <TopBar isLoggedIn={this.state.isLoggedIn} handleClick={this.handleClick} color={ true } /> 
             <React.Fragment>
               <Route 
                 path='/user'

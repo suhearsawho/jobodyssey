@@ -44,9 +44,6 @@ const styles = theme => ({
   rewards: {
     marginBottom: '4%',
   },
-  border: {
-    borderRadius: '30px',
-  }
 });
 
 class UserHomepage extends Component {
@@ -56,9 +53,9 @@ class UserHomepage extends Component {
     return (
       <div className={ classes.body }>
         <Grid container spacing={ 3 }>
-          <Grid item xs={ 12 } sm={ 6 }>
+          <Grid item xs={ 12 } sm={ 4 }>
             <Paper className={ classes.paper, classes.border }>
-              <Card className={ classes.border }>
+              <Card> 
                 <CardActionArea>
                   <CardMedia
                     component="img"
@@ -79,9 +76,9 @@ class UserHomepage extends Component {
               </Card>
             </Paper>
           </Grid>
-          <Grid item xs={ 12 } sm={ 6 }>
-            <div>
-              <Card className={ classes.rewards }>  
+          <Grid item xs={ 12 } sm={ 8 }>
+            <div className={ classes.rewards }>
+              <Card> 
                 <CardActionArea>
                 <CardContent>
                   <Typography variant="h6">

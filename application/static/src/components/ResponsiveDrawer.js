@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -53,10 +54,11 @@ const useStyles = makeStyles(theme => ({
 
 
 function ResponsiveDrawer(props) {
-  const { container } = props;
+  const { handleClick, container } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const jobKeys = ['Job Search', 'Saved Jobs', 'Job History'];
 
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
@@ -67,12 +69,26 @@ function ResponsiveDrawer(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['Job Search', 'Saved Jobs', 'Job History'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        <Link to='/jobs'>
+          <ListItem button key={ jobKeys[0] }>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={ jobKeys[0] } />
           </ListItem>
-        ))}
+        </Link>
+        <ListItem button key={ jobKeys[1] }>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={ jobKeys[1] } />
+        </ListItem>
+        <ListItem button key={ jobKeys[2] }>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary={ jobKeys[2] } />
+        </ListItem>
       </List>
       <Divider />
       <List>

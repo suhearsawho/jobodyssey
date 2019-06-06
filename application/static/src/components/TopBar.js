@@ -32,14 +32,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TopBar({ isLoggedIn, color }) {
+export default function TopBar({ isLoggedIn, handleClick, color }) {
   const classes = useStyles();
-
   return (
       <AppBar position="fixed" className={ color ? classes.color: classes.noColor }>
         <Toolbar>
           { isLoggedIn && (
-            <ResponsiveDrawer />
+            <ResponsiveDrawer handleClick={ handleClick }/>
           )}
           <Typography variant="h6" className={ classes.title }>
             jobodyssey
