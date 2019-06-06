@@ -24,7 +24,14 @@ class JobSearch extends Component {
   // need to make it so theres a way to update the list?
   componentDidMount() {
     //fetch("https://jobs.github.com/positions.json?description=python&full_time=true&location=sf")
-    fetch("http://127.0.0.1:8000/api/users")
+    // TODO: THIS LOGIC SHOULD BE CHANGED WHEN API UPDATED?
+    let ipAddress = window.location.hostname;
+    let url;
+    if (ipAddress === '127.0.0.1')
+    	url = 'http://' + ipAddress + ':8000/api/users';
+    else
+	    url = 'http://' + ipAddress + '/api/users';
+    fetch(url)
       .then(res => res.json())
       .then(
         (result) => {
