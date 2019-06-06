@@ -52,13 +52,12 @@ class User(BaseModel, Base):
         """
         returns a csv formatted version of jobs applied
         """
-        if self.jobs_applied is None:
+        if not self.jobs_applied:
             return ''
         csv_applied = self.sheets_columns
         for i in self.jobs_applied.get('data'):
-            for val in i:
-                for col in applied_columns:
-                    csv_applied += val.get(col) + ','
-                    """ to fit csv formatting notes not included """
-                csv_applied += val.get('notes') + '\n'
+            for col in self.applied_columns:
+                csv_applied += i.get(col) + ','
+                """ to fit csv formatting notes not included """
+            csv_applied += i.get('notes') + '\n'
         return csv_applied
