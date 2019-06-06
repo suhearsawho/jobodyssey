@@ -9,15 +9,80 @@ const styles = theme => ({
 });
 
 class JobSearch extends Component {
-  render() {
-    const { classes } = this.props;
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      job_listings: [],
+      classes: props.classes
+    };
+  }
 
-    return (
+  // TODO: Either add a button which will change this api call
+  // or make it a separate page to retrieve the list. If former
+  // need to make it so theres a way to update the list?
+  componentDidMount() {
+    //fetch("https://jobs.github.com/positions.json?description=python&full_time=true&location=sf")
+    fetch("http://127.0.0.1:8000/api/users")
+      .then(res => res.json())
+      .then(
+        (result) => {
+	        this.setState({
+	          isLoaded: true,
+            items: result
+	        });
+	      },
+	      (error) => {
+          this.setState({
+	          isLoaded: true,
+	          error
+	        });
+	      }
+      )
+  }
+
+  render() {
+    const { error, isLoaded, items, classes } = this.state;
+    console.log(classes.test)
+    if (error) {
+      console.log('IN 1')
+      return (
+        <React.Fragment>
+          <div className={ classes.test }>Error: {error.message}</div>
+        </React.Fragment>
+      )
+    } else if (!isLoaded) {
+      return (
+        <React.Fragment>
+          <div className={ classes.test }>Loading... Hang Tight</div>
+        </React.Fragment>
+      )
+    } else {
+      console.log('IN 3')
+      console.log(items)
+      return (
+        <React.Fragment>
+          <div className={ classes.test }>
+          <ul>
+	          {Object.keys(items).map(key => (
+	           <li key={key}>
+	             {items[key]}
+	           </li>
+            ))}
+          </ul>
+          </div>
+        </React.Fragment>
+      )
+    }
+    return(
       <React.Fragment>
-        <div className={ classes.test }>Hi</div> 
+        <div className={ classes.test }>why?!</div>
       </React.Fragment>
     )
   }
+  // TODO: Include a POST api request to update the database
+  // with the indicated jobs when saved to jobs interested
 }
 
 export default withStyles(styles)(JobSearch);
