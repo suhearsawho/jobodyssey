@@ -8,11 +8,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment'; 
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
   nonList: {
     position: 'relative',
-    top: '16%',
+    top: '5%',
   },
   list: {
     position: 'relative',
@@ -25,6 +26,10 @@ const styles = theme => ({
   listSection: {
     backgroundColor: 'inherit',
     padding: '5'
+  },
+  title: {
+    paddingLeft: '5%',
+    paddingBottom: '5%'
   }
 });
 
@@ -34,8 +39,28 @@ class JobSearch extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      job_listings: []
+      job_listings: [],
+      favorite: null
       }
+  }
+
+  jobFavorite(item) {
+    if (this.state.favorite === item.id) {
+      this.setState({
+        favorite: null
+      })
+    } else {
+      this.setState({
+        favorite : item.id
+      })
+    }
+  }
+
+  favoriteColor(item) {
+    if (this.state.favorite === item.id) {
+      return "red";
+    }
+    return "";
   }
 
   // TODO: Either add a button which will change this api call
@@ -74,6 +99,7 @@ class JobSearch extends Component {
   render() {
     const { classes } = this.props
     const { error, isLoaded, items } = this.state;
+
     if (error) {
       console.log('IN 1')
       return (
@@ -90,12 +116,24 @@ class JobSearch extends Component {
     return (
       <React.Fragment>
         <List className={ classes.list }>
+          <Typography className={ classes.title }variant="h2">
+            Job Listings
+          </Typography>
           {items.map(item => {
             return (
-              <ListItem key={item} className={classes.listSection} role={undefined} dense>
+              <ListItem 
+                key={item} 
+                className={classes.listSection} 
+                role={undefined}
+                dense
+              >
                 <ListItemIcon>
                   <IconButton edge="end" aria-label="Favorite">
-                    <FavoriteIcon />
+                    <FavoriteIcon 
+                      className={item.id}
+                      style={{color: this.favoriteColor(item)}}
+                      onClick={ this.jobFavorite.bind(this, item) }
+                    />
                   </IconButton>
                 </ListItemIcon>
                 <ListItemText 
