@@ -1,5 +1,5 @@
 {
-  "name": "react_practice",
+  "name": "job_odyssey",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -20,7 +20,8 @@
     "@material-ui/icons": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.0"
+    "react-router-dom": "^5.0.1",
+    "react-swipeable-views": "^0.13.3"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
