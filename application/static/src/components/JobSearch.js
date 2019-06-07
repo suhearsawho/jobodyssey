@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from '@material-ui/core/IconButton';
+import CommentIcon from '@material-ui/icons/Comment'; 
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const styles = theme => ({
   nonList: {
@@ -7,11 +15,16 @@ const styles = theme => ({
     top: '16%',
   },
   list: {
-    flex: '1',
-    width: '100%',
-    height: '100%',
     position: 'relative',
-    top: '20%'
+    top: '20%',
+    maxWidth: 700,
+    overflow: 'auto',
+    backgroundColor: theme.palette.background.paper,
+    width: '100%'
+  },
+  listSection: {
+    backgroundColor: 'inherit',
+    padding: '5'
   }
 });
 
@@ -22,7 +35,7 @@ class JobSearch extends Component {
       error: null,
       isLoaded: false,
       job_listings: []
-    };
+      }
   }
 
   // TODO: Either add a button which will change this api call
@@ -57,6 +70,7 @@ class JobSearch extends Component {
       )
   }
 
+
   render() {
     const { classes } = this.props
     const { error, isLoaded, items } = this.state;
@@ -72,21 +86,34 @@ class JobSearch extends Component {
     } else {
       console.log('IN 3')
       console.log(items)
-      return (
-        <React.Fragment>
-        <div className={ classes.list }>
-          <ul>
-            {items.map(item => (
-              <li key={ item.id }>
-                { item.company } - { item.title }
-                <ul>
-                  <li>{ item.location }</li> 
-                  <li><a href={ item.url }>{ item.url }</a></li>
-                </ul>
-              </li>
-            ))}
-          </ul>
-        </div>
+
+    return (
+      <React.Fragment>
+        <List className={ classes.list }>
+          {items.map(item => {
+            return (
+              <ListItem key={item} className={classes.listSection} role={undefined} dense>
+                <ListItemIcon>
+                  <IconButton edge="end" aria-label="Favorite">
+                    <FavoriteIcon />
+                  </IconButton>
+                </ListItemIcon>
+                <ListItemText 
+                  id={item.id} 
+                  primary={` ${ item.company } - ${ item.title } `}
+                  secondary={item.location} 
+                />
+                <ListItemSecondaryAction>
+                  <a href={ item.url } target="_blank">
+                  <IconButton edge="end" aria-label="Comments">
+                    <CommentIcon />
+                  </IconButton>
+                  </a>
+                </ListItemSecondaryAction>
+              </ListItem>
+            );
+          })}
+        </List>
         </React.Fragment>
       )
     }
