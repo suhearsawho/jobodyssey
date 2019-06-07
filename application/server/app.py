@@ -17,9 +17,6 @@ app = Flask(__name__, static_folder='../static/dist', template_folder='../static
 app.url_map.strict_slashes = False
 app.secret_key = flask_secret
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 

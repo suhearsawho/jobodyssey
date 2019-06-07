@@ -9,6 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import JobSummary from './JobSummary';
 
 const styles = theme => ({
   body: {
@@ -44,6 +45,9 @@ const styles = theme => ({
   rewards: {
     marginBottom: '4%',
   },
+  rightTitle: {
+    marginBottom: '1%',
+  }
 });
 
 class UserHomepage extends Component {
@@ -96,9 +100,10 @@ class UserHomepage extends Component {
               <Card>  
                 <CardActionArea>
                 <CardContent>
-                  <Typography variant="h6">
+                  <Typography variant="h6" className={ classes.rightTitle }>
                     Job Summary
                   </Typography>
+                  <JobSummary />
                 </CardContent>
                 </CardActionArea>
               </Card>
