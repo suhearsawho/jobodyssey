@@ -31,3 +31,4 @@ def user_info():
         if username is not None and username == session.get('username'): # need to decide how we are going to grab information
             return jsonify(user.to_json())
     return jsonify({'username': 'French Fries'})
+
