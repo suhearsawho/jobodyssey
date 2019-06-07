@@ -37,6 +37,7 @@ class User extends Component {
       jobsInterested: [],
       title: 'Entry Level Software Engineer',
       rewards: [],
+      profilePicture: '',
     };
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -62,6 +63,7 @@ class User extends Component {
     if (domain.trim() === '127.0.0.1'.trim()) {
       domain = domain.concat(':8000');
     }
+    /* Make this part more efficient -> Maybe one api call for just the username and then asynchronous calls to other 2 apis? */
     $.ajax({
       type: 'GET',
       url: 'http://' + domain + '/api/user',
@@ -74,6 +76,15 @@ class User extends Component {
           jobsInterested: ['Amazon'],
           levelId: 'Entry Level',
           rewards: ['Dog', 'Cat']
+        });
+        $.ajax({
+          type: 'GET',
+          url: 'https://api.github.com/users/' + this.state.username,
+          success: (data) => {
+            console.log(data);
+            this.setState({
+            });
+          }
         });
       }
     });
