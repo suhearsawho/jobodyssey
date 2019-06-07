@@ -39,13 +39,24 @@ class User extends Component {
       rewards: [],
     };
 
-    this.handleClick = this.handleClick.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
+  
+  handleLogout() {
+    let domain = window.location.hostname;
+    if (domain.trim() === '127.0.0.1'.trim()) {
+      domain = domain.concat(':8000');
+    }
 
-  handleClick() {
-    console.log('hi');
+    $.ajax({
+      type: 'GET',
+      url: 'http://' + domain + '/user/logout',
+      success: (data) => {
+        if (data.redirect)
+          window.location.href = data.redirect;
+      }
+    });
   }
-
   componentDidMount() {
     let domain = window.location.hostname;
     if (domain.trim() === '127.0.0.1'.trim()) {
@@ -57,25 +68,23 @@ class User extends Component {
       success: (data) => {
         console.log(data);
         this.setState({
-          username: data.username,
-          currency: '100',
+          username: data.user_name,
+          currency: data.currency,
           jobsApplied: ['Apple', 'Google'],
           jobsInterested: ['Amazon'],
           levelId: 'Entry Level',
           rewards: ['Dog', 'Cat']
         });
-        console.log('after state change', this.state);
       }
     });
   }
 
   render() {
-    console.log('IN render function', this.state);
     return (
       <Router>
         <MuiThemeProvider theme={ theme }>
           <CssBaseline />
-          <TopBar isLoggedIn={this.state.isLoggedIn} handleClick={this.handleClick} color={ true } /> 
+          <TopBar isLoggedIn={this.state.isLoggedIn} handleLogout={this.handleLogout} color={ true } /> 
             <React.Fragment>
               <Route 
                 path='/user'

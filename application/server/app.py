@@ -1,15 +1,24 @@
+"""This module creates the application for Job Odyssey"""
 from flask import Blueprint, Flask, render_template, redirect, request, url_for, jsonify, session
 from flask_cors import CORS, cross_origin
 import os
 import requests
-
-client_id = os.environ.get('GITHUB_CLIENT_ID')
-client_secret = os.environ.get('GITHUB_CLIENT_SECRET')
 from application.models import database
 
+# Retrieves client ID and secret from Github
+client_id = os.environ.get('GITHUB_CLIENT_ID')
+client_secret = os.environ.get('GITHUB_CLIENT_SECRET')
+
+# Key for storing session and cookie information cryptographically
+flask_secret = os.environ.get('FLASK_SECRET')
+
+# Creates the application
 app = Flask(__name__, static_folder='../static/dist', template_folder='../static/templates')
 app.url_map.strict_slashes = False
-app.config.from_mapping(SECRET_KEY='dev')
+app.secret_key = flask_secret
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 

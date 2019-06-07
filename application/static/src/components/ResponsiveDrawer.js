@@ -55,13 +55,14 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(3),
   },
   linkStyle: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    color: 'black',
   }
 }));
 
 
 function ResponsiveDrawer(props) {
-  const { handleClick, container } = props;
+  const { container } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);

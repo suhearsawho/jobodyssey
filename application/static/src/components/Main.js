@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Avatar from '@material-ui/core/Avatar';
 
 const styles = theme => ({
   main: {
@@ -60,10 +61,10 @@ class Main extends Component {
         <div className={ classes.main }>
           <div className={ classes.opening }>
             <h3 className={ classes.title }>
-              Gamify Your Job Search Here:
+              Calling All Software Engineers:
             </h3>
             <h1 className={ classes.title }>
-              jobodyssey
+              Gamify Your Job Search Here!
             </h1>
           </div>
           <div className={ classes.buttonContainer }>

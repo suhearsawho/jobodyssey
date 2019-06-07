@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function TopBar({ isLoggedIn, handleClick, color }) {
+export default function TopBar({ isLoggedIn, handleLogout, color }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
@@ -42,19 +42,24 @@ export default function TopBar({ isLoggedIn, handleClick, color }) {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose(event) {
-    console.log(event);
+  function handleClose() {
     setAnchorEl(null);
+  }
+
+  function callLogout() {
+    setAnchorEl(null);
+    console.log('in topbar logout');
+    handleLogout();
   }
 
   return (
       <AppBar position="fixed" className={ color ? classes.color: classes.noColor }>
         <Toolbar>
           { isLoggedIn && (
-            <ResponsiveDrawer handleClick={ handleClick }/>
+            <ResponsiveDrawer />
           )}
           <Typography variant="h6" className={ classes.title }>
-            jobodyssey
+            Job Odyssey
           </Typography>
           <div className={ classes.info }>
             { isLoggedIn && (
@@ -84,7 +89,9 @@ export default function TopBar({ isLoggedIn, handleClick, color }) {
 									onClose={ handleClose }
 								>
 									<MenuItem onClick={ handleClose }>My Account</MenuItem>
-									<MenuItem onClick={ handleClose }>Logout</MenuItem>
+                  <MenuItem onClick={ callLogout }>
+                    Logout
+                  </MenuItem>
 								</Menu> 
               </React.Fragment>
               )
