@@ -32,12 +32,13 @@ def user_info():
             return jsonify(user.to_json())
     return jsonify({'username': 'French Fries'})
 
-@api_views.route('/job_search/', methods=['GET'])
+@api_views.route('/job_search/', methods=['POST'])
 def job_search():
     """
     for searching github job api
     """
-    r = requests.get('https://jobs.github.com/positions.json?description=python&full_time=true&location=sf')
+    params = request.get_json()
+    r = requests.get('https://jobs.github.com/positions.json?', params=params)
     return jsonify({'items': r.json()})
 
 @api_views.route('/jobs/applied', methods=['GET', 'POST', 'PUT', 'DELETE'])
