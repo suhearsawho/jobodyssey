@@ -58,7 +58,7 @@ const theme = createMuiTheme({
     }
   },
   typography: {
-  	fontFamily: "Nunito Sans, Roboto, sans-serif"
+    fontFamily: "Nunito Sans, Roboto, sans-serif"
   }
 });
 
@@ -81,9 +81,9 @@ class JobSearch extends Component {
   }
 
   handleChangeLoc(event) {
-      this.setState({
-        location: event.target.value
-      })
+    this.setState({
+      location: event.target.value
+    })
   }
 
   handleChangeSearch(event) {
@@ -99,37 +99,37 @@ class JobSearch extends Component {
     let ipAddress = window.location.hostname;
     let url;
     if (ipAddress === '127.0.0.1')
-        url = 'http://' + ipAddress + ':8000/api/job_search';
-      else
-        url = 'http://' + ipAddress + '/api/job_search';
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          description: this.state.searchTerms,
-          location: this.state.location
-        })
+      url = 'http://' + ipAddress + ':8000/api/job_search';
+    else
+      url = 'http://' + ipAddress + '/api/job_search';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        description: this.state.searchTerms,
+        location: this.state.location
       })
-        .then(res => res.json())
-        .then(
-          (result) => {
-            console.log(result)
-            this.setState({
-              isLoaded: true,
-              items: result.items
-            });
-          },
-          (error) => {
-            console.log(res)
-            this.setState({
-              isLoaded: true,
-              error
-            });
-          }
-        )
+    })
+      .then(res => res.json())
+      .then(
+        (result) => {
+          console.log(result)
+          this.setState({
+            isLoaded: true,
+            items: result.items
+          });
+        },
+        (error) => {
+          console.log(res)
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
   }
 
   jobFavorite(item) {
@@ -142,6 +142,26 @@ class JobSearch extends Component {
         favorite: item.id
       })
     }
+    let ipAddress = window.location.hostname;
+    let url;
+    if (ipAddress === '127.0.0.1')
+      url = 'http://' + ipAddress + ':8000/api/jobs/interested';
+    else
+      url = 'http://' + ipAddress + '/api/jobs/interested';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: item.id,
+        company: item.company,
+        url: item.url,
+        title: item.title,
+        location: item.location
+      })
+    })
   }
 
   favoriteColor(item) {
@@ -151,166 +171,102 @@ class JobSearch extends Component {
     return "";
   }
 
-  // // TODO: Either add a button which will change this api call
-  // // or make it a separate page to retrieve the list. If former
-  // // need to make it so theres a way to update the list?
-  // componentDidMount() {
-  //   //fetch("https://jobs.github.com/positions.json?description=python&full_time=true&location=sf")
-  //   // TODO: THIS LOGIC SHOULD BE CHANGED WHEN API UPDATED?
-  //   let ipAddress = window.location.hostname;
-  //   let url;
-  //   console.log('hi')
-  //   console.log(this.state.viewList)
-  //   if (this.state.viewList === true) {
-  //     if (ipAddress === '127.0.0.1')
-  //       url = 'http://' + ipAddress + ':8000/api/job_search';
-  //     else
-  //       url = 'http://' + ipAddress + '/api/job_search';
-  //     fetch(url, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         description: this.state.searchTerms,
-  //         location: this.state.location
-  //       })
-  //     })
-  //       .then(res => res.json())
-  //       .then(
-  //         (result) => {
-  //           console.log(result)
-  //           this.setState({
-  //             isLoaded: true,
-  //             items: result.items
-  //           });
-  //         },
-  //         (error) => {
-  //           console.log(res)
-  //           this.setState({
-  //             isLoaded: true,
-  //             error
-  //           });
-  //         }
-  //       )
-  //   } else {
-  //     this.setState({
-  //       isLoaded: true,
-  //       items: []
-  //     })
-  //   }
-  // }
-
   render() {
     const { classes } = this.props
     const { error, isLoaded, items } = this.state;
-
-    // if (error) {
-    //   return (
-    //     <div className={classes.nonList}>Error: {error.message}</div>
-    //   )
-    // } else if (!isLoaded) {
-    //   return (
-    //     <div className={classes.nonList}>Loading... Hang Tight</div>
-    //   )
-    // } else {
-      return (
-        <MuiThemeProvider theme={theme}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-            <Form
-              className={classes.submitForm}
-            >
-              <br /> <br /> <br /> <br /> <br /> < br />
-              <Typography className={classes.title} variant="h2">
-                Search Job Listings
+    return (
+      <MuiThemeProvider theme={theme}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+          <Form
+            className={classes.submitForm}
+          >
+            <br /> <br /> <br /> <br /> <br /> < br />
+            <Typography className={classes.title} variant="h2">
+              Search Job Listings
                 </Typography>
-              <TextField
-                className={classes.input}
-                label="Search Terms"
-                margin="normal"
-                variant="outlined"
-                hintText="Enter Your Search Terms"
-                floatingLabelText="Search Terms"
-                value={this.state.searchTerms}
-                onChange={this.handleChangeSearch}
-                defaultValue=""
-              />
-              <TextField
-                className={classes.input}
-                name="Location"
-                label="Location"
-                margin="normal"
-                variant="outlined"
-                hintText="Desired Location"
-                floatingLabelText="Location"
-                value={this.state.location}
-                onChange={this.handleChangeLoc}
-                defaultValue=""
-              />
-              <br />
-              <Button
-                label="Search"
-                primary={true}
-                margin="normal"
-                variant="contained"
-                onClick={this.handleSubmit}
-                className={classes.input}
-              >
-                SEARCH
+            <TextField
+              className={classes.input}
+              label="Search Terms"
+              margin="normal"
+              variant="outlined"
+              hintText="Enter Your Search Terms"
+              floatingLabelText="Search Terms"
+              value={this.state.searchTerms}
+              onChange={this.handleChangeSearch}
+              defaultValue=""
+            />
+            <TextField
+              className={classes.input}
+              name="Location"
+              label="Location"
+              margin="normal"
+              variant="outlined"
+              hintText="Desired Location"
+              floatingLabelText="Location"
+              value={this.state.location}
+              onChange={this.handleChangeLoc}
+              defaultValue=""
+            />
+            <br />
+            <Button
+              label="Search"
+              primary={true}
+              margin="normal"
+              variant="contained"
+              onClick={this.handleSubmit}
+              className={classes.input}
+            >
+              SEARCH
                 </Button>
-            </Form>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-            {this.state.viewList ?
+          </Form>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+          {this.state.viewList && this.state.isLoaded ?
             <Typography className={classes.title}>
               Matches
             </Typography>
             : ""}
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
-            <List className={classes.list}>
-              {items.map(item => {
-                return (this.state.viewList ?
-                  <ListItem
-                    key={item}
-                    className={classes.listSection}
-                    role={undefined}
-                    dense
-                  >
-                    <ListItemIcon>
-                      <IconButton edge="end" aria-label="Favorite">
-                        <FavoriteIcon
-                          className={item.id}
-                          style={{ color: this.favoriteColor(item) }}
-                          onClick={this.jobFavorite.bind(this, item)}
-                        />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+          <List className={classes.list}>
+            {items.map(item => {
+              return (this.state.viewList ?
+                <ListItem
+                  key={item}
+                  className={classes.listSection}
+                  role={undefined}
+                  dense
+                >
+                  <ListItemIcon>
+                    <IconButton edge="end" aria-label="Favorite">
+                      <FavoriteIcon
+                        className={item.id}
+                        style={{ color: this.favoriteColor(item) }}
+                        onClick={this.jobFavorite.bind(this, item)}
+                      />
+                    </IconButton>
+                  </ListItemIcon>
+                  <ListItemText
+                    id={item.id}
+                    primary={` ${item.company} - ${item.title} `}
+                    secondary={item.location}
+                  />
+                  <ListItemSecondaryAction>
+                    <a href={item.url} target="_blank">
+                      <IconButton edge="end" aria-label="Comments">
+                        <CommentIcon />
                       </IconButton>
-                    </ListItemIcon>
-                    <ListItemText
-                      id={item.id}
-                      primary={` ${item.company} - ${item.title} `}
-                      secondary={item.location}
-                    />
-                    <ListItemSecondaryAction>
-                      <a href={item.url} target="_blank">
-                        <IconButton edge="end" aria-label="Comments">
-                          <CommentIcon />
-                        </IconButton>
-                      </a>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  : ''
-                );
-              })}
-            </List>
-          </div>
-        </MuiThemeProvider>
-      )
-    }
-  //}
-  // TODO: Include a POST api request to update the database
-  // with the indicated jobs when saved to jobs interested
+                    </a>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                : ''
+              );
+            })}
+          </List>
+        </div>
+      </MuiThemeProvider>
+    )
+  }
 }
 
 export default withStyles(styles)(JobSearch);
