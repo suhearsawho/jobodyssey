@@ -68,6 +68,7 @@ class JobSearch extends Component {
     this.state = {
       error: null,
       isLoaded: false,
+      items: [],
       job_listings: [],
       favorite: null,
       searchTerms: "",
@@ -84,6 +85,7 @@ class JobSearch extends Component {
         location: event.target.value
       })
   }
+
   handleChangeSearch(event) {
     this.setState({
       searchTerms: event.target.value
@@ -94,7 +96,40 @@ class JobSearch extends Component {
     this.setState({
       viewList: true
     })
-
+    let ipAddress = window.location.hostname;
+    let url;
+    if (ipAddress === '127.0.0.1')
+        url = 'http://' + ipAddress + ':8000/api/job_search';
+      else
+        url = 'http://' + ipAddress + '/api/job_search';
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          description: this.state.searchTerms,
+          location: this.state.location
+        })
+      })
+        .then(res => res.json())
+        .then(
+          (result) => {
+            console.log(result)
+            this.setState({
+              isLoaded: true,
+              items: result.items
+            });
+          },
+          (error) => {
+            console.log(res)
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        )
   }
 
   jobFavorite(item) {
@@ -116,51 +151,70 @@ class JobSearch extends Component {
     return "";
   }
 
-  // TODO: Either add a button which will change this api call
-  // or make it a separate page to retrieve the list. If former
-  // need to make it so theres a way to update the list?
-  componentDidMount() {
-    //fetch("https://jobs.github.com/positions.json?description=python&full_time=true&location=sf")
-    // TODO: THIS LOGIC SHOULD BE CHANGED WHEN API UPDATED?
-    let ipAddress = window.location.hostname;
-    let url;
-    if (ipAddress === '127.0.0.1')
-      url = 'http://' + ipAddress + ':8000/api/job_search';
-    else
-      url = 'http://' + ipAddress + '/api/job_search';
-    fetch(url)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result)
-          this.setState({
-            isLoaded: true,
-            items: result.items
-          });
-        },
-        (error) => {
-          console.log(res)
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
-  }
+  // // TODO: Either add a button which will change this api call
+  // // or make it a separate page to retrieve the list. If former
+  // // need to make it so theres a way to update the list?
+  // componentDidMount() {
+  //   //fetch("https://jobs.github.com/positions.json?description=python&full_time=true&location=sf")
+  //   // TODO: THIS LOGIC SHOULD BE CHANGED WHEN API UPDATED?
+  //   let ipAddress = window.location.hostname;
+  //   let url;
+  //   console.log('hi')
+  //   console.log(this.state.viewList)
+  //   if (this.state.viewList === true) {
+  //     if (ipAddress === '127.0.0.1')
+  //       url = 'http://' + ipAddress + ':8000/api/job_search';
+  //     else
+  //       url = 'http://' + ipAddress + '/api/job_search';
+  //     fetch(url, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         description: this.state.searchTerms,
+  //         location: this.state.location
+  //       })
+  //     })
+  //       .then(res => res.json())
+  //       .then(
+  //         (result) => {
+  //           console.log(result)
+  //           this.setState({
+  //             isLoaded: true,
+  //             items: result.items
+  //           });
+  //         },
+  //         (error) => {
+  //           console.log(res)
+  //           this.setState({
+  //             isLoaded: true,
+  //             error
+  //           });
+  //         }
+  //       )
+  //   } else {
+  //     this.setState({
+  //       isLoaded: true,
+  //       items: []
+  //     })
+  //   }
+  // }
 
   render() {
     const { classes } = this.props
     const { error, isLoaded, items } = this.state;
 
-    if (error) {
-      return (
-        <div className={classes.nonList}>Error: {error.message}</div>
-      )
-    } else if (!isLoaded) {
-      return (
-        <div className={classes.nonList}>Loading... Hang Tight</div>
-      )
-    } else {
+    // if (error) {
+    //   return (
+    //     <div className={classes.nonList}>Error: {error.message}</div>
+    //   )
+    // } else if (!isLoaded) {
+    //   return (
+    //     <div className={classes.nonList}>Loading... Hang Tight</div>
+    //   )
+    // } else {
       return (
         <MuiThemeProvider theme={theme}>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -254,7 +308,7 @@ class JobSearch extends Component {
         </MuiThemeProvider>
       )
     }
-  }
+  //}
   // TODO: Include a POST api request to update the database
   // with the indicated jobs when saved to jobs interested
 }
