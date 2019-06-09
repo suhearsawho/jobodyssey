@@ -38,5 +38,6 @@ def job_search():
     """
     for searching github job api
     """
+    params = request.get_json()
     r = requests.get('https://jobs.github.com/positions.json?', params=params)
     return jsonify({'items': r.json()})
