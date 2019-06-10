@@ -8,7 +8,7 @@ from application.models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String, Float, ForeignKey,\
     MetaData, Table, JSON
-
+import json
 
 class UserReward(Base):
     """
@@ -33,20 +33,22 @@ class User(BaseModel, Base):
     __tablename__ = 'users'
     user_name = Column(String(128), nullable=True)
     currency = Column(Integer, default=0)
-    jobs_applied = Column(JSON, nullable=True)
-    jobs_interested = Column(JSON, nullable=True)
+    jobs_applied = Column(JSON, nullable=False)
+    jobs_interested = Column(JSON, nullable=False)
     level_id = Column(String(60), ForeignKey('levels.id'))
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
 
     """ Dictionary of all keys in our JSON of jobs applied """
-    applied_columns = ['date', 'company', 'url', 'title', 'address']
-    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)","Full Address","Additional Notes"\n'
+    applied_columns = ['date', 'company', 'url', 'title', 'address', 'status']
+    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)","Full Address","Status","Additional Notes"\n'
 
     def __init__(self, *args, **kwargs):
         """
         instantiates user object
         """
         super().__init__(*args, **kwargs)
+        self.jobs_applied = json.dumps({})
+        self.jobs_interested = json.dumps({})
 
     def get_csv(self):
         """

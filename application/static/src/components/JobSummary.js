@@ -22,7 +22,7 @@ function JobSummary() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const headlines = ['Tip of the Day', 'Jobs to Apply For', 'Job History'];
+  const headlines = ['Updates', 'Goals This Week', 'Recent History'];
 
   function handleChange(event, newValue) {
     setValue(newValue);

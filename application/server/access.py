@@ -43,9 +43,11 @@ def github_auth():
         users = database.all('User')
         for user in users.values():
             if user.user_name == session['username']:
+                session['id'] = user.id
                 return redirect(url_for('user.homepage'))
         new_user = User(**({'user_name': session.get('username'), 'level_id': '100'}))
         new_user.save()
+        session['id'] = new_user.id
         return redirect(url_for('user.homepage'))
 
 @bp.route('/logout')

@@ -38,6 +38,7 @@ class User extends Component {
       title: 'Entry Level Software Engineer',
       rewards: [],
       profilePicture: '',
+      bio: '',
     };
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -83,6 +84,8 @@ class User extends Component {
           success: (data) => {
             console.log(data);
             this.setState({
+              profilePicture: data.avatar_url,
+              bio: data.bio
             });
           }
         });

@@ -66,7 +66,7 @@ class UserHomepage extends Component {
                   <CardMedia
                     component="img"
                     alt="Profile Picture"
-                    image="https://avatars2.githubusercontent.com/u/2894642?s=400&v=4"
+                    image={ userData.profilePicture }
                     title="Profile Picture"
                     className={ classes.profilePicture }
                   />
@@ -75,7 +75,7 @@ class UserHomepage extends Component {
                       { userData.username }
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                      { userData.title }
+                      { userData.bio }
                     </Typography> 
                   </CardContent>
                 </CardActionArea>
