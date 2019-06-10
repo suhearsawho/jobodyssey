@@ -94,7 +94,7 @@ class Storage:
         gets one object based on the class and id
         """
         if cls and id:
-            obj_str = '{}.{}'.format(cld, id)
+            obj_str = '{}.{}'.format(cls, id)
             all_obj = self.all(cls)
             return all_obj.get(obj_str)
         return None

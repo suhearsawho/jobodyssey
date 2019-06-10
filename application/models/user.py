@@ -8,7 +8,7 @@ from application.models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String, Float, ForeignKey,\
     MetaData, Table, JSON
-
+import json
 
 class UserReward(Base):
     """
@@ -47,14 +47,8 @@ class User(BaseModel, Base):
         instantiates user object
         """
         super().__init__(*args, **kwargs)
-        self.jobs_applied = {
-            'name': user.username,
-            'data': {'max': 0}
-        }
-        self.jobs_interested = {
-            'name': user.username,
-            'data': {'max': 0}
-        }
+        self.jobs_applied = json.dumps({})
+        self.jobs_interested = json.dumps({})
 
     def get_csv(self):
         """
