@@ -20,7 +20,7 @@ const styles = theme => ({
   },
   submitForm: {
     position: 'relative',
-    padding: '20'
+    width: '75%',
   },
   list: {
     position: 'relative',
@@ -34,7 +34,7 @@ const styles = theme => ({
     padding: '5'
   },
   title: {
-    paddingBottom: '2%'
+    marginBottom: '0',
   },
   text: {
     padding: '8%'
@@ -42,13 +42,28 @@ const styles = theme => ({
   input: {
     display: 'flex',
     flexWrap: 'wrap',
+    width: '100%',
   },
   main: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
-    flexwrap: 'wrap',
+    flexDirection: 'column',
+    marginTop: '5rem',
+  },
+  secondMain: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: '3rem',
+  },            
+  entries: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    marginTop: '1rem',
   }
 });
 
@@ -207,13 +222,12 @@ class JobSearch extends Component {
     return (
       <React.Fragment>
         <div className={ classes.main }> 
+          <Typography gutterBottom variant="h5" component="h2" className={ classes.title }>
+            Search Job Listings
+          </Typography>
           <Form
             className={classes.submitForm}
           >
-            <br /> <br /> <br /> <br /> <br /> < br />
-            <Typography className={classes.title} variant="h2">
-              Search Job Listings
-                </Typography>
             <TextField
               className={classes.input}
               label="Search Terms"
@@ -250,14 +264,14 @@ class JobSearch extends Component {
                 </Button>
           </Form>
         </div>
-        <div className={ classes.main }> 
+        <div className={ classes.secondMain }> 
           {this.state.viewList && this.state.isLoaded ?
-            <Typography className={classes.title}>
+            <Typography gutterBottom variant="h5" component="h2" className={ classes.title }>
               Matches
             </Typography>
             : ""}
         </div>
-        <div className={ classes.main }> 
+        <div className={ classes.entries }> 
           <List className={classes.list}>
             {items.map(item => {
               return (this.state.viewList ?
