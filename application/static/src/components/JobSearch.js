@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/Comment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Typography from '@material-ui/core/Typography';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Form from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -43,22 +42,13 @@ const styles = theme => ({
   input: {
     display: 'flex',
     flexWrap: 'wrap',
-  }
-});
-
-const theme = createMuiTheme({
-  palette: {
-    secondary: {
-      main: "#8a2387",
-      contrastText: "white"
-    },
-    primary: {
-      main: "#e94057",
-      contrastText: "white"
-    }
   },
-  typography: {
-    fontFamily: "Nunito Sans, Roboto, sans-serif"
+  main: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexwrap: 'wrap',
   }
 });
 
@@ -73,11 +63,33 @@ class JobSearch extends Component {
       favorite: null,
       searchTerms: "",
       location: "",
-      viewList: false
+      viewList: false,
+      jobs_interested: []
     }
     this.handleChangeLoc = this.handleChangeLoc.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  
+  componentDidMount() {
+    let ipAddress = window.location.hostname;
+    let url;
+    if (ipAddress.trim() === '127.0.0.1'.trim())
+      url = 'http://' + ipAddress + ':8000/api/jobs/interested';
+    else
+      url = 'http://'+ ipAddress + '/api/jobs/interested';
+    
+    $.ajax({
+      type: 'GET',
+      url: url,
+      success: (data) => {
+        let results = JSON.parse(data);
+        let interested = Object.keys(results);
+        this.setState({
+          jobs_interested: interested
+        });
+      }
+    });
   }
 
   handleChangeLoc(event) {
@@ -148,35 +160,53 @@ class JobSearch extends Component {
       url = 'http://' + ipAddress + ':8000/api/jobs/interested';
     else
       url = 'http://' + ipAddress + '/api/jobs/interested';
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: item.id,
-        company: item.company,
-        url: item.url,
-        title: item.title,
-        location: item.location
-      })
-    })
-  }
-
-  favoriteColor(item) {
-    if (this.state.favorite === item.id) {
-      return "red";
+    
+    if (!this.state.jobs_interested.includes(item.id)) {
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: item.id,
+          company: item.company,
+          url: item.url,
+          title: item.title,
+          location: item.location
+        })
+      });
+      let newList = this.state.jobs_interested;
+      newList.push(item.id)
+      this.setState({
+        jobs_interested: newList
+      });
     }
-    return "";
+    else {
+      fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: item.id
+        })
+      });
+      let newList = this.state.jobs_interested;
+      newList.pop(item.id)
+      this.setState({
+        jobs_interested: newList
+      });
+    }
   }
-
+  
   render() {
     const { classes } = this.props
     const { error, isLoaded, items } = this.state;
+
     return (
-      <MuiThemeProvider theme={theme}>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+      <React.Fragment>
+        <div className={ classes.main }> 
           <Form
             className={classes.submitForm}
           >
@@ -220,14 +250,14 @@ class JobSearch extends Component {
                 </Button>
           </Form>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+        <div className={ classes.main }> 
           {this.state.viewList && this.state.isLoaded ?
             <Typography className={classes.title}>
               Matches
             </Typography>
             : ""}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap' }}>
+        <div className={ classes.main }> 
           <List className={classes.list}>
             {items.map(item => {
               return (this.state.viewList ?
@@ -241,7 +271,8 @@ class JobSearch extends Component {
                     <IconButton edge="end" aria-label="Favorite">
                       <FavoriteIcon
                         className={item.id}
-                        style={{ color: this.favoriteColor(item) }}
+                        style={ true === this.state.jobs_interested.includes(item.id) ? 
+                          { color: 'red' } : null } 
                         onClick={this.jobFavorite.bind(this, item)}
                       />
                     </IconButton>
@@ -264,7 +295,7 @@ class JobSearch extends Component {
             })}
           </List>
         </div>
-      </MuiThemeProvider>
+      </React.Fragment>
     )
   }
 }
