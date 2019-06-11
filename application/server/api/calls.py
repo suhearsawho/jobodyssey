@@ -110,7 +110,7 @@ def jobs_interested():
     job_id = data.get('id')
     if ((request.method == 'DELETE' or request.method == 'PUT') and
         (job_id not in jobs)):
-        response = {error: 'Not a valid job ID'}
+        response = {'error': 'Not a valid job ID'}
     else:
         print('user before modifications', user.__dict__)
         # PUT: Change an existing entry
