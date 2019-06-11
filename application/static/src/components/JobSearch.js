@@ -79,7 +79,7 @@ class JobSearch extends Component {
       searchTerms: "",
       location: "",
       viewList: false,
-      jobs_interested: []
+      jobsInterested: []
     }
     this.handleChangeLoc = this.handleChangeLoc.bind(this);
     this.handleChangeSearch = this.handleChangeSearch.bind(this);
@@ -101,7 +101,7 @@ class JobSearch extends Component {
         let results = JSON.parse(data);
         let interested = Object.keys(results);
         this.setState({
-          jobs_interested: interested
+          jobsInterested: interested
         });
       }
     });
@@ -160,23 +160,15 @@ class JobSearch extends Component {
   }
 
   jobFavorite(item) {
-    if (this.state.favorite === item.id) {
-      this.setState({
-        favorite: null
-      })
-    } else {
-      this.setState({
-        favorite: item.id
-      })
-    }
     let ipAddress = window.location.hostname;
     let url;
+    let newList;
     if (ipAddress === '127.0.0.1')
       url = 'http://' + ipAddress + ':8000/api/jobs/interested';
     else
       url = 'http://' + ipAddress + '/api/jobs/interested';
     
-    if (!this.state.jobs_interested.includes(item.id)) {
+    if (!this.state.jobsInterested.includes(item.id)) {
       fetch(url, {
         method: 'POST',
         headers: {
@@ -191,10 +183,9 @@ class JobSearch extends Component {
           location: item.location
         })
       });
-      let newList = this.state.jobs_interested;
-      newList.push(item.id)
-      this.setState({
-        jobs_interested: newList
+      this.setState((prevState) => {
+        const jobsInterested = prevState.jobsInterested.concat(item.id);
+        return { jobsInterested };
       });
     }
     else {
@@ -207,10 +198,9 @@ class JobSearch extends Component {
           id: item.id
         })
       });
-      let newList = this.state.jobs_interested;
-      newList.pop(item.id)
-      this.setState({
-        jobs_interested: newList
+      this.setState((prevState) => {
+        const jobsInterested = prevState.jobsInterested.filter(element => element !== item.id);
+        return { jobsInterested };
       });
     }
   }
@@ -285,7 +275,7 @@ class JobSearch extends Component {
                     <IconButton edge="end" aria-label="Favorite">
                       <FavoriteIcon
                         className={item.id}
-                        style={ true === this.state.jobs_interested.includes(item.id) ? 
+                        style={ true === this.state.jobsInterested.includes(item.id) ? 
                           { color: 'red' } : null } 
                         onClick={this.jobFavorite.bind(this, item)}
                       />
