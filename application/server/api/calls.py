@@ -106,12 +106,12 @@ def jobs_interested():
         return jsonify(error="Not a valid JSON"), 400
 
     jobs = json.loads(user.jobs_interested) 
+    data = request.get_json()
+    job_id = data.get('id')
     if ((request.method == 'DELETE' or request.method == 'PUT') and
         (job_id not in jobs)):
         response = {error: 'Not a valid job ID'}
     else:
-        data = request.get_json()
-        job_id = data.get('id')
         print('user before modifications', user.__dict__)
         # PUT: Change an existing entry
         if request.method == 'PUT':
@@ -128,7 +128,7 @@ def jobs_interested():
 
         # DELETE: Deletes an entry 
         elif request.method == 'DELETE':
-            jobs['data'].pop(job_id)
+            jobs.pop(job_id)
             
         user.jobs_interested = json.dumps(jobs)
         user.save()
