@@ -13,4 +13,10 @@ client_secret = os.environ.get('GITHUB_CLIENT_SECRET')
 def homepage():
     if 'username' in session:
         return render_template('user.html')
+    return render_template('index.html')
 
+@bp.route('/applied')
+def applied_page():
+    if 'username' in session:
+        return render_template('user.html')
+    return render_template('index.html')

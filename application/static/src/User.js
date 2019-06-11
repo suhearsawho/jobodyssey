@@ -8,6 +8,8 @@ import Main from './components/Main';
 import JobSearch from './components/JobSearch';
 import TopBar from './components/TopBar';
 import UserHomepage from './components/UserHomepage';
+import JobsApplied from './components/JobsApplied';
+import Rewards from './components/Rewards';
 
 const theme = createMuiTheme({
   palette: {
@@ -105,6 +107,8 @@ class User extends Component {
                 render={(props) => <UserHomepage {...props} userData={ this.state } />}
               />
               <Route exact path='/jobs' component={ JobSearch } />
+              <Route exact path='/jobs/applied' component={ JobsApplied } />
+              <Route exact path='/rewards' component={ Rewards } />
             </React.Fragment>
         </MuiThemeProvider>
       </Router>

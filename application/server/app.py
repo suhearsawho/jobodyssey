@@ -29,6 +29,9 @@ app.register_blueprint(access.bp)
 from application.server import jobs
 app.register_blueprint(jobs.bp)
 
+from application.server import rewards
+app.register_blueprint(rewards.bp)
+
 @app.teardown_appcontext
 def teardown_db(exception):
     """
