@@ -11,6 +11,18 @@
     "presets": [
       "@babel/preset-env",
       "@babel/preset-react"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-transform-runtime",
+        {
+          "absoluteRuntime": false,
+          "corejs": false,
+          "helpers": true,
+          "regenerator": true,
+          "useESModules": false
+        }
+      ]
     ]
   },
   "author": "",
@@ -21,13 +33,16 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
-    "react-swipeable-views": "^0.13.3"
+    "react-swipeable-views": "^0.13.3",
+    "babel-polyfill": "^6.23.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
     "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.23.0",
     "css-loader": "^2.1.1",
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^0.23.1",
