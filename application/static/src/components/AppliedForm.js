@@ -18,7 +18,7 @@ import Grid from '@material-ui/core/Grid';
 import { amber } from '@material-ui/core/colors';
 
 const typesInterviews = [
-	{
+  {
 		value: 'Phone Screening',
 		label: 'Phone Screening',
 	},

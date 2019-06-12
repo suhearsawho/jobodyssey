@@ -14,6 +14,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import JobCard from './JobCard';
 
 const styles = theme => ({
   root: {
@@ -100,52 +101,7 @@ class AppliedJobs extends Component {
 						</Button>
         	</Grid> 
           { Object.keys(jobsApplied).map((key) => (
-            <Grid item xs={ 12 }>
-              <Card className={ classes.card } id={ key }>
-                <CardHeader
-                  action={
-                    <IconButton aria-label="Settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                  titleTypographyProps={{  }}
-                  title={ jobsApplied[key].job_title + ' ' + jobsApplied[key].role + ' at ' + jobsApplied[key].company }
-                  subheader={ 'Applied On: ' + jobsApplied[key].date_applied }
-                />
-                <CardContent>
-                  <Typography variant="body1" color="textSecondary" component="p">
-                    { 'Interviews Received: '}
-                    { Object.keys(jobsApplied[key].interview).length === 0 ? 'None': jobsApplied[key].interview.join(', ') }
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary" component="p">
-                    { 'Offer Status: '}
-                    { Object.keys(jobsApplied[key].status).length === 0 ? 'None': jobsApplied[key].status }
-                  </Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                  <IconButton aria-label="Add to favorites">
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton
-                    className={ classes.expand, {
-                      [classes.expandOpen]: expanded,
-                    }}
-                    onClick={ () => this.handleExpandClick() }
-                    aria-expanded={expanded}
-                    aria-label="Show more"
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
-                </CardActions> 
-                <Collapse in={ expanded } timeout="auto" unmountOnExit>
-                  <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      { 'Notes: ' + jobsApplied[key].notes }
-                    </Typography>
-                  </CardContent>
-                </Collapse>
-              </Card>
-            </Grid>
+            <JobCard job={ jobsApplied[key] } id={ key } />
           ))}
         </Grid>
       </div>
