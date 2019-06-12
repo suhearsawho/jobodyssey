@@ -14,6 +14,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Grow from '@material-ui/core/Grow';
 import WarningIcon from '@material-ui/icons/Warning';
 import Fade from '@material-ui/core/Fade';
+import Grid from '@material-ui/core/Grid';
+import { amber } from '@material-ui/core/colors';
 
 const typesInterviews = [
 	{
@@ -74,18 +76,39 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     height: '100%',
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: '4rem',
+      paddingRight: '4rem',
+    },
+    flexGrow: 1,
 	},
-  textField: {
-    flexBasis: 200,
-  },
-  margin: {
-    margin: '1rem',
-  },
   company: {
   },
   warning: {
-    position: 'absolute',
-    bottom: '2%',
+    bottom: '-3rem',
+    backgroundColor: amber[700],
+  },
+  menu: {
+    width: 200,
+  },
+  interior: {
+    marginTop: '24px',
+  },
+  button: {
+    width: '75%',
+  },
+  iconVariant: {
+    opcaity: 0.9,
+    marginRight: theme.spacing(1),
+  },
+  icon: {
+    fontSize: 20,
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
   }
 }));
 
@@ -172,110 +195,140 @@ export default function AppliedForm(props) {
   }
   return (
     <div className={ classes.root }>
-      <TextField
-        required
-        id="company"
-        variant="outlined"
-        label="Company"
-        className={ classes.margin, classes.textField }
-        onChange={ handleChange('company') }
-      />
-      <TextField
-        required
-        id="address"
-        variant="outlined"
-        label="Address"
-        className={ classes.margin, classes.textField }
-        onChange={ handleChange('address') }
-      />
-      <TextField
-        id="notes"
-        variant="outlined"
-        label="Notes"
-        className={ classes.margin, classes.textField }
-        onChange={ handleChange('notes') }
-      />
-      <TextField
-        id="url"
-        variant="outlined"
-        label="URL of Job Post"
-        className={ classes.margin, classes.textField }
-        onChange={ handleChange('jobPostURL') }
-      />
-      <TextField
-        select
-        required
-        id="jobtitle"
-        variant="outlined"
-        value={ values.jobTitle }
-        label="Position"
-        className={ classes.margin, classes.textField }
-        onChange={ handleChange('jobTitle') }
+      <Grid container 
+        spacing={ 3 }
+        alignItems="center"
+        justify="center"
       >
-        {typesPositions.map(option => (
-          <MenuItem key={ option.value } value={ option.value }>
-            { option.label }
-          </MenuItem>
-        ))}
-      </TextField>
-  		<TextField
-        id="date"
-        variant="outlined"
-        label="Date Applied"
-        type="date"
-        defaultValue={ date }
-        className={ classes.margin, classes.textField }
-        onChange={ handleChange('dateApplied') }
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <FormControl
-        variant="outlined" 
-        className={ classes.margin, classes.textField }
-      >
-        <InputLabel htmlFor="select-multiple">Interviews Received</InputLabel>
-        <Select
-          multiple
-          value={ values.interview }
-          onChange={ handleChange('interview') }
-          input={<OutlinedInput id="select-multiple" />}
-          MenuProps={MenuProps}
-        >
-          {	typesInterviews.map(name => (
-            <MenuItem key={name.value} value={name.value}>
-              {name.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl> 
-      <FormControl
-        variant="outlined" 
-        className={ classes.margin, classes.textField }
-      >
-        <InputLabel htmlFor="select">Offer Status</InputLabel>
-        <Select
-          value={ values.offerStatus }
-          onChange={ handleChange('offerStatus') }
-          input={ <OutlinedInput id="select" /> }
-          MenuProps={ MenuProps }
-        >
-          {	typesOfferStatus.map(name => (
-            <MenuItem key={name.value} value={name.value}>
-              {name.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <Button
-        label="Search"
-        primary={true}
-        margin="normal"
-        variant="contained"
-        onClick={ handleSubmit }
-      >
-        SUBMIT  
-      </Button>
+        <Grid item xs={ 12 } sm={ 8 }>
+          <TextField
+            required
+            fullWidth
+            id="company"
+            variant="outlined"
+            label="Company"
+            onChange={ handleChange('company') }
+          />
+        </Grid>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <TextField
+            fullWidth
+            select
+            required
+            id="jobtitle"
+            variant="outlined"
+            value={ values.jobTitle }
+            label="Position"
+            onChange={ handleChange('jobTitle') }
+          >
+            {typesPositions.map(option => (
+              <MenuItem key={ option.value } value={ option.value }>
+                { option.label }
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={ 12 } sm={ 8 }>
+          <TextField
+            required
+            fullWidth
+            id="address"
+            variant="outlined"
+            label="Address"
+            onChange={ handleChange('address') }
+          />
+          <TextField
+            fullWidth
+            id="url"
+            variant="outlined"
+            label="URL of Job Post"
+            className={ classes.interior }
+            onChange={ handleChange('jobPostURL') }
+          />
+        </Grid>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <TextField
+            fullWidth
+            multiline
+            id="notes"
+            variant="outlined"
+            label="Notes"
+            rows={ 5 }
+            onChange={ handleChange('notes') }
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder="Important Notes (Contact Info, Tips, etc.)"
+          />
+        </Grid>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <TextField
+            fullWidth
+            id="date"
+            variant="outlined"
+            label="Date Applied"
+            type="date"
+            defaultValue={ date }
+            onChange={ handleChange('dateApplied') }
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={ 6 } sm={ 4 }>
+          <FormControl
+            variant="outlined" 
+            fullWidth
+          >
+            <InputLabel htmlFor="select-multiple">Interviews Received</InputLabel>
+            <Select
+              multiple
+              value={ values.interview }
+              onChange={ handleChange('interview') }
+              input={<OutlinedInput id="select-multiple" />}
+              MenuProps={ MenuProps }
+            >
+              {	typesInterviews.map(name => (
+                <MenuItem key={name.value} value={name.value}>
+                  {name.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={ 6 } sm={ 4 }>
+          <FormControl
+            variant="outlined"
+            fullWidth
+          >
+            <InputLabel htmlFor="select">Offer Status</InputLabel>
+            <Select
+              value={ values.offerStatus }
+              onChange={ handleChange('offerStatus') }
+              input={ <OutlinedInput id="select" /> }
+              MenuProps={ MenuProps }
+            >
+              {	typesOfferStatus.map(name => (
+                <MenuItem key={name.value} value={name.value}>
+                  {name.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <Button
+            fullWidth
+            label="Search"
+            primary={true}
+            margin="normal"
+            variant="contained"
+            onClick={ handleSubmit }
+          >
+            SUBMIT  
+          </Button>
+        </Grid>
+      </Grid>
  			<Snackbar
         open={ values.open }
         onClose={ handleClose }
@@ -284,7 +337,14 @@ export default function AppliedForm(props) {
         ContentProps={{
           'aria-describedby': 'message-id',
         }}
-        message={<span id="message-id"><WarningIcon />Please Fill Required Fields</span>}
+        message={
+          <React.Fragment>
+            <span id="message-id" className={ classes.message }>
+              <WarningIcon className={ classes.icon, classes.iconVariant } />
+              Please Fill Required Fields
+            </span>
+          </React.Fragment>
+        }
       />
     </div>
   );
