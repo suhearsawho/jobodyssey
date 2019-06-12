@@ -57,7 +57,7 @@ const typesOfferStatus = [
     label: 'Rejection',
   },
   {
-    value: 'Offer',
+    value: 'Received Offer',
     label: 'Received Offer',
   },
   {

@@ -108,15 +108,18 @@ class AppliedJobs extends Component {
                       <MoreVertIcon />
                     </IconButton>
                   }
+                  titleTypographyProps={{  }}
                   title={ jobsApplied[key].job_title + ' ' + jobsApplied[key].role + ' at ' + jobsApplied[key].company }
                   subheader={ 'Applied On: ' + jobsApplied[key].date_applied }
                 />
                 <CardContent>
-                  <Typography variant="body2" color="textSecondary" component="p">
+                  <Typography variant="body1" color="textSecondary" component="p">
                     { 'Interviews Received: '}
                     { Object.keys(jobsApplied[key].interview).length === 0 ? 'None': jobsApplied[key].interview.join(', ') }
                   </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    { 'Offer Status: '}
+                    { Object.keys(jobsApplied[key].status).length === 0 ? 'None': jobsApplied[key].status }
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
