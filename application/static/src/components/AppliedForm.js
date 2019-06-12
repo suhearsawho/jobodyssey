@@ -19,30 +19,30 @@ import { amber } from '@material-ui/core/colors';
 
 const typesInterviews = [
 	{
-		value: 'phone_screen',
+		value: 'Phone Screening',
 		label: 'Phone Screening',
 	},
 	{
-		value: 'phone_interview',
+		value: 'Phone Interview',
 		label: 'Phone Interview',
 	},
 	{
-		value: 'onsite_interview',
+		value: 'Onsite Interview',
 		label: 'Onsite Interview',
 	},
 ];
 
 const typesPositions = [
   {
-    value: 'full_time',
+    value: 'Full Time',
     label: 'Full Time',
   },
   {
-    value: 'part_time',
+    value: 'Part Time',
     label: 'Part Time',
   },
   {
-    value: 'internship',
+    value: 'Internship',
     label: 'Internship',
   },
 ];
