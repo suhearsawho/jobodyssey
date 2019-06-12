@@ -248,20 +248,13 @@ export default function AppliedForm(props) {
         <Grid item xs={ 12 } sm={ 4 }>
           <TextField
             fullWidth
-            select
             required
             id="jobtitle"
             variant="outlined"
             value={ values.jobTitle }
             label="Position"
             onChange={ handleChange('jobTitle') }
-          >
-            {typesPositions.map(option => (
-              <MenuItem key={ option.value } value={ option.value }>
-                { option.label }
-              </MenuItem>
-            ))}
-          </TextField>
+          />
         </Grid>
         <Grid item xs={ 12 } sm={ 4 }>
           <TextField
