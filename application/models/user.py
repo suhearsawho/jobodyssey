@@ -5,6 +5,7 @@ User Class from Models Module
 import hashlib
 import os
 from application.models.base_model import BaseModel, Base
+from application import models
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String, Float, ForeignKey,\
     MetaData, Table, JSON
@@ -24,6 +25,38 @@ class UserReward(Base):
                        ForeignKey('rewards.id'),
                        nullable=False,
                        primary_key=True)
+
+    def __init__(self, *args, **kwargs):
+        """
+        initialize new UserReward Class
+        """
+        if kwargs:
+            self.__set_attributes(kwargs)
+        else:
+            print('Need Kwargs')
+
+    def __set_attributes(self, attr_dict):
+        """
+        private: converts attr_dict values to python class attributes
+        """
+        for attr, val in attr_dict.items():
+            setattr(self, attr, val)
+
+    def save(self):
+        """
+        Saves our userreward instance
+        """
+        models.database.new(self)
+        models.database.save()
+    
+    def to_json(self):
+        return {'user_id': self.user_id, 'reward_id': self.reward_id}
+
+    def delete(self):
+        """
+        deletes instance from storage
+        """
+        models.database.delete(self)
 
 
 class User(BaseModel, Base):

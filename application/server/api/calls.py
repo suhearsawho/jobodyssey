@@ -6,7 +6,7 @@ from application.server.api import api_views
 from application.models import database, CLASS_DICT
 import requests
 
-from application.models.user import User
+from application.models.user import User, UserReward
 from application.models.reward import Reward
 from flask import abort, jsonify, session, request
 import pdb
@@ -37,8 +37,16 @@ def rewards():
             rewards['data'].append({'name': roll.name, 'img': roll.image, 'rarity': roll.rarity, 'id': roll.id})
         return jsonify(rewards)
     data = request.get_json()
-    print(data)
-    return jsonify({})
+    user = database.get('User', data['user_id'])
+    try:
+        new_user_reward = UserReward(**data)
+        print(new_user_reward.to_json())
+        new_user_reward.save()
+    except:
+        pass
+    user.currency -= 5
+    user.save()
+    return jsonify(user.to_json())
 
 @api_views.route('/user', methods=['GET']) #feed in user id if we are doing this by user id
 def user_info():
