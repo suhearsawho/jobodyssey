@@ -10,6 +10,7 @@ from application.models.user import User
 from flask import abort, jsonify, session, request
 import pdb
 import json
+import uuid
 
 @api_views.route('/users', methods=['GET', 'POST'])
 def users(user_id=None):
@@ -49,8 +50,7 @@ def jobs_applied():
     Used to retrieve, add, update, and delete jobs that the user has applied to
     """
     user = database.get('User', session['id'])
-    
-    # GET: Return all jobs that user has applied to
+    # GET: Return all jobs that user is interested in
     if request.method == 'GET':
         return jsonify(user.jobs_applied), 200
     
@@ -58,13 +58,14 @@ def jobs_applied():
         return jsonify(error="Not a valid JSON"), 400
 
     jobs = json.loads(user.jobs_applied) 
+    data = request.get_json()
+    if request.method != 'POST':
+        job_id = data.get('id')
+    
     if ((request.method == 'DELETE' or request.method == 'PUT') and
         (job_id not in jobs)):
-        response = {error: 'Not a valid job ID'}
+        response = {'error': 'Not a valid ID'}
     else:
-        data = request.get_json()
-        job_id = data.get('id')
-        print('user before modifications', user.__dict__)
         # PUT: Change an existing entry
         if request.method == 'PUT':
             for key, value in data.items():
@@ -73,20 +74,19 @@ def jobs_applied():
             user.currency += 10    
         # POST: Creates a new entry
         elif request.method == 'POST':
-            if job_id not in jobs:
-                data.pop('id')
-                jobs[job_id] = data
-                user.currency += 10
+            print(data)
+            job_id = str(uuid.uuid4()) 
+            jobs[job_id] = data
+            user.currency += 10
 
         # DELETE: Deletes an entry 
         elif request.method == 'DELETE':
-            jobs['data'].pop(job_id)
+            jobs.pop(job_id)
             
         user.jobs_applied = json.dumps(jobs)
         user.save()
         response = {'success': True}
 
-    print('this is your final user', user)
     status = 200 if 'success' in response else 404
     return jsonify(response), status
 
@@ -95,7 +95,6 @@ def jobs_interested():
     """
     Used to retrieve, add, update, and delete jobs that the user is interested in
 
-    Important! Must use setattr in order to successfully permeate changes
     """
     user = database.get('User', session['id'])
     # GET: Return all jobs that user is interested in
@@ -108,7 +107,6 @@ def jobs_interested():
     jobs = json.loads(user.jobs_interested) 
     data = request.get_json()
     job_id = data.get('id')
-    print('this is what you want', request.method, job_id)
     if ((request.method == 'DELETE' or request.method == 'PUT') and
         (job_id not in jobs)):
         response = {'error': 'Not a valid job ID'}
