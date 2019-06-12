@@ -12,6 +12,7 @@ const styles = theme => ({
     flexGrow: 1,
     position: 'relative',
     marginTop: '5rem',
+    height: '100%',
   },
 });
 

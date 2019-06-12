@@ -12,6 +12,7 @@ from flask import abort, jsonify, session, request
 import pdb
 import json
 from random import randint
+import uuid
 
 
 @api_views.route('/rewards', methods=['GET', 'POST'])
@@ -50,26 +51,24 @@ def user_info():
     """
     return user info in order to populate user page
     """
-    users = database.all('User')
-    for user in users.values():
-        username = user.user_name
-        if username is not None and username == session.get('username'): # need to decide how we are going to grab information
-            return jsonify(user.to_json())
-    return jsonify({'username': 'French Fries'})
+    user = database.get('User', session['id'])
+    return jsonify(user.to_json())
+
+@api_views.route('/csv', methods=['GET'])
+def csv():
+    """
+    returns a string csv of the jobs applied for a user
+    """
+    user = database.get('User', session['id'])
+    return user.get_csv()
 
 @api_views.route('/user/rewards', methods=['GET'])
 def user_rewards():
     """
     return all rewards associated with a user
     """
-    user_id = None
-    users = database.all('User')
-    for user in users.values():
-        username = user.user_name
-        if username is not None and username == session.get('username'): # need to decide how we are going to grab information
-            user_id = jsonify(user.to_json()).get('id')
-    if user_id is not None:
-        pass
+    user = database.get('User', session['id'])
+    user_id = session['id']
     return jsonify({'username': 'Susan loves French Fries'})
 
 @api_views.route('/job_search', methods=['POST'])
@@ -96,13 +95,13 @@ def jobs_applied():
         return jsonify(error="Not a valid JSON"), 400
 
     jobs = json.loads(user.jobs_applied)
+    data = request.get_json()
+    if request.method != 'POST':
+        job_id = data.get('id')
     if ((request.method == 'DELETE' or request.method == 'PUT') and
         (job_id not in jobs)):
-        response = {error: 'Not a valid job ID'}
+        response = {'error': 'Not a valid ID'}
     else:
-        data = request.get_json()
-        job_id = data.get('id')
-        print('user before modifications', user.__dict__)
         # PUT: Change an existing entry
         if request.method == 'PUT':
             for key, value in data.items():
@@ -111,20 +110,19 @@ def jobs_applied():
             user.currency += 10
         # POST: Creates a new entry
         elif request.method == 'POST':
-            if job_id not in jobs:
-                data.pop('id')
-                jobs[job_id] = data
-                user.currency += 10
+            print(data)
+            job_id = str(uuid.uuid4())
+            jobs[job_id] = data
+            user.currency += 10
 
         # DELETE: Deletes an entry
         elif request.method == 'DELETE':
-            jobs['data'].pop(job_id)
+            jobs.pop(job_id)
 
         user.jobs_applied = json.dumps(jobs)
         user.save()
         response = {'success': True}
 
-    print('this is your final user', user)
     status = 200 if 'success' in response else 404
     return jsonify(response), status
 
@@ -133,7 +131,6 @@ def jobs_interested():
     """
     Used to retrieve, add, update, and delete jobs that the user is interested in
 
-    Important! Must use setattr in order to successfully permeate changes
     """
     user = database.get('User', session['id'])
     # GET: Return all jobs that user is interested in
@@ -146,7 +143,6 @@ def jobs_interested():
     jobs = json.loads(user.jobs_interested)
     data = request.get_json()
     job_id = data.get('id')
-    print('this is what you want', request.method, job_id)
     if ((request.method == 'DELETE' or request.method == 'PUT') and
         (job_id not in jobs)):
         response = {'error': 'Not a valid job ID'}

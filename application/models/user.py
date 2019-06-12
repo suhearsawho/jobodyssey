@@ -72,8 +72,8 @@ class User(BaseModel, Base):
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
 
     """ Dictionary of all keys in our JSON of jobs applied """
-    applied_columns = ['date', 'company', 'url', 'title', 'address', 'status']
-    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)","Full Address","Status","Additional Notes"\n'
+    applied_columns = ['date_applied', 'company', 'url', 'job_title', 'role' , 'address', 'status', 'interview']
+    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)","Role","Full Address","Status","Interviews Recieved","Additional Notes"\n'
 
     def __init__(self, *args, **kwargs):
         """
@@ -89,10 +89,11 @@ class User(BaseModel, Base):
         """
         if not self.jobs_applied:
             return ''
-        csv_applied = self.sheets_columns
-        for i in self.jobs_applied.get('data'):
+        csv_applied = str(self.sheets_columns)
+        applied = json.loads(self.jobs_applied)
+        for i in applied.values():
             for col in self.applied_columns:
-                csv_applied += i.get(col) + ','
+                csv_applied += str(i.get(col)) + ','
                 """ to fit csv formatting notes not included """
             csv_applied += i.get('notes') + '\n'
         return csv_applied

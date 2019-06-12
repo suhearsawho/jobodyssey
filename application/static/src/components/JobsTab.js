@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import AppliedForm from './AppliedForm';
+import AppliedJobs from './AppliedJobs';
 
 function TabContainer({ children, dir }) {
   return (
@@ -21,6 +22,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     position: 'relative',
     marginTop: '5rem',
+    height: '100%',
+  },
+  content: {
+    height: '100%',
   },
 }));
 
@@ -55,12 +60,13 @@ export default function JobsTab() {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
+        className={ classes.content }
       >
-        <TabContainer dir={theme.direction}>
+        <TabContainer dir={theme.direction} className={ classes.content }>
           <AppliedForm />
         </TabContainer>
         <TabContainer dir={theme.direction}>
-          
+          <AppliedJobs /> 
         </TabContainer>
       </SwipeableViews>
     </div>
