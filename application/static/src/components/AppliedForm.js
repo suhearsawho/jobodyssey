@@ -49,27 +49,49 @@ const typesPositions = [
 
 const typesOfferStatus = [
   {
-    value: 'waiting',
+    value: 'Waiting to Hear Back',
     label: 'Waiting to Hear Back',
   },
   {
-    value: 'rejection',
+    value: 'Rejection',
     label: 'Rejection',
   },
   {
-    value: 'offer',
+    value: 'Offer',
     label: 'Received Offer',
   },
   {
-    value: 'acceptance_offer',
+    value: 'Acceptance of Offer',
     label: 'Acceptance of Offer',
   },
   {
-    value: 'rejection_offer',
+    value: 'Rejection of Offer',
     label: 'Rejection of Offer',
   },
 ];
 
+const typesRoles = [
+  {
+    value: 'Full Stack',
+    label: 'Full Stack',
+  },
+  {
+    value: 'Backend',
+    label: 'Backend',
+  },
+  {
+    value: 'Frontend',
+    label: 'Frontend',
+  },
+  {
+    value: 'SRE',
+    label: 'SRE',
+  },
+  {
+    value: 'Dev-Ops',
+    label: 'Dev-Ops',
+  },
+]
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -143,13 +165,14 @@ export default function AppliedForm(props) {
     notes: '',
     jobPostURL: '',
     address: '',
+    role: '',
     open: false,
     Transition: Grow,
   });
 
   const handleSubmit = () => {
     if (values.company.trim() === '' || values.address.trim() === '' ||
-        values.jobTitle.trim() === '') { 
+        values.jobTitle.trim() === '' || values.role.trim() === '') { 
       console.log('passed condition');
       setValues({...values, open: true });
     } else { 
@@ -174,6 +197,7 @@ export default function AppliedForm(props) {
           status: values.offerStatus,
           interview: values.interview,
           notes: values.notes,
+          role: values.role,
         }),
         success: (data) => {
           console.log(data);
@@ -185,6 +209,7 @@ export default function AppliedForm(props) {
             offerStatus: '',
             notes: '',
             jobPostURL: '',
+            role: '',
             address: '',
           });
         }
@@ -209,7 +234,7 @@ export default function AppliedForm(props) {
         alignItems="center"
         justify="center"
       >
-        <Grid item xs={ 12 } sm={ 8 }>
+        <Grid item xs={ 12 } sm={ 4 }>
           <TextField
             required
             fullWidth
@@ -232,6 +257,24 @@ export default function AppliedForm(props) {
             onChange={ handleChange('jobTitle') }
           >
             {typesPositions.map(option => (
+              <MenuItem key={ option.value } value={ option.value }>
+                { option.label }
+              </MenuItem>
+            ))}
+          </TextField>
+        </Grid>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <TextField
+            fullWidth
+            select
+            required
+            id="jobtitle"
+            variant="outlined"
+            value={ values.role }
+            label="Role"
+            onChange={ handleChange('role') }
+          >
+            {typesRoles.map(option => (
               <MenuItem key={ option.value } value={ option.value }>
                 { option.label }
               </MenuItem>

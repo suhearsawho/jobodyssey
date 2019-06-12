@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const styles = theme => ({
   root: {
@@ -70,7 +71,6 @@ class AppliedJobs extends Component {
   handleSpreadsheet() {
   }
 	handleExpandClick() {
-    console.log('handling expansion')
 		this.setState((prevState) => ({
       expanded: !prevState.expanded
     }));
@@ -102,8 +102,27 @@ class AppliedJobs extends Component {
           { Object.keys(jobsApplied).map((key) => (
             <Grid item xs={ 12 }>
               <Card className={ classes.card } id={ key }>
-                  <p>jobsApplied[key].company</p>
+                <CardHeader
+                  action={
+                    <IconButton aria-label="Settings">
+                      <MoreVertIcon />
+                    </IconButton>
+                  }
+                  title={ jobsApplied[key].job_title + ' ' + jobsApplied[key].role + ' at ' + jobsApplied[key].company }
+                  subheader={ 'Applied On: ' + jobsApplied[key].date_applied }
+                />
+                <CardContent>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                    { 'Interviews Received: '}
+                    { Object.keys(jobsApplied[key].interview).length === 0 ? 'None': jobsApplied[key].interview.join(', ') }
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" component="p">
+                  </Typography>
+                </CardContent>
                 <CardActions disableSpacing>
+                  <IconButton aria-label="Add to favorites">
+                    <FavoriteIcon />
+                  </IconButton>
                   <IconButton
                     className={ classes.expand, {
                       [classes.expandOpen]: expanded,
@@ -117,7 +136,9 @@ class AppliedJobs extends Component {
                 </CardActions> 
                 <Collapse in={ expanded } timeout="auto" unmountOnExit>
                   <CardContent>
-                    <p>Testing</p>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      { 'Notes: ' + jobsApplied[key].notes }
+                    </Typography>
                   </CardContent>
                 </Collapse>
               </Card>
