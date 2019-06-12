@@ -93,7 +93,10 @@ class User(BaseModel, Base):
         applied = json.loads(self.jobs_applied)
         for i in applied.values():
             for col in self.applied_columns:
-                csv_applied += str(i.get(col)) + ','
+                if col == 'interview':
+                    csv_applied += '|'.join(i.get(col)) + ','
+                else:
+                    csv_applied += str(i.get(col)) + ','
                 """ to fit csv formatting notes not included """
             csv_applied += i.get('notes') + '\n'
         return csv_applied
