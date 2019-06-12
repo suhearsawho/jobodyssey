@@ -38,12 +38,9 @@ def rewards():
         return jsonify(rewards)
     data = request.get_json()
     user = database.get('User', data['user_id'])
-    try:
+    if database.duplicateUserReward(data['user_id'], data['reward_id']) is False:
         new_user_reward = UserReward(**data)
-        print(new_user_reward.to_json())
         new_user_reward.save()
-    except:
-        pass
     user.currency -= 5
     user.save()
     return jsonify(user.to_json())
@@ -59,6 +56,21 @@ def user_info():
         if username is not None and username == session.get('username'): # need to decide how we are going to grab information
             return jsonify(user.to_json())
     return jsonify({'username': 'French Fries'})
+
+@api_views.route('/user/rewards', methods=['GET'])
+def user_rewards():
+    """
+    return all rewards associated with a user
+    """
+    user_id = None
+    users = database.all('User')
+    for user in users.values():
+        username = user.user_name
+        if username is not None and username == session.get('username'): # need to decide how we are going to grab information
+            user_id = jsonify(user.to_json()).get('id')
+    if user_id is not None:
+        pass
+    return jsonify({'username': 'Susan loves French Fries'})
 
 @api_views.route('/job_search', methods=['POST'])
 def job_search():

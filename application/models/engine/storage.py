@@ -104,3 +104,13 @@ class Storage:
         returns count of all objects
         """
         return (len(self.all(cls)))
+
+    def duplicateUserReward(self, user_id, reward_id):
+        """
+        checks for a duplicate of the user reward
+        """
+        for duplicate in self.__session.query(user.UserReward).\
+            filter(user.UserReward.user_id == user_id).\
+            filter(user.UserReward.reward_id == reward_id):
+            return True
+        return False

@@ -14,7 +14,7 @@ const styles = theme => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '5rem',
+        marginTop: '3rem',
         fontSize: '36'
       }
   });
@@ -182,7 +182,7 @@ const styles = theme => ({
         let ipAddress = window.location.hostname;
         let url;
         let user;
-        
+
         if (ipAddress === '127.0.0.1')
             url = 'http://' + ipAddress + ':8000/api/';
         else
@@ -213,11 +213,33 @@ const styles = theme => ({
      * @return { JSX }
      */
     render() {
+        let currency;
         if (this.state.end) {
             this.addReward(this.state.randomItem.value.id)
+            let ipAddress = window.location.hostname;
+            let url;
+            if (ipAddress.trim() === '127.0.0.1'.trim())
+                url = 'http://' + ipAddress + ':8000/api/user';
+            else
+                url = 'http://' + ipAddress + '/api/user';
+            fetch(url)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        this.props.currency = result.currency
+                    });
         }
+        currency = this.props.currency
+        console.log(currency)
+        if (currency < 5) {
+            this.state.end = false
+        }
+        console.log('this is the currency')
+        console.log(currency)
         return (
-            <div className="RandomItemSpinner">
+            <div style={{textAlign: 'center'}} className="RandomItemSpinner">
+                <h2>Coins Available</h2>
+                <h3>{currency}</h3>
                 <SpinAgainButton disabled={ !this.state.end } spinAgainHandler={ this.spinAgainHandler.bind(this) } />
                 <RandomItem item={ this.state.randomItem.value } />
             </div>
@@ -306,7 +328,19 @@ class Rewards extends Component {
             error: null,
             isLoaded: false,
             rewards: false
-          }
+        }
+        let ipAddress = window.location.hostname;
+        let url;
+        if (ipAddress.trim() === '127.0.0.1'.trim())
+            url = 'http://' + ipAddress + ':8000/api/user';
+        else
+            url = 'http://' + ipAddress + '/api/user';
+        fetch(url)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.state.isLoaded = result.currency
+                });
       }
 
     getRewards() {
@@ -322,15 +356,7 @@ class Rewards extends Component {
             (result) => {
                 console.log(result)
                 this.setState({
-                    isLoaded: true,
                     rewards: result.data
-                });
-            },
-            (error) => {
-                console.log(res)
-                this.setState({
-                    isLoaded: true,
-                    error
                 });
             }
         )
@@ -345,12 +371,13 @@ class Rewards extends Component {
                 <br />
                 {rewards === false ?
                     <React.Fragment>
-                        <h2>{} Coins Available</h2>
-                        <Button onClick={() => this.getRewards()}>5 Coins to Roll!</Button>
+                        <h2>Coins Available</h2>
+                        <h3>{this.state.isLoaded}</h3>
+                        <Button disabled={this.state.isLoaded < 5 ? true : false }onClick={() => this.getRewards()}>5 Coins to Roll!</Button>
                     </React.Fragment>
                     :
                     <React.Fragment>
-                        <RandomItemSpinner items={rewards} />
+                        <RandomItemSpinner items={rewards} currency={this.state.isLoaded} />
                     </React.Fragment>
                 }
             </div>
