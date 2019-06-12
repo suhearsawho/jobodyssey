@@ -74,8 +74,8 @@ def jobs_applied():
             user.currency += 10    
         # POST: Creates a new entry
         elif request.method == 'POST':
-            job_id = str(uuid.uuid4()) 
             print(data)
+            job_id = str(uuid.uuid4()) 
             jobs[job_id] = data
             user.currency += 10
 
@@ -95,7 +95,6 @@ def jobs_interested():
     """
     Used to retrieve, add, update, and delete jobs that the user is interested in
 
-    Important! Must use setattr in order to successfully permeate changes
     """
     user = database.get('User', session['id'])
     # GET: Return all jobs that user is interested in
@@ -108,7 +107,6 @@ def jobs_interested():
     jobs = json.loads(user.jobs_interested) 
     data = request.get_json()
     job_id = data.get('id')
-    print('this is what you want', request.method, job_id)
     if ((request.method == 'DELETE' or request.method == 'PUT') and
         (job_id not in jobs)):
         response = {'error': 'Not a valid job ID'}

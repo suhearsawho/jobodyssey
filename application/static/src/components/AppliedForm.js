@@ -148,8 +148,8 @@ export default function AppliedForm(props) {
   });
 
   const handleSubmit = () => {
-    if (values.company.trim() === '' || values.address.trim() === '' 
-        || values.interview.length === 0) {
+    if (values.company.trim() === '' || values.address.trim() === '' ||
+        values.jobTitle.trim() === '') { 
       console.log('passed condition');
       setValues({...values, open: true });
     } else { 
@@ -165,7 +165,16 @@ export default function AppliedForm(props) {
         url: url,
         contentType: 'application/json',
         dataType: 'json',
-        data: JSON.stringify({ ...values }),
+        data: JSON.stringify({
+          date_applied: values.dateApplied,
+          company: values.company,
+          url: values.jobPostURL,
+          job_title: values.jobTitle,
+          address: values.address,
+          status: values.offerStatus,
+          interview: values.interview,
+          notes: values.notes,
+        }),
         success: (data) => {
           console.log(data);
           setValues({
@@ -207,6 +216,7 @@ export default function AppliedForm(props) {
             id="company"
             variant="outlined"
             label="Company"
+            value={ values.company }
             onChange={ handleChange('company') }
           />
         </Grid>
@@ -235,6 +245,7 @@ export default function AppliedForm(props) {
             id="address"
             variant="outlined"
             label="Address"
+            value={ values.address }
             onChange={ handleChange('address') }
           />
           <TextField
@@ -243,6 +254,7 @@ export default function AppliedForm(props) {
             variant="outlined"
             label="URL of Job Post"
             className={ classes.interior }
+            value={ values.jobPostURL }
             onChange={ handleChange('jobPostURL') }
           />
         </Grid>
@@ -255,6 +267,7 @@ export default function AppliedForm(props) {
             label="Notes"
             rows={ 5 }
             onChange={ handleChange('notes') }
+            value={ values.notes }
             InputLabelProps={{
               shrink: true,
             }}

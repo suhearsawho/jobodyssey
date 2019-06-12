@@ -39,8 +39,8 @@ class User(BaseModel, Base):
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
 
     """ Dictionary of all keys in our JSON of jobs applied """
-    applied_columns = ['date', 'company', 'url', 'title', 'address', 'status']
-    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)","Full Address","Status","Additional Notes"\n'
+    applied_columns = ['date_applied', 'company', 'url', 'job_title', 'address', 'status', 'interview', 'notes']
+    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)","Full Address","Status","Interviews Recieved","Additional Notes"\n'
 
     def __init__(self, *args, **kwargs):
         """
