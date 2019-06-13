@@ -269,9 +269,8 @@ class RandomItem extends Component {
                 <img 
                 style={{
                 height: 'auto',
-                maxHeight: '250px',
-                width: 'auto',
-                maxWidth: '250px'}} 
+                maxHeight: '255px',
+                width: 'auto'}} 
                 src={ this.props.item.img } />
             </div>
         );
