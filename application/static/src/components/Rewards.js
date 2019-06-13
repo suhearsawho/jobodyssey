@@ -337,6 +337,23 @@ class Rewards extends Component {
                     this.state.isLoaded = result.currency
                 });
       }
+    
+    componentDidMount() {
+        let ipAddress = window.location.hostname;
+        let url;
+        if (ipAddress.trim() === '127.0.0.1'.trim())
+            url = 'http://' + ipAddress + ':8000/api/user';
+        else
+            url = 'http://' + ipAddress + '/api/user';
+        fetch(url)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                      isLoaded: result.currency
+                    });
+                });
+    }
 
     getRewards() {
         let ipAddress = window.location.hostname;
