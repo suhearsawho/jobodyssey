@@ -202,11 +202,15 @@ export default function AppliedForm(props) {
       });
     }
   };
-  
+ 
+  const handleCancel = () => {
+    props.handleCancel();
+  }
+
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });
   };
-  
+
   function handleClose() {
     setValues({
       ...values,
@@ -365,6 +369,18 @@ export default function AppliedForm(props) {
             onClick={ handleSubmit }
           >
             SUBMIT  
+          </Button>
+        </Grid>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <Button
+            fullWidth
+            label="Search"
+            primary={true}
+            margin="normal"
+            variant="contained"
+            onClick={ handleCancel }
+          >
+            CANCEL
           </Button>
         </Grid>
       </Grid>
