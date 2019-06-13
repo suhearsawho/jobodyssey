@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 export default function TopBar({ isLoggedIn, handleLogout, color }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-	const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl);
 
   function handleMenu(event) {
     setAnchorEl(event.currentTarget);
@@ -53,57 +53,57 @@ export default function TopBar({ isLoggedIn, handleLogout, color }) {
   }
 
   return (
-      <AppBar position="fixed" className={ color ? classes.color: classes.noColor }>
-        <Toolbar>
-          { isLoggedIn && (
-            <ResponsiveDrawer />
-          )}
-          <Typography variant="h6" className={ classes.title }>
-            Job Odyssey
+    <AppBar position="fixed" className={color ? classes.color : classes.noColor}>
+      <Toolbar>
+        {isLoggedIn && (
+          <ResponsiveDrawer />
+        )}
+        <Typography variant="h6" className={classes.title}>
+          Job Odyssey
           </Typography>
-          <div className={ classes.info }>
-            { isLoggedIn && (
-              <React.Fragment>
-                <IconButton
-                  aria-label="Account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  onClick={ handleMenu }
-                >
-                  <AccountCircle />
-                </IconButton>
-							 	<Menu
-									id="menu-appbar"
-									anchorEl={ anchorEl }
-									anchorOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'right',
-									}}
-									open={ open }
-									onClose={ handleClose }
-								>
-									<MenuItem onClick={ handleClose }>My Account</MenuItem>
-                  <MenuItem onClick={ callLogout }>
-                    Logout
+        <div className={classes.info}>
+          {isLoggedIn && (
+            <React.Fragment>
+              <IconButton
+                aria-label="Account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={handleMenu}
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>My Account</MenuItem>
+                <MenuItem onClick={callLogout}>
+                  Logout
                   </MenuItem>
-								</Menu> 
-              </React.Fragment>
-              )
-            }
-            { !isLoggedIn && (
-              <Button className={ classes.button }>
-                Learn More
+              </Menu>
+            </React.Fragment>
+          )
+          }
+          {!isLoggedIn && (
+            <Button className={classes.button}>
+              Learn More
               </Button>
-              )
-            }
-          </div>
-        </Toolbar>
-      </AppBar>
+          )
+          }
+        </div>
+      </Toolbar>
+    </AppBar>
   )
 };
