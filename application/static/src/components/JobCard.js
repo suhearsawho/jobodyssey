@@ -50,6 +50,7 @@ class JobCard extends Component {
 		this.handleExpandClick = this.handleExpandClick.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
     this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
   }
   
@@ -69,6 +70,12 @@ class JobCard extends Component {
     this.setState({
       edit: false,
       job: values,
+    });
+  }
+
+  handleCancel(values) {
+    this.setState({
+      edit: false,
     });
   }
 
@@ -93,10 +100,19 @@ class JobCard extends Component {
     });
   }
 
+  fixUrl(url) {
+    if (!url.startsWith('http', 0)) {
+      url = 'http://' + url;
+    }
+    console.log('checking');
+    return url
+
+  }
   render() {
     const { classes } = this.props;
-    console.log('is job defined', this.state.job);
     const { expanded, edit, job, id } = this.state;
+    const url = this.fixUrl(job.url);
+
     return (
       <Grid item xs={ 12 } sm={ 6 }>
         <Card className={ classes.card } id={ id }>
@@ -106,23 +122,46 @@ class JobCard extends Component {
             }
             titleTypographyProps={{  }}
             title={ job.job_title + ' at ' + job.company }
-            subheader={ 'Applied On: ' + job.date_applied }
+            subheader={ 'Applied On ' + job.date_applied }
           />
           { !edit && (
             <React.Fragment>
             <CardContent>
-              <Typography variant="body1" color="textSecondary" component="p">
-                { 'Interviews Received: '}
-                { Object.keys(job.interview).length === 0 ? 'None': job.interview.join(', ') }
-              </Typography>
-              <Typography variant="body1" color="textSecondary" component="p">
-                { 'Languages: '}
-                { Object.keys(job.languages).length === 0 ? 'None': job.languages.join(', ') }
-              </Typography>
-              <Typography variant="body1" color="textSecondary" component="p">
-                { 'Offer Status: '}
-                { job.status === '' ? 'None': job.status }
-              </Typography>
+              <Grid container
+                spacing={ 1 }
+                justify="center"
+              >
+                <Grid item xs={ 4 } sm={ 4 }>
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    { 'Languages: '}
+                  </Typography>
+                </Grid>
+                <Grid item xs={ 8 } sm={ 8 }>
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    { Object.keys(job.languages).length === 0 ? 'None': job.languages.join(', ') }
+                  </Typography>
+                </Grid>
+                <Grid item xs={ 4 } >
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    { 'Interviews Received: '}
+                  </Typography>
+                </Grid>
+                <Grid item xs={ 8 }>
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    { Object.keys(job.interview).length === 0 ? 'None': job.interview.join(', ') }
+                  </Typography>
+                </Grid>
+                <Grid item xs={ 4 } sm={ 4 }> 
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    { 'Offer Status: '}
+                  </Typography>
+                </Grid>
+                <Grid item xs={ 8 } sm={ 8 }> 
+                  <Typography variant="body1" color="textSecondary" component="p">
+                    { job.status === '' ? 'None': job.status }
+                  </Typography>
+                </Grid>
+              </Grid>
             </CardContent>
             <CardActions disableSpacing>
               <IconButton aria-label="Add to favorites">
@@ -141,16 +180,48 @@ class JobCard extends Component {
             </CardActions> 
             <Collapse in={ expanded } timeout="auto" unmountOnExit>
               <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  { 'Notes: ' + job.notes }
-                </Typography>
+                <Grid container
+                  spacing={ 1 }
+                  justify="center"
+                >
+                  <Grid item xs={ 4 } >
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      { 'URL: ' }
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={ 8 } >
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      <a href={ url }>{ job.url }</a>
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={ 4 } >
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      { 'Address: ' }
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={ 8 } >
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      { job.address }
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={ 4 } >
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      { 'Notes: ' }
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={ 8 } >
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      { job.notes }
+                    </Typography>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Collapse>
             </React.Fragment>
           )}
           { edit && (
             <CardContent>
-              <EditForm job={ job } id={ id } handleClose={ this.handleSubmitEdit }/>
+              <EditForm job={ job } id={ id } handleClose={ this.handleSubmitEdit } handleCancel={ this.handleCancel }/>
             </CardContent>
           )}
         </Card>

@@ -72,6 +72,23 @@ class AppliedJobs extends Component {
   }
   
   handleSpreadsheet() {
+    let ipAddress = window.location.hostname;
+    let url;
+    console.log('in appliedjobs mount function');
+    if (ipAddress.trim() === '127.0.0.1'.trim())
+      url = 'http://' + ipAddress + ':8000/api/csv';
+    else
+      url = 'http://'+ ipAddress + '/api/jobs/csv';
+    $.ajax({
+      type: 'GET',
+      url: url,
+      success: (data) => {
+        console.log(data, typeof data);
+        let mywindow = window.open("", "CSVFile");
+        mywindow.document.write(data);
+      }
+    });
+    
   }
 	handleExpandClick() {
 		this.setState((prevState) => ({
