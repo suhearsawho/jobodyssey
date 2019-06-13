@@ -20,7 +20,6 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'center',
   },
   card: {
@@ -35,6 +34,9 @@ const styles = theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
+  button: {
+    marginBottom: '24px',
+  }
 });
 
 class AppliedJobs extends Component {
@@ -85,10 +87,9 @@ class AppliedJobs extends Component {
       <div className={ classes.root }>
         <Grid container
           spacing={ 3 }
-          alignItems="center"
           justify="center"
         >
-        	<Grid item xs={ 12 } sm={ 4 }>
+        	<Grid item xs={ 12 } sm={ 4 } className={ classes.button }>
 						<Button
 							fullWidth
 							label="Search"
@@ -97,9 +98,14 @@ class AppliedJobs extends Component {
 							variant="contained"
 							onClick={ () => this.handleSpreadsheet() }
 						>
-							EXPORT TO GOOGLE SPREADSHEETS
+							EXPORT TO CSV
 						</Button>
-        	</Grid> 
+        	</Grid>
+        </Grid>
+        <Grid container
+          spacing={ 3 }
+          justify="center"
+        >
           { Object.keys(jobsApplied).map((key) => (
             <JobCard job={ jobsApplied[key] } id={ key } />
           ))}

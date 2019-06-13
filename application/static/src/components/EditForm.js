@@ -100,16 +100,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     height: '100%',
-    paddingLeft: '1rem',
-    paddingRight: '1rem',
-    [theme.breakpoints.up('sm')]: {
-      paddingLeft: '4rem',
-      paddingRight: '4rem',
-    },
     flexGrow: 1,
 	},
-  company: {
-  },
   warning: {
     bottom: '-3rem',
     backgroundColor: amber[700],
@@ -153,21 +145,20 @@ function GrowTransition(props) {
 }
 
 export default function AppliedForm(props) {
-  let today = new Date();
-  let date = today.getFullYear() + '-' + ("0" + (today.getMonth() + 1)).slice(-2) + '-';
-  date += ("0" + today.getDate()).slice(-2);
-  
+  const date = props.job.date_applied;
   const classes = useStyles();
+  const { job, id } = props
   const [values, setValues] = React.useState({
-    company: '',
-    dateApplied: date,
-    jobTitle: '',
-    interview: [],
-    offerStatus: '',
-    notes: '',
-    jobPostURL: '',
-    address: '',
-    languages: [],
+    company: job.company,
+    dateApplied: job.date_applied,
+    jobTitle: job.job_title,
+    interview: job.interview,
+    offerStatus: job.status,
+    notes: job.notes,
+    jobPostURL: job.url,
+    address: job.address,
+    languages: job.languages,
+    id: id,
     open: false,
     Transition: Grow,
   });
@@ -175,7 +166,6 @@ export default function AppliedForm(props) {
   const handleSubmit = () => {
     if (values.company.trim() === '' || values.address.trim() === '' ||
         values.jobTitle.trim() === '') { 
-      console.log('passed condition');
       setValues({...values, open: true });
     } else { 
       let ipAddress = window.location.hostname;
@@ -184,13 +174,14 @@ export default function AppliedForm(props) {
         url = 'http://' + ipAddress + ':8000/api/jobs/applied';
       else
         url = 'http://'+ ipAddress + '/api/jobs/applied';
-
+      
       $.ajax({
-        type: 'POST',
+        type: 'PUT',
         url: url,
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify({
+          id: values.id,
           date_applied: values.dateApplied,
           company: values.company,
           url: values.jobPostURL,
@@ -201,19 +192,8 @@ export default function AppliedForm(props) {
           notes: values.notes,
           languages: values.languages,
         }),
-        success: (data) => {
-          console.log(data);
-          setValues({
-            company: '',
-            dateApplied: date,
-            jobTitle: '',
-            interview: [],
-            offerStatus: '',
-            notes: '',
-            jobPostURL: '',
-            address: '',
-            languages: [],
-          });
+        success: () => {
+          props.handleClose(values);
         }
       });
     }
@@ -229,10 +209,12 @@ export default function AppliedForm(props) {
       open: false,
     });
   }
+
   return (
     <div className={ classes.root }>
       <Grid container 
-        spacing={ 3 }
+        spacing={ 1 }
+        alignItems="center"
         justify="center"
       >
         <Grid item xs={ 12 } sm={ 4 }>

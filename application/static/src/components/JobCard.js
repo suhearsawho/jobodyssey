@@ -14,6 +14,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import EditMenu from './EditMenu';
+import EditForm from './EditForm';
 
 const styles = theme => ({
   root: {
@@ -41,8 +43,13 @@ class JobCard extends Component {
     super(props);
     this.state = {
 			expanded: false,
+      edit: false,
+      editValues: null,
     };
 		this.handleExpandClick = this.handleExpandClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
   }
   
 	handleExpandClick() {
@@ -50,56 +57,92 @@ class JobCard extends Component {
       expanded: !prevState.expanded
     }));
 	}
+  
+  handleEdit() {
+    console.log("in handle edit");
+    this.setState({
+      edit: true,
+    });
+  }
+
+  handleSubmitEdit(values) {
+    this.setState({
+      edit: false,
+      editValues: values,
+    });
+    window.location.reload();
+  }
+
+  handleDelete() {
+    console.log("in handle delete");
+    // Send a delete request
+  }
 
   render() {
     const { classes, job, id } = this.props;
-    const { expanded } = this.state;
+    const { expanded, edit, editValues } = this.state;
+    
+/*    if (editValues) {
+      console.log("passed condition in jobcard");
+      job  = Object.assign({}, editValues);
+    }*/
 
     return (
-      <Grid item xs={ 12 }>
+      <Grid item xs={ 12 } sm={ 6 }>
         <Card className={ classes.card } id={ id }>
           <CardHeader
             action={
-              <IconButton aria-label="Settings">
-                <MoreVertIcon />
-              </IconButton>
+              <EditMenu handleEdit={ this.handleEdit } handleDelete={ this.handleDelete }/>
             }
             titleTypographyProps={{  }}
-            title={ job.job_title + ' ' + job.role + ' at ' + job.company }
+            title={ job.job_title + ' at ' + job.company }
             subheader={ 'Applied On: ' + job.date_applied }
           />
-          <CardContent>
-            <Typography variant="body1" color="textSecondary" component="p">
-              { 'Interviews Received: '}
-              { Object.keys(job.interview).length === 0 ? 'None': job.interview.join(', ') }
-            </Typography>
-            <Typography variant="body1" color="textSecondary" component="p">
-              { 'Offer Status: '}
-              { Object.keys(job.status).length === 0 ? 'None': job.status }
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="Add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton
-              className={ classes.expand, {
-                [classes.expandOpen]: expanded,
-              }}
-              onClick={ () => this.handleExpandClick() }
-              aria-expanded={ expanded }
-              aria-label="Show more"
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </CardActions> 
-          <Collapse in={ expanded } timeout="auto" unmountOnExit>
+          { !edit && (
+            <React.Fragment>
             <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
-                { 'Notes: ' + job.notes }
+              <Typography variant="body1" color="textSecondary" component="p">
+                { 'Interviews Received: '}
+                { Object.keys(job.interview).length === 0 ? 'None': job.interview.join(', ') }
+              </Typography>
+              <Typography variant="body1" color="textSecondary" component="p">
+                { 'Languages: '}
+                { Object.keys(job.languages).length === 0 ? 'None': job.languages.join(', ') }
+              </Typography>
+              <Typography variant="body1" color="textSecondary" component="p">
+                { 'Offer Status: '}
+                { Object.keys(job.status).length === 0 ? 'None': job.status }
               </Typography>
             </CardContent>
-          </Collapse>
+            <CardActions disableSpacing>
+              <IconButton aria-label="Add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton
+                className={ classes.expand, {
+                  [classes.expandOpen]: expanded,
+                }}
+                onClick={ () => this.handleExpandClick() }
+                aria-expanded={ expanded }
+                aria-label="Show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions> 
+            <Collapse in={ expanded } timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  { 'Notes: ' + job.notes }
+                </Typography>
+              </CardContent>
+            </Collapse>
+            </React.Fragment>
+          )}
+          { edit && (
+            <CardContent>
+              <EditForm job={ job } id={ id } handleClose={ this.handleSubmitEdit }/>
+            </CardContent>
+          )}
         </Card>
       </Grid>
     );
