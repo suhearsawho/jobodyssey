@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar';
-import SwipeableViews from 'react-swipeable-views';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import JobsTab from './JobsTab';
@@ -14,6 +11,20 @@ const styles = theme => ({
     flexGrow: 1,
     position: 'relative',
     marginTop: '5rem',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  title: {
+    marginBottom: '2rem',
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
+    [theme.breakpoints.up('sm')]: {
+      paddingLeft: '4rem',
+      paddingRight: '4rem',
+    },
+    textAlign: 'center',
   },
 });
 
@@ -24,6 +35,9 @@ class JobsAppliedForm extends Component {
 
     return (
         <div className={ classes.body }>
+          <Typography gutterBottom variant="h5" component="h2" className={ classes.title }>
+            Applied to a Job? Enter The Information Here!
+          </Typography>
           <AppliedForm />
         </div>
     )

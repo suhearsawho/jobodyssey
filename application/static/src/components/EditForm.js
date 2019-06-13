@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
 	},
   warning: {
-    bottom: '-3rem',
+    bottom: '1rem',
     backgroundColor: amber[700],
   },
   menu: {

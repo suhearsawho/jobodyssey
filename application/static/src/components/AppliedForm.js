@@ -111,7 +111,7 @@ const useStyles = makeStyles(theme => ({
   company: {
   },
   warning: {
-    bottom: '-3rem',
+    bottom: '1rem',
     backgroundColor: amber[700],
   },
   menu: {
