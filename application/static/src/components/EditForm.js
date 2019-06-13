@@ -153,10 +153,6 @@ function GrowTransition(props) {
 }
 
 export default function AppliedForm(props) {
-  let today = new Date();
-  let date = today.getFullYear() + '-' + ("0" + (today.getMonth() + 1)).slice(-2) + '-';
-  date += ("0" + today.getDate()).slice(-2);
-  
   const classes = useStyles();
   const [values, setValues] = React.useState({
     company: '',
@@ -236,6 +232,7 @@ export default function AppliedForm(props) {
     <div className={ classes.root }>
       <Grid container 
         spacing={ 3 }
+        alignItems="center"
         justify="center"
       >
         <Grid item xs={ 12 } sm={ 4 }>

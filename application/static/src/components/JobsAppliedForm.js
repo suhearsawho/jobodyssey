@@ -8,33 +8,26 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import JobsTab from './JobsTab';
 import AppliedForm from './AppliedForm';
-import AppliedJobs from './AppliedJobs';
 
 const styles = theme => ({
   body: {
     flexGrow: 1,
     position: 'relative',
     marginTop: '5rem',
-    height: '100%',
   },
 });
 
-class JobsApplied extends Component {
+class JobsAppliedForm extends Component {
   
   render() {
     const { classes } = this.props;
 
     return (
-      <Router>
         <div className={ classes.body }>
-        <React.Fragment>
-          <Route exact path='history' component={ AppliedJobs } />
-          <Route exact path='/jobs/applied/form' component={ AppliedForm } />
-        </React.Fragment>
+          <AppliedForm />
         </div>
-      </Router>
     )
   }
 }
 
-export default withStyles(styles)(JobsApplied);
+export default withStyles(styles)(JobsAppliedForm);

@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
+import FormatAlignLeftIcon from '@material-ui/icons/FormatAlignLeft';
 import GroupIcon from '@material-ui/icons/Group';
 import Hidden from '@material-ui/core/Hidden';
 import HistoryIcon from '@material-ui/icons/History';
@@ -66,8 +67,8 @@ function ResponsiveDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const jobKeys = ['Job Search', 'Saved Jobs', 'Job History'];
-  const userKeys = ['Home', 'Community', 'Rewards'];
+  const jobKeys = ['Job Search', 'Saved Jobs', 'Add Applied Job', 'Applied Jobs History'];
+  const userKeys = ['Home', 'Community', 'Rewards Market'];
   
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
@@ -117,12 +118,20 @@ function ResponsiveDrawer(props) {
           </ListItemIcon>
           <ListItemText primary={ jobKeys[1] } />
         </ListItem>
-        <Link to='/jobs/applied' className={ classes.linkStyle }>
+        <Link to='/jobs/appliedform' className={ classes.linkStyle }>
           <ListItem button key={ jobKeys[2] }>
+            <ListItemIcon>
+              <FormatAlignLeftIcon />
+            </ListItemIcon>
+            <ListItemText primary={ jobKeys[2] } />
+          </ListItem>
+        </Link>
+        <Link to='/jobs/appliedhistory' className={ classes.linkStyle }>
+          <ListItem button key={ jobKeys[3] }>
             <ListItemIcon>
               <HistoryIcon />
             </ListItemIcon>
-            <ListItemText primary={ jobKeys[2] } />
+            <ListItemText primary={ jobKeys[3] } />
           </ListItem>
         </Link>
       </List>

@@ -9,14 +9,14 @@ bp = Blueprint('jobs', __name__, url_prefix='/jobs', static_folder='../static/di
 client_id = os.environ.get('GITHUB_CLIENT_ID')
 client_secret = os.environ.get('GITHUB_CLIENT_SECRET')
 
-@bp.route('/', methods=('GET', 'POST'))
-def homepage():
+@bp.route('/appliedform')
+def applied_form():
     if 'username' in session:
         return render_template('user.html')
     return render_template('index.html')
 
-@bp.route('/applied')
-def applied_page():
+@bp.route('/appliedhistory')
+def applied_history():
     if 'username' in session:
         return render_template('user.html')
     return render_template('index.html')
