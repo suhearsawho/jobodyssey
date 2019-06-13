@@ -175,25 +175,29 @@ export default function AppliedForm(props) {
       else
         url = 'http://'+ ipAddress + '/api/jobs/applied';
       
+      const result = {
+        date_applied: values.dateApplied,
+        company: values.company,
+        url: values.jobPostURL,
+        job_title: values.jobTitle,
+        address: values.address,
+        status: values.offerStatus,
+        interview: values.interview,
+        notes: values.notes,
+        languages: values.languages,
+      }
+
       $.ajax({
         type: 'PUT',
         url: url,
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify({
+          ...result,
           id: values.id,
-          date_applied: values.dateApplied,
-          company: values.company,
-          url: values.jobPostURL,
-          job_title: values.jobTitle,
-          address: values.address,
-          status: values.offerStatus,
-          interview: values.interview,
-          notes: values.notes,
-          languages: values.languages,
         }),
         success: () => {
-          props.handleClose(values);
+          props.handleClose(result);
         }
       });
     }

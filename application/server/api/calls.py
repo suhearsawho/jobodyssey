@@ -54,6 +54,14 @@ def user_info():
     user = database.get('User', session['id'])
     return jsonify(user.to_json())
 
+@api_views.route('/user/currency', methods=['GET'])
+def user_token():
+    """
+    returns the currency that a user has
+    """
+    user = database.get('User', session['id'])
+    return jsonify({'currency': user.currency})
+
 @api_views.route('/csv', methods=['GET'])
 def csv():
     """

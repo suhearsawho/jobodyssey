@@ -44,7 +44,8 @@ class JobCard extends Component {
     this.state = {
 			expanded: false,
       edit: false,
-      editValues: null,
+      job: props.job,
+      id: props.id,
     };
 		this.handleExpandClick = this.handleExpandClick.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -59,7 +60,6 @@ class JobCard extends Component {
 	}
   
   handleEdit() {
-    console.log("in handle edit");
     this.setState({
       edit: true,
     });
@@ -68,25 +68,35 @@ class JobCard extends Component {
   handleSubmitEdit(values) {
     this.setState({
       edit: false,
-      editValues: values,
+      job: values,
     });
-    window.location.reload();
   }
 
   handleDelete() {
-    console.log("in handle delete");
-    // Send a delete request
+    let ipAddress = window.location.hostname;
+    let url;
+    if (ipAddress.trim() === '127.0.0.1'.trim())
+      url = 'http://' + ipAddress + ':8000/api/jobs/applied';
+    else
+      url = 'http://'+ ipAddress + '/api/jobs/applied';
+    $.ajax({
+      type: 'DELETE',
+      url: url,
+      dataType: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        id: this.state.id
+      }),
+      success: (data => {
+        window.location.reload();
+      })
+    });
   }
 
   render() {
-    const { classes, job, id } = this.props;
-    const { expanded, edit, editValues } = this.state;
-    
-/*    if (editValues) {
-      console.log("passed condition in jobcard");
-      job  = Object.assign({}, editValues);
-    }*/
-
+    const { classes } = this.props;
+    console.log('is job defined', this.state.job);
+    const { expanded, edit, job, id } = this.state;
     return (
       <Grid item xs={ 12 } sm={ 6 }>
         <Card className={ classes.card } id={ id }>
@@ -111,7 +121,7 @@ class JobCard extends Component {
               </Typography>
               <Typography variant="body1" color="textSecondary" component="p">
                 { 'Offer Status: '}
-                { Object.keys(job.status).length === 0 ? 'None': job.status }
+                { job.status === '' ? 'None': job.status }
               </Typography>
             </CardContent>
             <CardActions disableSpacing>
