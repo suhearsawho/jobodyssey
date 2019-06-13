@@ -8,18 +8,26 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 
-const tutorialSteps = [
-	{
-		label: 'An Adorable Cat! ',
-		imgPath:
-	    'https://images.unsplash.com/photo-1517451330947-7809dead78d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1400&q=60'
-  },
-  {
-    label: 'A Confused Cat!',
-    imgPath:
-      'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80'
-  }
-]
+function getRewards() {
+  let ipAddress = window.location.hostname;
+  let url;
+  let results;
+
+  if (ipAddress.trim() === '127.0.0.1'.trim())
+    url = 'http://' + ipAddress + ':8000/api/user/rewards';
+  else
+    url = 'http://'+ ipAddress + '/api/user/rewards';
+  
+  $.ajax({
+    type: 'GET',
+    url: url,
+    async: false,
+    success: (data) => {
+      results = data;
+    }
+  });
+  return results;
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,7 +55,8 @@ function RewardSummary() {
   const classes = useStyles();
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = tutorialSteps.length;
+  const userRewards = getRewards();
+  const maxSteps = userRewards.length;
 
   function handleNext() {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -60,11 +69,11 @@ function RewardSummary() {
   function handleStepChange(step) {
     setActiveStep(step);
   }
-
+  
   return (
     <div className={classes.root}>
       <Paper square elevation={0} className={classes.header}>
-        <Typography>{tutorialSteps[activeStep].label}</Typography>
+        <Typography>{userRewards[activeStep].name} ({userRewards[activeStep].rarity})</Typography>
       </Paper>
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -72,10 +81,10 @@ function RewardSummary() {
         onChangeIndex={handleStepChange}
         enableMouseEvents
       >
-        {tutorialSteps.map((step, index) => (
-          <div key={step.label}>
+        {userRewards.map((step, index) => (
+          <div key={step.name}>
             {Math.abs(activeStep - index) <= 2 ? (
-						<img className={classes.img} src={step.imgPath} alt={step.label} />
+						<img className={classes.img} src={step.image} alt={step.name} />
             ) : null}
           </div>
         ))}

@@ -66,11 +66,11 @@ class JobCard extends Component {
   }
 
   handleSubmitEdit(values) {
-    console.log('values from function', values)
     this.setState({
       edit: false,
       editValues: values,
     });
+    window.location.reload();
   }
 
   handleDelete() {
@@ -82,10 +82,10 @@ class JobCard extends Component {
     const { classes, job, id } = this.props;
     const { expanded, edit, editValues } = this.state;
     
-    if (editValues) {
+/*    if (editValues) {
       console.log("passed condition in jobcard");
       job  = Object.assign({}, editValues);
-    }
+    }*/
 
     return (
       <Grid item xs={ 12 } sm={ 6 }>

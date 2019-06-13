@@ -154,7 +154,7 @@ export default function AppliedForm(props) {
     jobTitle: job.job_title,
     interview: job.interview,
     offerStatus: job.status,
-    notes: job.note,
+    notes: job.notes,
     jobPostURL: job.url,
     address: job.address,
     languages: job.languages,
