@@ -114,3 +114,13 @@ class Storage:
             filter(user.UserReward.reward_id == reward_id):
             return True
         return False
+
+    def userRewards(self, user_id):
+        """
+        returns a list of associated user rewards
+        """
+        user_rewards = []
+        for rewards in self.__session.query(user.UserReward).\
+            filter(user.UserReward.user_id == user_id):
+            user_rewards.append(self.get('Reward', rewards.reward_id).to_json())
+        return user_rewards
