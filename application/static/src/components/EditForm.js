@@ -100,16 +100,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     height: '100%',
-    paddingLeft: '1rem',
-    paddingRight: '1rem',
-    [theme.breakpoints.up('sm')]: {
-      paddingLeft: '4rem',
-      paddingRight: '4rem',
-    },
     flexGrow: 1,
 	},
-  company: {
-  },
   warning: {
     bottom: '-3rem',
     backgroundColor: amber[700],
@@ -153,18 +145,20 @@ function GrowTransition(props) {
 }
 
 export default function AppliedForm(props) {
+  const date = props.job.date_applied;
   const classes = useStyles();
+  const { job, id } = props
   const [values, setValues] = React.useState({
-    company: '',
-    dateApplied: date,
-    jobTitle: '',
-    interview: [],
-    offerStatus: '',
-    notes: '',
-    jobPostURL: '',
-    address: '',
-    role: '',
-    languages: [],
+    company: job.company,
+    dateApplied: job.date_applied,
+    jobTitle: job.job_title,
+    interview: job.interview,
+    offerStatus: job.status,
+    notes: job.note,
+    jobPostURL: job.url,
+    address: job.address,
+    languages: job.languages,
+    id: id,
     open: false,
     Transition: Grow,
   });
@@ -172,7 +166,6 @@ export default function AppliedForm(props) {
   const handleSubmit = () => {
     if (values.company.trim() === '' || values.address.trim() === '' ||
         values.jobTitle.trim() === '') { 
-      console.log('passed condition');
       setValues({...values, open: true });
     } else { 
       let ipAddress = window.location.hostname;
@@ -181,13 +174,14 @@ export default function AppliedForm(props) {
         url = 'http://' + ipAddress + ':8000/api/jobs/applied';
       else
         url = 'http://'+ ipAddress + '/api/jobs/applied';
-
+      
       $.ajax({
-        type: 'POST',
+        type: 'PUT',
         url: url,
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify({
+          id: values.id,
           date_applied: values.dateApplied,
           company: values.company,
           url: values.jobPostURL,
@@ -196,23 +190,10 @@ export default function AppliedForm(props) {
           status: values.offerStatus,
           interview: values.interview,
           notes: values.notes,
-          role: values.role,
           languages: values.languages,
         }),
-        success: (data) => {
-          console.log(data);
-          setValues({
-            company: '',
-            dateApplied: date,
-            jobTitle: '',
-            interview: [],
-            offerStatus: '',
-            notes: '',
-            jobPostURL: '',
-            role: '',
-            address: '',
-            languages: [],
-          });
+        success: () => {
+          props.handleClose(values);
         }
       });
     }
@@ -228,10 +209,11 @@ export default function AppliedForm(props) {
       open: false,
     });
   }
+
   return (
     <div className={ classes.root }>
       <Grid container 
-        spacing={ 3 }
+        spacing={ 1 }
         alignItems="center"
         justify="center"
       >

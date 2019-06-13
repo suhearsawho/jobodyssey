@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import EditMenu from './EditMenu';
+import EditForm from './EditForm';
 
 const styles = theme => ({
   root: {
@@ -43,10 +44,12 @@ class JobCard extends Component {
     this.state = {
 			expanded: false,
       edit: false,
+      editValues: null,
     };
 		this.handleExpandClick = this.handleExpandClick.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
   }
   
 	handleExpandClick() {
@@ -62,6 +65,14 @@ class JobCard extends Component {
     });
   }
 
+  handleSubmitEdit(values) {
+    console.log('values from function', values)
+    this.setState({
+      edit: false,
+      editValues: values,
+    });
+  }
+
   handleDelete() {
     console.log("in handle delete");
     // Send a delete request
@@ -69,7 +80,12 @@ class JobCard extends Component {
 
   render() {
     const { classes, job, id } = this.props;
-    const { expanded, edit } = this.state;
+    const { expanded, edit, editValues } = this.state;
+    
+    if (editValues) {
+      console.log("passed condition in jobcard");
+      job  = Object.assign({}, editValues);
+    }
 
     return (
       <Grid item xs={ 12 } sm={ 6 }>
@@ -124,7 +140,7 @@ class JobCard extends Component {
           )}
           { edit && (
             <CardContent>
-              <p>Testing it out</p>
+              <EditForm job={ job } id={ id } handleClose={ this.handleSubmitEdit }/>
             </CardContent>
           )}
         </Card>

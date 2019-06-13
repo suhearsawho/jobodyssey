@@ -167,7 +167,6 @@ export default function AppliedForm(props) {
     notes: '',
     jobPostURL: '',
     address: '',
-    role: '',
     languages: [],
     open: false,
     Transition: Grow,
@@ -200,7 +199,6 @@ export default function AppliedForm(props) {
           status: values.offerStatus,
           interview: values.interview,
           notes: values.notes,
-          role: values.role,
           languages: values.languages,
         }),
         success: (data) => {
@@ -213,7 +211,6 @@ export default function AppliedForm(props) {
             offerStatus: '',
             notes: '',
             jobPostURL: '',
-            role: '',
             address: '',
             languages: [],
           });
