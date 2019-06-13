@@ -8,6 +8,14 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 
+const noRewards = [
+  {
+    name: 'Oh Oh. You have no rewards!',
+    image:
+      'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80'
+  }
+]
+
 function getRewards() {
   let ipAddress = window.location.hostname;
   let url;
@@ -72,8 +80,10 @@ function RewardSummary() {
   
   return (
     <div className={classes.root}>
+      { (userRewards !== undefined && userRewards.length !== 0) && (
+      <React.Fragment>
       <Paper square elevation={0} className={classes.header}>
-        <Typography>{userRewards[activeStep].name} ({userRewards[activeStep].rarity})</Typography>
+        <Typography>{ userRewards[activeStep].name } ({userRewards[activeStep].rarity})</Typography>
       </Paper>
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
@@ -107,6 +117,47 @@ function RewardSummary() {
           </Button>
         }
       />
+      </React.Fragment>
+      )}
+      { (userRewards === undefined || userRewards.length === 0) && (
+      <React.Fragment>
+      <Paper square elevation={0} className={classes.header}>
+        <Typography>{ noRewards[activeStep].name }</Typography>
+      </Paper>
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={activeStep}
+        onChangeIndex={handleStepChange}
+        enableMouseEvents
+      >
+        {noRewards.map((step, index) => (
+          <div key={step.name}>
+            {Math.abs(activeStep - index) <= 2 ? (
+						<img className={classes.img} src={step.image} alt={step.name} />
+            ) : null}
+          </div>
+        ))}
+      </SwipeableViews>
+      <MobileStepper
+        steps={maxSteps}
+        position="static"
+        variant="text"
+        activeStep={activeStep}
+        nextButton={
+          <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+            Next
+            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+          </Button>
+        }
+        backButton={
+          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+            Back
+          </Button>
+        }
+      />
+      </React.Fragment>
+      )}  
     </div>
   );
 }
