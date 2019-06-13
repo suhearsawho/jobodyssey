@@ -26,15 +26,15 @@ def rewards():
             random_int = randint(0, 100)
             """ This logic can be changed as rewards becomes more populated"""
             if random_int < 70:
-                roll = database.get('Reward', '4')
+                roll = database.get('Reward', str(randint(26, 48)))
             elif random_int < 90:
-                roll = database.get('Reward', '3')
+                roll = database.get('Reward', str(randint(17, 25)))
             elif random_int < 98:
-                roll = database.get('Reward', '2')
-            elif random_int == 98:
-                roll = database.get('Reward', '1')
+                roll = database.get('Reward', str(randint(3, 16)))
             else:
-                roll = database.get('Reward', '0')
+                roll = database.get('Reward', str(randint(0, 2)))
+            if roll is None:
+                roll = database.get('Reward', '30')
             rewards['data'].append({'name': roll.name, 'img': roll.image, 'rarity': roll.rarity, 'id': roll.id})
         return jsonify(rewards)
     data = request.get_json()
@@ -67,9 +67,7 @@ def user_rewards():
     """
     return all rewards associated with a user
     """
-    user = database.get('User', session['id'])
-    user_id = session['id']
-    return jsonify({'username': 'Susan loves French Fries'})
+    return jsonify(database.userRewards(session['id']))
 
 @api_views.route('/job_search', methods=['POST'])
 def job_search():

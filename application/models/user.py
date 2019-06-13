@@ -89,7 +89,7 @@ class User(BaseModel, Base):
         """
         if not self.jobs_applied:
             return ''
-        csv_applied = str(self.sheets_columns)
+        csv_applied = str(self.sheets_columns) + '<br/>'
         applied = json.loads(self.jobs_applied)
         for i in applied.values():
             for col in self.applied_columns:
@@ -98,5 +98,5 @@ class User(BaseModel, Base):
                 else:
                     csv_applied += str(i.get(col)) + ','
                 """ to fit csv formatting notes not included """
-            csv_applied += i.get('notes') + '\n'
+            csv_applied += i.get('notes') + '<br/>'
         return csv_applied
