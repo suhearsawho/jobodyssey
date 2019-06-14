@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -12,12 +12,15 @@ import JobsAppliedForm from './components/JobsAppliedForm';
 import JobsAppliedHistory from './components/JobsAppliedHistory';
 import Rewards from './components/Rewards';
 import TokenMessage from './components/TokenMessage';
+import SavedJobs from './components/SavedJobs';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { withStyles } from '@material-ui/core';
+import ComingSoon from './components/ComingSoon';
+import NoMatch from './components/NoMatch';
 
 const theme = createMuiTheme({
   palette: {
@@ -170,8 +173,9 @@ class User extends Component {
             />
         </div>
             <React.Fragment>
+              <Switch>
               <Route 
-                path='/user'
+                exact path='/user'
                 render={(props) => <UserHomepage {...props} userData={ this.state } />}
               />
               <Route
@@ -187,6 +191,10 @@ class User extends Component {
                 render={(props) => <JobsAppliedHistory {...props} handleToken={ this.handleClick }/>}
               />
               <Route exact path='/rewards' component={ Rewards } />
+              <Route exact path='/jobs/saved' component={ ComingSoon } />
+              <Route exact path='/user/community' component={ ComingSoon } />
+              <Route component={ NoMatch } />
+              </Switch>
             </React.Fragment>
         </MuiThemeProvider>
       </Router>

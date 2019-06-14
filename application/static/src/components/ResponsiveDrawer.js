@@ -87,12 +87,14 @@ function ResponsiveDrawer(props) {
             <ListItemText primary={ userKeys[0] } />
           </ListItem>
         </Link>
-        <ListItem button key={ userKeys[1] }>
-          <ListItemIcon>
-            <GroupIcon />
-          </ListItemIcon>
-          <ListItemText primary={ userKeys[1] } />
-        </ListItem>
+        <Link to='/user/community' className={ classes.linkStyle }>
+          <ListItem button key={ userKeys[1] }>
+            <ListItemIcon>
+              <GroupIcon />
+            </ListItemIcon>
+            <ListItemText primary={ userKeys[1] } />
+          </ListItem>
+        </Link>
         <Link to='/rewards' className={ classes.linkStyle }>
           <ListItem button key={ userKeys[2] }>
             <ListItemIcon>
@@ -112,12 +114,14 @@ function ResponsiveDrawer(props) {
             <ListItemText primary={ jobKeys[0] } />
           </ListItem>
         </Link>
-        <ListItem button key={ jobKeys[1] }>
-          <ListItemIcon>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText primary={ jobKeys[1] } />
-        </ListItem>
+        <Link to='/jobs/saved' className={ classes.linkStyle }>
+          <ListItem button key={ jobKeys[1] }>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={ jobKeys[1] } />
+          </ListItem>
+        </Link>
         <Link to='/jobs/appliedform' className={ classes.linkStyle }>
           <ListItem button key={ jobKeys[2] }>
             <ListItemIcon>

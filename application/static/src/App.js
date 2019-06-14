@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { Switch, BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import Main from './components/Main';
 import JobSearch from './components/JobSearch';
 import TopBar from './components/TopBar';
 import UserHomepage from './components/UserHomepage';
+import NoMatch from './components/NoMatch';
 
 const theme = createMuiTheme({
   palette: {
@@ -59,10 +60,13 @@ class App extends Component {
           <CssBaseline />
           <TopBar isLoggedIn={ false } color={ false } /> 
             <React.Fragment>
-              <Route 
-                exact path='/' 
-                render={ (props) => <Main {...props} handleOAuth= { this.handleOAuth } />} 
-              />
+              <Switch>
+                <Route 
+                  exact path='/' 
+                  render={ (props) => <Main {...props} handleOAuth= { this.handleOAuth } />} 
+                />
+                <Route component={ NoMatch } />
+              </Switch>
             </React.Fragment>
         </MuiThemeProvider>
       </Router>

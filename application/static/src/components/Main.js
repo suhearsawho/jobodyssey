@@ -23,7 +23,7 @@ const styles = theme => ({
       paddingLeft: "4rem"
     },
     position: "absolute",
-    top: "35%",
+    top: "16rem",
   },
   warning: {
     paddingLeft: "1rem",
@@ -39,10 +39,11 @@ const styles = theme => ({
   buttonContainer: {
     paddingLeft: "1rem",
     [theme.breakpoints.up('sm')]: {
-      paddingLeft: "4rem"
+      paddingLeft: "4rem",
+      top: "25rem"
     },
     position: "absolute",
-    top: "55%"
+    top: "35rem"
   },
   button: {
     color: "rgba(255, 255, 255, 1)",
@@ -55,7 +56,6 @@ class Main extends Component {
   
   render() {
     const { handleOAuth, classes } = this.props;
-    console.log(this.props, handleOAuth);
     return (
       <React.Fragment>
         <div className={ classes.main }>
