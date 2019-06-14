@@ -26,3 +26,9 @@ def applied_history():
     if 'username' in session:
         return render_template('user.html')
     return render_template('index.html')
+
+@bp.route('/saved')
+def saved():
+    if 'username' in session:
+        return render_template('user.html')
+    return render_template('index.html')

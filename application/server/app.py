@@ -52,7 +52,9 @@ def github_login():
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template('error.html'), 404
+    if session.get('username'):
+        return render_template('user.html')
+    return render_template('index.html')
 
 if __name__ == '__main__':
     if os.environ.get('DEV'):
