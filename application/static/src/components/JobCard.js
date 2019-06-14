@@ -191,7 +191,7 @@ class JobCard extends Component {
                   </Grid>
                   <Grid item xs={ 8 } >
                     <Typography variant="body2" color="textSecondary" component="p">
-                      <a href={ url }>{ job.url }</a>
+                      <a href={ url } target="_blank">{ job.url }</a>
                     </Typography>
                   </Grid>
                   <Grid item xs={ 4 } >
