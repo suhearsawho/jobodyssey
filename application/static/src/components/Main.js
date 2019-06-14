@@ -23,7 +23,7 @@ const styles = theme => ({
       paddingLeft: "4rem"
     },
     position: "absolute",
-    top: "16rem",
+    top: "35%",
   },
   warning: {
     paddingLeft: "1rem",
@@ -40,7 +40,7 @@ const styles = theme => ({
     paddingLeft: "1rem",
     [theme.breakpoints.up('sm')]: {
       paddingLeft: "4rem",
-      top: "25rem"
+      top: "55%"
     },
     position: "absolute",
     top: "35rem"
