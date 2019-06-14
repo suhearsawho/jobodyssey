@@ -196,7 +196,8 @@ export default function AppliedForm(props) {
           ...result,
           id: values.id,
         }),
-        success: () => {
+        success: (data) => {
+          props.handleToken(data.token, data.message);
           props.handleClose(result);
         }
       });

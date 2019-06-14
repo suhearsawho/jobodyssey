@@ -109,7 +109,7 @@ class JobCard extends Component {
 
   }
   render() {
-    const { classes } = this.props;
+    const { classes, handleToken } = this.props;
     const { expanded, edit, job, id } = this.state;
     const url = this.fixUrl(job.url);
 
@@ -221,7 +221,7 @@ class JobCard extends Component {
           )}
           { edit && (
             <CardContent>
-              <EditForm job={ job } id={ id } handleClose={ this.handleSubmitEdit } handleCancel={ this.handleCancel }/>
+              <EditForm job={ job } id={ id } handleClose={ this.handleSubmitEdit } handleCancel={ this.handleCancel } handleToken={ handleToken }/>
             </CardContent>
           )}
         </Card>
