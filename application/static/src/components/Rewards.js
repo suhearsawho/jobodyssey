@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     spinner: {
@@ -234,8 +235,12 @@ const styles = theme => ({
         }
         return (
             <div style={{textAlign: 'center'}} className="RandomItemSpinner">
-                <h2>Coins Available</h2>
-                <h3>{currency}</h3>
+                <Typography gutterBottom variant="h5" component="h2">
+		  Coins Available
+		</Typography>
+                <Typography gutterBottom variant="h5" component="h2">
+		  {currency}
+		</Typography>
                 <SpinAgainButton disabled={ !this.state.end } spinAgainHandler={ this.spinAgainHandler.bind(this) } />
                 <RandomItem item={ this.state.randomItem.value } />
             </div>
@@ -264,7 +269,12 @@ class RandomItem extends Component {
     render() {
         return (
             <div className="RandomItem">
-                <h3 style={{textAlign: 'center'}}>{this.props.item.name} - {this.props.item.rarity}</h3>
+                <Typography
+		  variant="h5"
+		  component="h2"
+		  style={{textAlign: 'center'}}>
+		    {this.props.item.name} - {this.props.item.rarity}
+		</Typography>
                 <br />
                 <img 
                 style={{
@@ -303,7 +313,7 @@ class SpinAgainButton extends Component {
                     disabled={ disabled }
                     style={{width:'250px'}}
                     onClick={ this.props.spinAgainHandler }>
-                        &#9658; 5 Coins to Roll!
+                        5 Coins to Roll!
                 </Button>
             </div>
         );
@@ -380,11 +390,14 @@ class Rewards extends Component {
 
         return (
             <div className={classes.spinner}>
-                <br />
                 {rewards === false ?
                     <React.Fragment>
-                        <h2>Coins Available</h2>
-                        <h3>{isLoaded}</h3>
+			<Typography gutterBottom variant="h5" component="h2">
+			Coins Available
+			</Typography>
+			<Typography gutterBottom variant="h5" component="h2">
+			{ isLoaded }
+			</Typography>
                         <Button  disabled={isLoaded < 5 ? true : false } onClick={() => this.getRewards()}>5 Coins to Roll!</Button>
                     </React.Fragment>
                     :
