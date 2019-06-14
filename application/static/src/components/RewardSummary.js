@@ -78,6 +78,9 @@ function RewardSummary() {
     setActiveStep(step);
   }
   
+  function handleNothing() {
+  }
+
   return (
     <div className={classes.root}>
       { (userRewards !== undefined && userRewards.length !== 0) && (
@@ -144,13 +147,13 @@ function RewardSummary() {
         variant="text"
         activeStep={activeStep}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+          <Button size="small" onClick={handleNothing} disabled={activeStep === maxSteps - 1}>
             Next
             {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
           </Button>
         }
         backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+          <Button size="small" onClick={handleNothing} disabled={activeStep === 0}>
             {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
             Back
           </Button>
