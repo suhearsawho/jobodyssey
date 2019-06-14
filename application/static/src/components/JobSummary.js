@@ -22,7 +22,7 @@ function JobSummary() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const headlines = ['Updates', 'Goals This Week', 'Recent History'];
+  const headlines = ['Tips', 'Goals This Week', 'Recent History'];
 
   function handleChange(event, newValue) {
     setValue(newValue);
@@ -54,10 +54,10 @@ function JobSummary() {
           Get plenty of rest during the week of your interview!
         </TabContainer>
         <TabContainer dir={theme.direction}>
-          Displays jobs you still need to apply to 
+          Coming Soon!
         </TabContainer>
         <TabContainer dir={theme.direction}>
-          Past Five Jobs
+          Coming Soon!
         </TabContainer>
       </SwipeableViews>
   	</div> 

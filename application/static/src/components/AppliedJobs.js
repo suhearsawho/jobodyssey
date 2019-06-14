@@ -36,6 +36,10 @@ const styles = theme => ({
   },
   button: {
     marginBottom: '24px',
+  },
+  title: {
+    textAlign: 'center',
+    marginTop: '2rem',
   }
 });
 
@@ -117,6 +121,12 @@ class AppliedJobs extends Component {
 						>
 							EXPORT TO CSV
 						</Button>
+            { Object.keys(jobsApplied).length === 0 && (
+              <Typography gutterBottom variant="h5" component="h2" className={ classes.title }>
+                You have not applied to any jobs! Start today! 
+              </Typography>
+              )
+            }
         	</Grid>
         </Grid>
         <Grid container
