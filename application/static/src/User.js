@@ -12,7 +12,6 @@ import JobsAppliedForm from './components/JobsAppliedForm';
 import JobsAppliedHistory from './components/JobsAppliedHistory';
 import Rewards from './components/Rewards';
 import TokenMessage from './components/TokenMessage';
-import SavedJobs from './components/SavedJobs';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Snackbar from '@material-ui/core/Snackbar';
