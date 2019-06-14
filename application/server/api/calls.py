@@ -42,7 +42,7 @@ def rewards():
     if database.duplicateUserReward(data['user_id'], data['reward_id']) is False:
         new_user_reward = UserReward(**data)
         new_user_reward.save()
-    user.currency -= 5
+    user.currency -= 30
     user.save()
     return jsonify(user.to_json())
 

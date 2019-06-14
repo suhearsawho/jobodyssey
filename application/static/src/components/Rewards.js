@@ -230,7 +230,7 @@ const styles = theme => ({
         }
         currency = this.props.currency
         console.log(currency)
-        if (currency < 5) {
+        if (currency < 30) {
             this.state.end = false
         }
         return (
@@ -313,7 +313,7 @@ class SpinAgainButton extends Component {
                     disabled={ disabled }
                     style={{width:'250px'}}
                     onClick={ this.props.spinAgainHandler }>
-                        5 Coins to Roll!
+                        30 Coins to Roll!
                 </Button>
             </div>
         );
@@ -398,7 +398,7 @@ class Rewards extends Component {
 			<Typography gutterBottom variant="h5" component="h2">
 			{ isLoaded }
 			</Typography>
-                        <Button  disabled={isLoaded < 5 ? true : false } onClick={() => this.getRewards()}>5 Coins to Roll!</Button>
+                        <Button  disabled={isLoaded < 30 ? true : false } onClick={() => this.getRewards()}>30 Coins to Roll!</Button>
                     </React.Fragment>
                     :
                     <React.Fragment>
