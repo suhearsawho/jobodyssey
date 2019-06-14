@@ -21,11 +21,11 @@ const styles = theme => ({
 class JobsAppliedHistory extends Component {
   
   render() {
-    const { classes } = this.props;
+    const { classes, handleToken } = this.props;
 
     return (
         <div className={ classes.body }>
-          <AppliedJobs />
+          <AppliedJobs handleToken={ handleToken }/>
         </div>
     )
   }

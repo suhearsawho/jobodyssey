@@ -97,7 +97,7 @@ class AppliedJobs extends Component {
 	}
 
   render() {
-    const { classes } = this.props;
+    const { classes, handleToken } = this.props;
     const { jobsApplied, expanded } = this.state;
 
     return (
@@ -124,7 +124,7 @@ class AppliedJobs extends Component {
           justify="center"
         >
           { Object.keys(jobsApplied).map((key) => (
-            <JobCard job={ jobsApplied[key] } id={ key } />
+            <JobCard job={ jobsApplied[key] } id={ key } handleToken={ handleToken }/>
           ))}
         </Grid>
       </div>

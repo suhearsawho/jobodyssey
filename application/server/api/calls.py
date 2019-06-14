@@ -109,17 +109,28 @@ def jobs_applied():
         response = {'error': 'Not a valid ID'}
     else:
         # PUT: Change an existing entry
+        response = {'success': True }
+        message = ''
         if request.method == 'PUT':
+            token = 10
             for key, value in data.items():
                 if key != 'id':
+                    if value == 'Rejection':
+                        message = 'Rejection is hard - Have some extra coins!'
+                        token += 20
+                    if value == 'Received Offer':
+                        message = 'Congratulations!!!!'
+                        token += 50
                     jobs[job_id][key] = value
-            user.currency += 10
+            user.currency += token
+
         # POST: Creates a new entry
         elif request.method == 'POST':
             print(data)
             job_id = str(uuid.uuid4())
             jobs[job_id] = data
-            user.currency += 10
+            token = 30
+            user.currency += token
 
         # DELETE: Deletes an entry
         elif request.method == 'DELETE':
@@ -127,9 +138,10 @@ def jobs_applied():
 
         user.jobs_applied = json.dumps(jobs)
         user.save()
-        response = {'success': True}
+        response['token'] = token
+        response['message'] = message
 
-    status = 200 if 'success' in response else 404
+    status = 200 if 'success' in response.keys() else 404
     return jsonify(response), status
 
 @api_views.route('/jobs/interested', methods=['GET', 'POST', 'PUT', 'DELETE'])

@@ -31,14 +31,14 @@ const styles = theme => ({
 class JobsAppliedForm extends Component {
   
   render() {
-    const { classes } = this.props;
+    const { classes, handleToken } = this.props;
 
     return (
         <div className={ classes.body }>
           <Typography gutterBottom variant="h5" component="h2" className={ classes.title }>
             Applied to a Job? Enter The Information Here!
           </Typography>
-          <AppliedForm />
+          <AppliedForm handleToken={ handleToken }/>
         </div>
     )
   }

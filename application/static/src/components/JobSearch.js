@@ -187,6 +187,8 @@ class JobSearch extends Component {
         const jobsInterested = prevState.jobsInterested.concat(item.id);
         return { jobsInterested };
       });
+      let token = 10;
+      this.props.handleToken(token);
     }
     else {
       fetch(url, {

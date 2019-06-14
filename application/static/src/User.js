@@ -11,6 +11,13 @@ import UserHomepage from './components/UserHomepage';
 import JobsAppliedForm from './components/JobsAppliedForm';
 import JobsAppliedHistory from './components/JobsAppliedHistory';
 import Rewards from './components/Rewards';
+import TokenMessage from './components/TokenMessage';
+import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
+import Snackbar from '@material-ui/core/Snackbar';
+import Slide from '@material-ui/core/Slide';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { withStyles } from '@material-ui/core';
 
 const theme = createMuiTheme({
   palette: {
@@ -28,6 +35,23 @@ const theme = createMuiTheme({
   }
 });
 
+const styles = theme => ({
+  root: {
+    backgroundColor: 'green',
+  },
+  icon: {
+    fontSize: 20,
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1),
+  },
+  message: {
+    display: 'flex',
+    alignItems: 'center',
+  }
+});
+
 class User extends Component {
   constructor(props) {
     super(props);
@@ -42,11 +66,34 @@ class User extends Component {
       rewards: [],
       profilePicture: '',
       bio: '',
+      Transition: Slide,
+      open: false,
+      token: 0,
     };
 
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
-  
+ 
+  handleClick(value, message) {
+    console.log('handle click!');
+    if (message === undefined || message === null)
+      message = ''
+    this.setState({
+      open: true,
+      token: value,
+      message: message, 
+    });
+  };
+
+  handleClose() {
+    console.log("in close");
+    this.setState({
+      open: false,
+    });
+  }
+
   handleLogout() {
     let domain = window.location.hostname;
     if (domain.trim() === '127.0.0.1'.trim()) {
@@ -76,10 +123,10 @@ class User extends Component {
         this.setState({
           username: data.user_name,
           currency: data.currency,
-          jobsApplied: ['Apple', 'Google'],
-          jobsInterested: ['Amazon'],
+          jobsApplied: data.jobs_applied,
+          jobsInterested: data.jobs_interested,
           levelId: 'Entry Level',
-          rewards: ['Dog', 'Cat']
+          rewards: data.rewards,
         });
         $.ajax({
           type: 'GET',
@@ -97,19 +144,48 @@ class User extends Component {
   }
 
   render() {
+    const { open, Transition, token, message } = this.state;
+    const { classes } = this.props;
+
     return (
       <Router>
         <MuiThemeProvider theme={ theme }>
           <CssBaseline />
-          <TopBar isLoggedIn={this.state.isLoggedIn} handleLogout={this.handleLogout} color={ true } /> 
+          <TopBar isLoggedIn={this.state.isLoggedIn} handleLogout={this.handleLogout} color={ true } />
+          <div>
+            <Snackbar
+              open={ open }
+              autoHideDuration={ 3000 }
+              onClose={ () => this.handleClose() }
+              TransitionComponent={ Transition }
+              ContentProps={{
+                'aria-describedby': 'message-id',
+              }}
+              message={
+                <span id="client-snackbar" className={classes.message}>
+                  <CheckCircleIcon className={ classes.icon, classes.iconVariant } />
+                  You Earned { token } Coins! { message }
+                </span>
+              }
+            />
+        </div>
             <React.Fragment>
               <Route 
                 path='/user'
                 render={(props) => <UserHomepage {...props} userData={ this.state } />}
               />
-              <Route exact path='/jobs' component={ JobSearch } />
-              <Route exact path='/jobs/appliedform' component={ JobsAppliedForm } />
-              <Route exact path='/jobs/appliedhistory' component={ JobsAppliedHistory } />
+              <Route
+                exact path='/jobs'
+                render={(props) => <JobSearch {...props} handleToken={ this.handleClick }/>}
+              />
+              <Route 
+                exact path='/jobs/appliedform'
+                render={(props) => <JobsAppliedForm {...props} handleToken={ this.handleClick }/>}
+              />
+              <Route
+                exact path='/jobs/appliedhistory'
+                render={(props) => <JobsAppliedHistory {...props} handleToken={ this.handleClick }/>}
+              />
               <Route exact path='/rewards' component={ Rewards } />
             </React.Fragment>
         </MuiThemeProvider>
@@ -118,4 +194,4 @@ class User extends Component {
   }
 }
 
-export default User;
+export default withStyles(styles)(User);
