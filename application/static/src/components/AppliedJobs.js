@@ -82,7 +82,7 @@ class AppliedJobs extends Component {
     if (ipAddress.trim() === '127.0.0.1'.trim())
       url = 'http://' + ipAddress + ':8000/api/csv';
     else
-      url = 'http://'+ ipAddress + '/api/jobs/csv';
+      url = 'http://'+ ipAddress + '/api/csv';
     $.ajax({
       type: 'GET',
       url: url,
