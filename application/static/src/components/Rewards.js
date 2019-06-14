@@ -25,6 +25,17 @@ const styles = theme => ({
    */
   class RandomItemSpinner extends Component {
 
+    constructor(props) {
+      super(props);
+
+      this.state = {
+	updated: true,
+        end: true,
+	randomItem: null,
+	currency: this.props.currency - 30
+      };
+    }
+
     componentWillMount() {
         this.start(this.buildPool());
     }
@@ -59,7 +70,7 @@ const styles = theme => ({
             let item = it.next();
 
             if (!item.value) {
-                this.setState({ end: true });
+                this.setState({ end: true, updated: false });
                 return;
             }
 
@@ -159,6 +170,7 @@ const styles = theme => ({
         .then(
         (result) => {
           this.props.items = result.data});
+	this.setState((prevState) => ({ currency: prevState.currency - 30 }));
         this.start(this.buildPool());
     }
 
@@ -212,9 +224,8 @@ const styles = theme => ({
      * @return { JSX }
      */
     render() {
-        let currency;
-        if (this.state.end || this.props.currency === null) {
-            this.addReward(this.state.randomItem.value.id)
+        if (this.state.end && this.state.updated === false) {
+	    this.addReward(this.state.randomItem.value.id);
             let ipAddress = window.location.hostname;
             let url;
             if (ipAddress.trim() === '127.0.0.1'.trim())
@@ -225,29 +236,31 @@ const styles = theme => ({
                 .then(res => res.json())
                 .then(
                     (result) => {
-                        this.props.currency = result.currency
+                        this.setState({
+				updated: true
+			});
                     });
         }
-        currency = this.props.currency
-        console.log(currency)
-        if (currency < 30) {
-            this.state.end = false
-        }
+        //if (this.state.currency < 30) {
+        //    this.setState({
+	//      end: false,
+	//      updated: true
+	//   });
+        //}
         return (
             <div style={{textAlign: 'center'}} className="RandomItemSpinner">
                 <Typography gutterBottom variant="h5" component="h2">
 		  Coins Available
 		</Typography>
                 <Typography gutterBottom variant="h5" component="h2">
-		  {currency}
+		  {this.state.currency}
 		</Typography>
-                <SpinAgainButton disabled={ !this.state.end } spinAgainHandler={ this.spinAgainHandler.bind(this) } />
+                <SpinAgainButton disabled={ !this.state.end || this.state.currency < 30 } spinAgainHandler={ this.spinAgainHandler.bind(this) } />
                 <RandomItem item={ this.state.randomItem.value } />
             </div>
         );
     }
-}
-
+} 
 RandomItemSpinner.defaultProps = {
     options: {
         delay: 120,
@@ -334,18 +347,6 @@ class Rewards extends Component {
             isLoaded: false,
             rewards: false
         }
-        let ipAddress = window.location.hostname;
-        let url;
-        if (ipAddress.trim() === '127.0.0.1'.trim())
-            url = 'http://' + ipAddress + ':8000/api/user';
-        else
-            url = 'http://' + ipAddress + '/api/user';
-        fetch(url)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.state.isLoaded = result.currency
-                });
       }
     
     componentDidMount() {
@@ -402,7 +403,7 @@ class Rewards extends Component {
                     </React.Fragment>
                     :
                     <React.Fragment>
-                        <RandomItemSpinner items={rewards} currency={null}/>
+                        <RandomItemSpinner items={rewards} currency={ isLoaded }/>
                     </React.Fragment>
                 }
             </div>

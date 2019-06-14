@@ -44,6 +44,7 @@ def rewards():
         new_user_reward.save()
     user.currency -= 30
     user.save()
+    print('this is the current currency {}'.format(user.currency))
     return jsonify(user.to_json())
 
 @api_views.route('/user', methods=['GET']) #feed in user id if we are doing this by user id
