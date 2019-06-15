@@ -59,9 +59,9 @@ class AppliedJobs extends Component {
     let url;
     console.log('in appliedjobs mount function');
     if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'http://' + ipAddress + ':8000/api/jobs/applied';
+      url = 'https://' + ipAddress + ':8000/api/jobs/applied';
     else
-      url = 'http://'+ ipAddress + '/api/jobs/applied';
+      url = 'https://'+ ipAddress + '/api/jobs/applied';
     $.ajax({
       type: 'GET',
       url: url,
@@ -80,9 +80,9 @@ class AppliedJobs extends Component {
     let url;
     console.log('in appliedjobs mount function');
     if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'http://' + ipAddress + ':8000/api/csv';
+      url = 'https://' + ipAddress + ':8000/api/csv';
     else
-      url = 'http://'+ ipAddress + '/api/csv';
+      url = 'https://'+ ipAddress + '/api/csv';
     $.ajax({
       type: 'GET',
       url: url,

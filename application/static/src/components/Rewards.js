@@ -162,9 +162,9 @@ const styles = theme => ({
         let ipAddress = window.location.hostname;
         let url;
         if (ipAddress === '127.0.0.1')
-            url = 'http://' + ipAddress + ':8000/api/rewards';
+            url = 'https://' + ipAddress + ':8000/api/rewards';
         else
-            url = 'http://' + ipAddress + '/api/rewards';
+            url = 'https://' + ipAddress + '/api/rewards';
         fetch(url)
         .then(res => res.json())
         .then(
@@ -195,9 +195,9 @@ const styles = theme => ({
         let user;
 
         if (ipAddress === '127.0.0.1')
-            url = 'http://' + ipAddress + ':8000/api/';
+            url = 'https://' + ipAddress + ':8000/api/';
         else
-            url = 'http://' + ipAddress + '/api/';
+            url = 'https://' + ipAddress + '/api/';
         fetch(url + 'user')
             .then(res => res.json())
             .then(
@@ -229,9 +229,9 @@ const styles = theme => ({
             let ipAddress = window.location.hostname;
             let url;
             if (ipAddress.trim() === '127.0.0.1'.trim())
-                url = 'http://' + ipAddress + ':8000/api/user';
+                url = 'https://' + ipAddress + ':8000/api/user';
             else
-                url = 'http://' + ipAddress + '/api/user';
+                url = 'https://' + ipAddress + '/api/user';
             fetch(url)
                 .then(res => res.json())
                 .then(
@@ -353,9 +353,9 @@ class Rewards extends Component {
         let ipAddress = window.location.hostname;
         let url;
         if (ipAddress.trim() === '127.0.0.1'.trim())
-            url = 'http://' + ipAddress + ':8000/api/user';
+            url = 'https://' + ipAddress + ':8000/api/user';
         else
-            url = 'http://' + ipAddress + '/api/user';
+            url = 'https://' + ipAddress + '/api/user';
         fetch(url)
             .then(res => res.json())
             .then(
@@ -370,9 +370,9 @@ class Rewards extends Component {
         let ipAddress = window.location.hostname;
         let url;
         if (ipAddress === '127.0.0.1')
-            url = 'http://' + ipAddress + ':8000/api/rewards';
+            url = 'https://' + ipAddress + ':8000/api/rewards';
         else
-            url = 'http://' + ipAddress + '/api/rewards';
+            url = 'https://' + ipAddress + '/api/rewards';
         fetch(url)
             .then(res => res.json())
             .then(

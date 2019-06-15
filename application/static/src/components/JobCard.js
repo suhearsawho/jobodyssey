@@ -83,9 +83,9 @@ class JobCard extends Component {
     let ipAddress = window.location.hostname;
     let url;
     if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'http://' + ipAddress + ':8000/api/jobs/applied';
+      url = 'https://' + ipAddress + ':8000/api/jobs/applied';
     else
-      url = 'http://'+ ipAddress + '/api/jobs/applied';
+      url = 'https://'+ ipAddress + '/api/jobs/applied';
     $.ajax({
       type: 'DELETE',
       url: url,
@@ -102,7 +102,7 @@ class JobCard extends Component {
 
   fixUrl(url) {
     if (!url.startsWith('http', 0)) {
-      url = 'http://' + url;
+      url = 'https://' + url;
     }
     console.log('checking');
     return url

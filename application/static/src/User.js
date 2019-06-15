@@ -104,7 +104,7 @@ class User extends Component {
 
     $.ajax({
       type: 'GET',
-      url: 'http://' + domain + '/user/logout',
+      url: 'https://' + domain + '/user/logout',
       success: (data) => {
         if (data.redirect)
           window.location.href = data.redirect;
@@ -119,7 +119,7 @@ class User extends Component {
     /* Make this part more efficient -> Maybe one api call for just the username and then asynchronous calls to other 2 apis? */
     $.ajax({
       type: 'GET',
-      url: 'http://' + domain + '/api/user',
+      url: 'https://' + domain + '/api/user',
       success: (data) => {
         console.log(data);
         this.setState({

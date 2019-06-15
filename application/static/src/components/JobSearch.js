@@ -90,9 +90,9 @@ class JobSearch extends Component {
     let ipAddress = window.location.hostname;
     let url;
     if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'http://' + ipAddress + ':8000/api/jobs/interested';
+      url = 'https://' + ipAddress + ':8000/api/jobs/interested';
     else
-      url = 'http://'+ ipAddress + '/api/jobs/interested';
+      url = 'https://'+ ipAddress + '/api/jobs/interested';
     
     $.ajax({
       type: 'GET',
@@ -126,9 +126,9 @@ class JobSearch extends Component {
     let ipAddress = window.location.hostname;
     let url;
     if (ipAddress === '127.0.0.1')
-      url = 'http://' + ipAddress + ':8000/api/job_search';
+      url = 'https://' + ipAddress + ':8000/api/job_search';
     else
-      url = 'http://' + ipAddress + '/api/job_search';
+      url = 'https://' + ipAddress + '/api/job_search';
     fetch(url, {
       method: 'POST',
       headers: {
@@ -164,9 +164,9 @@ class JobSearch extends Component {
     let url;
     let newList;
     if (ipAddress === '127.0.0.1')
-      url = 'http://' + ipAddress + ':8000/api/jobs/interested';
+      url = 'https://' + ipAddress + ':8000/api/jobs/interested';
     else
-      url = 'http://' + ipAddress + '/api/jobs/interested';
+      url = 'https://' + ipAddress + '/api/jobs/interested';
     
     if (!this.state.jobsInterested.includes(item.id)) {
       fetch(url, {

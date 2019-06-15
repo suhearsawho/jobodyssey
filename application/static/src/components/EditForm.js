@@ -171,9 +171,9 @@ export default function AppliedForm(props) {
       let ipAddress = window.location.hostname;
       let url;
       if (ipAddress.trim() === '127.0.0.1'.trim())
-        url = 'http://' + ipAddress + ':8000/api/jobs/applied';
+        url = 'https://' + ipAddress + ':8000/api/jobs/applied';
       else
-        url = 'http://'+ ipAddress + '/api/jobs/applied';
+        url = 'https://'+ ipAddress + '/api/jobs/applied';
       
       const result = {
         date_applied: values.dateApplied,

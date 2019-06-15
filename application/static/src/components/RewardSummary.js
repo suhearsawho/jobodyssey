@@ -22,9 +22,9 @@ function getRewards() {
   let results;
 
   if (ipAddress.trim() === '127.0.0.1'.trim())
-    url = 'http://' + ipAddress + ':8000/api/user/rewards';
+    url = 'https://' + ipAddress + ':8000/api/user/rewards';
   else
-    url = 'http://'+ ipAddress + '/api/user/rewards';
+    url = 'https://'+ ipAddress + '/api/user/rewards';
   
   $.ajax({
     type: 'GET',
