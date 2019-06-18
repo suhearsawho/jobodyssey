@@ -28,11 +28,11 @@ There are two ways to access Job Odyssey -
 
 ## Screenshots
 
-<img width=50% src="https://imgur.com/i1Q9COP">
+<img width=50% src="https://i.imgur.com/i1Q9COP.png">
 
-<img width=50% src="https://imgur.com/4xbKtA1">
+<img width=50% src="https://i.imgur.com/4xbKtA1.png">
 
-<img width=50% src="https://imgur.com/6mkexPV">
+<img width=50% src="https://i.imgur.com/6mkexPV.png">
 
 ## Features
 
