@@ -1,5 +1,9 @@
 # Job Odyssey
 
+<a href="https://jobodyssey.com">
+    <img src="https://i.imgur.com/Z9dBwqq.png" alt="jobodyssey" title="JobOdyssey">
+</a>
+
 [Job Odyssey](https://jobodyssey.com) is a web application that is designed to gamify and organize your job search!
 To achieve this goal, Job Odyssey provides a unique reward and currency system that is designed to re-energize your job 
 search. Users can generate currency by performing certain actions - such as saving a job post, applying to jobs, and 
