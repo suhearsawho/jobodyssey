@@ -11,6 +11,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey,\
     MetaData, Table, JSON
 import json
 
+
 class UserReward(Base):
     """
     User Reward TO DO
@@ -72,8 +73,9 @@ class User(BaseModel, Base):
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
 
     """ Dictionary of all keys in our JSON of jobs applied """
-    applied_columns = ['date_applied', 'company', 'url', 'job_title', 'role' , 'address', 'status', 'interview']
-    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)","Role","Full Address","Status","Interviews Recieved","Additional Notes"\n'
+    applied_columns = ['date_applied', 'company', 'url', 'job_title', 'role', 'address', 'status', 'interview']
+    sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)",\
+        "Role","Full Address","Status","Interviews Received","Additional Notes"\n'
 
     def __init__(self, *args, **kwargs):
         """

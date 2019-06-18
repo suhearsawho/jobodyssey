@@ -56,7 +56,8 @@ class BaseModel:
         for attr, val in attr_dict.items():
             setattr(self, attr, val)
 
-    def __is_serializable(self, obj_v):
+    @staticmethod
+    def __is_serializable(obj_v):
         """
         private: checks if object is serializable
         """
@@ -70,12 +71,12 @@ class BaseModel:
         """
         updates the basemodel and sets updated attributes
         """
-        IGNORE = [
+        ignore = [
             'id', 'created_at', 'updated_at', 'user_id'
         ]
         if attr_dict:
             updated_dict = {
-                k: v for k, v in attr_dict.items() if k not in IGNORE
+                k: v for k, v in attr_dict.items() if k not in ignore
             }
             for key, value in updated_dict.items():
                 setattr(self, key, value)
@@ -83,7 +84,7 @@ class BaseModel:
 
     def save(self):
         """
-        updates attribute updated_at to current time
+        updates attribute updated_at to current time and saves class to database
         """
         self.updated_at = datetime.utcnow()
         models.database.new(self)
@@ -91,7 +92,10 @@ class BaseModel:
 
     def to_json(self, saving_file_storage=False):
         """
-        returns json representation of self
+        Creates dictionary of class with sqlalchemy instance state removed
+        :param saving_file_storage:
+        :return:
+        The dictionary of our class with relevant values
         """
         obj_class = self.__class__.__name__
         bm_dict = {
@@ -104,11 +108,13 @@ class BaseModel:
             })
         if not saving_file_storage and obj_class == 'User':
             bm_dict.pop('password', None)
-        return(bm_dict)
+        return bm_dict
 
     def __str__(self):
         """
-        return: string of object instance
+        str magic method
+        :return:
+        formatted string representation of class
         """
         class_name = type(self).__name__
         return '[{}] ({}) {}'.format(class_name, self.id, self.__dict__)

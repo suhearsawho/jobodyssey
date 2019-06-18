@@ -18,13 +18,17 @@ import uuid
 @api_views.route('/rewards', methods=['GET', 'POST'])
 def rewards():
     """
-    testing things
+    Processes GET and POST requests to fetch a randomized array of rewards or update user_rewards with a newly
+    created user_reward relationship, respectively
+    :return:
+    For GET requests will return a dictionary with an array of randomized rewards, populated based on rarity
+    For POST requests will take the data and add the user_reward object to the database based on user_id and reward_id
     """
     if request.method == 'GET':
-        rewards = {'data': []}
+        rand_rewards = {'data': []}
         for i in range(10):
             random_int = randint(0, 100)
-            """ This logic can be changed as rewards becomes more populated"""
+            """ Setting rarities of rewards based on the result of a random int """
             if random_int < 70:
                 roll = database.get('Reward', str(randint(26, 48)))
             elif random_int < 90:
@@ -35,41 +39,51 @@ def rewards():
                 roll = database.get('Reward', str(randint(0, 2)))
             if roll is None:
                 roll = database.get('Reward', '30')
-            rewards['data'].append({'name': roll.name, 'img': roll.image, 'rarity': roll.rarity, 'id': roll.id})
-        return jsonify(rewards)
+            rand_rewards['data'].append({'name': roll.name, 'img': roll.image, 'rarity': roll.rarity, 'id': roll.id})
+        return jsonify(rand_rewards)
     data = request.get_json()
     user = database.get('User', data['user_id'])
+    """ Checks database for duplicate user_reward entry """
     if database.duplicateUserReward(data['user_id'], data['reward_id']) is False:
         new_user_reward = UserReward(**data)
         new_user_reward.save()
     user.currency -= 30
     user.save()
-    print('this is the current currency {}'.format(user.currency))
     return jsonify(user.to_json())
 
-@api_views.route('/user', methods=['GET']) #feed in user id if we are doing this by user id
+
+@api_views.route('/user', methods=['GET'])
 def user_info():
     """
-    return user info in order to populate user page
+    API call for returning a user for userpage
+    :return:
+    JSON formatted user information
     """
     user = database.get('User', session['id'])
     return jsonify(user.to_json())
+
 
 @api_views.route('/user/currency', methods=['GET'])
 def user_token():
     """
-    returns the currency that a user has
+    API call for obtaining the user's current amount of currency
+    :return:
+    Currency of a user
     """
     user = database.get('User', session['id'])
     return jsonify({'currency': user.currency})
 
+
 @api_views.route('/csv', methods=['GET'])
 def csv():
     """
-    returns a string csv of the jobs applied for a user
+    API call for the CSV formatted jobs_applied variable of a user
+    :return:
+    CSV formatted jobs_applied variable of the user
     """
     user = database.get('User', session['id'])
     return user.get_csv()
+
 
 @api_views.route('/user/rewards', methods=['GET'])
 def user_rewards():
@@ -78,19 +92,25 @@ def user_rewards():
     """
     return jsonify(database.userRewards(session['id']))
 
+
 @api_views.route('/job_search', methods=['POST'])
 def job_search():
     """
-    for searching github job api
+    Uses the Github Jobs API to find results that match search parameters
+    :return:
+    Results that match the POST request search parameters from Github Jobs
     """
     params = request.get_json()
     r = requests.get('https://jobs.github.com/positions.json?', params=params)
     return jsonify({'items': r.json()})
 
+
 @api_views.route('/jobs/applied', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def jobs_applied():
     """
     Used to retrieve, add, update, and delete jobs that the user has applied to
+    :return:
+    A user's jobs_applied for successful GET requests, error on invalid requests, and status code otherwise
     """
     user = database.get('User', session['id'])
 
@@ -145,11 +165,13 @@ def jobs_applied():
     status = 200 if 'success' in response.keys() else 404
     return jsonify(response), status
 
+
 @api_views.route('/jobs/interested', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def jobs_interested():
     """
     Used to retrieve, add, update, and delete jobs that the user is interested in
-
+    :return:
+    A user's jobs_interested for valid GET request, error, or status code for valid non GET requests
     """
     user = database.get('User', session['id'])
     # GET: Return all jobs that user is interested in

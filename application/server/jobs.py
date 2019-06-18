@@ -3,6 +3,9 @@ from application.models.user import User
 from application.models import database
 import requests
 import os
+"""
+Routes dependent on username presence, using either the user page or index
+"""
 
 bp = Blueprint('jobs', __name__, url_prefix='/jobs', static_folder='../static/dist', template_folder='../static/templates')
 
