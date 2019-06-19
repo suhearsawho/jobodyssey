@@ -9,6 +9,7 @@ import JobSearch from './components/JobSearch';
 import TopBar from './components/TopBar';
 import UserHomepage from './components/UserHomepage';
 import NoMatch from './components/NoMatch';
+import getUrl from './components/tools/getUrl';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,12 +35,8 @@ class App extends Component {
   }
 
   handleOAuth() {
-    let ipAddress = window.location.hostname;
-    let url;
-    if (ipAddress === '127.0.0.1')
-    	url = 'https://' + ipAddress + ':8000/login';
-    else
-	    url = 'https://' + ipAddress + '/login';
+    let url = getUrl('/login');
+    console.log('this is your url', url);
     $.ajax({
       type: 'GET',
       url: url,

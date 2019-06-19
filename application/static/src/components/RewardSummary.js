@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
+import getUrl from './tools/getUrl';
 
 const noRewards = [
   {
@@ -17,15 +18,9 @@ const noRewards = [
 ]
 
 function getRewards() {
-  let ipAddress = window.location.hostname;
-  let url;
+  let url = getUrl('/api/user/rewards');
   let results;
 
-  if (ipAddress.trim() === '127.0.0.1'.trim())
-    url = 'https://' + ipAddress + ':8000/api/user/rewards';
-  else
-    url = 'https://'+ ipAddress + '/api/user/rewards';
-  
   $.ajax({
     type: 'GET',
     url: url,

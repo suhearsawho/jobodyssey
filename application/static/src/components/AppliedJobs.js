@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import JobCard from './JobCard';
+import getUrl from './tools/getUrl';
 
 const styles = theme => ({
   root: {
@@ -55,13 +56,7 @@ class AppliedJobs extends Component {
   }
 
   componentDidMount() {
-    let ipAddress = window.location.hostname;
-    let url;
-    console.log('in appliedjobs mount function');
-    if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'https://' + ipAddress + ':8000/api/jobs/applied';
-    else
-      url = 'https://'+ ipAddress + '/api/jobs/applied';
+    let url = getUrl('/api/jobs/applied');
     $.ajax({
       type: 'GET',
       url: url,
@@ -76,13 +71,7 @@ class AppliedJobs extends Component {
   }
   
   handleSpreadsheet() {
-    let ipAddress = window.location.hostname;
-    let url;
-    console.log('in appliedjobs mount function');
-    if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'https://' + ipAddress + ':8000/api/csv';
-    else
-      url = 'https://'+ ipAddress + '/api/csv';
+    let url = getUrl('/api/csv');
     $.ajax({
       type: 'GET',
       url: url,

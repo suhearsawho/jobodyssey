@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import getUrl from './tools/getUrl';
 
 const styles = theme => ({
     spinner: {
@@ -29,10 +30,10 @@ const styles = theme => ({
       super(props);
 
       this.state = {
-	updated: true,
+	      updated: true,
         end: true,
-	randomItem: null,
-	currency: this.props.currency - 30
+	      randomItem: null,
+	      currency: this.props.currency - 30
       };
     }
 
@@ -159,12 +160,7 @@ const styles = theme => ({
      * Event Handler to respin
      */
     spinAgainHandler() {
-        let ipAddress = window.location.hostname;
-        let url;
-        if (ipAddress === '127.0.0.1')
-            url = 'https://' + ipAddress + ':8000/api/rewards';
-        else
-            url = 'https://' + ipAddress + '/api/rewards';
+        let url = getUrl('/api/rewards');
         fetch(url)
         .then(res => res.json())
         .then(
@@ -180,7 +176,7 @@ const styles = theme => ({
      playClick() {
          var isSafari = (navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1);
          if (!isSafari) {
-             let mp3url = 'https://raw.githubusercontent.com/andrewdelprete/randomItemSpinner/master/src/mp3s/click.mp3'
+             let mp3url = 'http://raw.githubusercontent.com/andrewdelprete/randomItemSpinner/master/src/mp3s/click.mp3'
              let audio = new Audio(mp3url);
              audio.play();
          }
@@ -190,14 +186,9 @@ const styles = theme => ({
       * Add rolled reward to database
       */
      addReward(reward_id) {
-        let ipAddress = window.location.hostname;
-        let url;
+        let url = getUrl('/api/');
         let user;
 
-        if (ipAddress === '127.0.0.1')
-            url = 'https://' + ipAddress + ':8000/api/';
-        else
-            url = 'https://' + ipAddress + '/api/';
         fetch(url + 'user')
             .then(res => res.json())
             .then(
@@ -226,12 +217,7 @@ const styles = theme => ({
     render() {
         if (this.state.end && this.state.updated === false) {
 	    this.addReward(this.state.randomItem.value.id);
-            let ipAddress = window.location.hostname;
-            let url;
-            if (ipAddress.trim() === '127.0.0.1'.trim())
-                url = 'https://' + ipAddress + ':8000/api/user';
-            else
-                url = 'https://' + ipAddress + '/api/user';
+            let url = getUrl('/api/user');
             fetch(url)
                 .then(res => res.json())
                 .then(
@@ -350,12 +336,7 @@ class Rewards extends Component {
       }
     
     componentDidMount() {
-        let ipAddress = window.location.hostname;
-        let url;
-        if (ipAddress.trim() === '127.0.0.1'.trim())
-            url = 'https://' + ipAddress + ':8000/api/user';
-        else
-            url = 'https://' + ipAddress + '/api/user';
+        let url = getUrl('/api/user');
         fetch(url)
             .then(res => res.json())
             .then(
@@ -367,12 +348,7 @@ class Rewards extends Component {
     }
 
     getRewards() {
-        let ipAddress = window.location.hostname;
-        let url;
-        if (ipAddress === '127.0.0.1')
-            url = 'https://' + ipAddress + ':8000/api/rewards';
-        else
-            url = 'https://' + ipAddress + '/api/rewards';
+        let url = getUrl('/api/rewards');
         fetch(url)
             .then(res => res.json())
             .then(

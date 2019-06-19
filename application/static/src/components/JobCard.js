@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import EditMenu from './EditMenu';
 import EditForm from './EditForm';
+import getUrl from './tools/getUrl';
 
 const styles = theme => ({
   root: {
@@ -80,12 +81,7 @@ class JobCard extends Component {
   }
 
   handleDelete() {
-    let ipAddress = window.location.hostname;
-    let url;
-    if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'https://' + ipAddress + ':8000/api/jobs/applied';
-    else
-      url = 'https://'+ ipAddress + '/api/jobs/applied';
+    let url = getUrl('/api/jobs/applied');
     $.ajax({
       type: 'DELETE',
       url: url,
