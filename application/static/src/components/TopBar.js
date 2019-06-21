@@ -48,7 +48,6 @@ export default function TopBar({ isLoggedIn, handleLogout, color }) {
 
   function callLogout() {
     setAnchorEl(null);
-    console.log('in topbar logout');
     handleLogout();
   }
 

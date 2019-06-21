@@ -68,7 +68,7 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const jobKeys = ['Job Search', 'Saved Jobs', 'Add Applied Job', 'Applied Jobs History'];
-  const userKeys = ['Home', 'Community', 'Rewards Market'];
+  const userKeys = ['Home', 'Rewards Market'];
   
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
@@ -87,20 +87,12 @@ function ResponsiveDrawer(props) {
             <ListItemText primary={ userKeys[0] } />
           </ListItem>
         </Link>
-        <Link to='/user/community' className={ classes.linkStyle }>
-          <ListItem button key={ userKeys[1] }>
-            <ListItemIcon>
-              <GroupIcon />
-            </ListItemIcon>
-            <ListItemText primary={ userKeys[1] } />
-          </ListItem>
-        </Link>
         <Link to='/rewards' className={ classes.linkStyle }>
-          <ListItem button key={ userKeys[2] }>
+          <ListItem button key={ userKeys[1] }>
             <ListItemIcon>
               <PlayCircleOutlineIcon />
             </ListItemIcon>
-            <ListItemText primary={ userKeys[2] } />
+            <ListItemText primary={ userKeys[1] } />
           </ListItem>
         </Link>
       </List>
@@ -130,7 +122,7 @@ function ResponsiveDrawer(props) {
             <ListItemText primary={ jobKeys[2] } />
           </ListItem>
         </Link>
-        <Link to='/jobs/appliedhistory' className={ classes.linkStyle }>
+        <Link to='/jobs/history' className={ classes.linkStyle }>
           <ListItem button key={ jobKeys[3] }>
             <ListItemIcon>
               <HistoryIcon />
