@@ -20,7 +20,8 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { withStyles } from '@material-ui/core';
 import ComingSoon from './components/ComingSoon';
 import NoMatch from './components/NoMatch';
-
+import TableHistory from './components/TableHistory';
+import VerticalHistory from './components/VerticalHistory';
 import getUrl from './components/tools/getUrl';
 
 const theme = createMuiTheme({
@@ -182,6 +183,14 @@ class User extends Component {
               <Route
                 exact path='/jobs/appliedhistory'
                 render={(props) => <JobsAppliedHistory {...props} handleToken={ this.handleClick }/>}
+              />
+              <Route
+                exact path='/jobs/appliedhistorytable'
+                render={(props) => <TableHistory {...props} handleToken={ this.handleClick }/>}
+              />
+              <Route
+                exact path='/jobs/appliedhistoryvertical'
+                render={(props) => <VerticalHistory {...props} handleToken={ this.handleClick }/>}
               />
               <Route exact path='/rewards' component={ Rewards } />
               <Route exact path='/jobs/saved' component={ ComingSoon } />
