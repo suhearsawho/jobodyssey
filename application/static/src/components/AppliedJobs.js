@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import JobCard from './JobCard';
@@ -41,7 +42,11 @@ const styles = theme => ({
   title: {
     textAlign: 'center',
     marginTop: '2rem',
-  }
+  },
+  category: {
+    textAlign: 'center',
+    marginTop: '1rem',
+  },
 });
 
 class AppliedJobs extends Component {
@@ -122,9 +127,46 @@ class AppliedJobs extends Component {
           spacing={ 3 }
           justify="center"
         >
-          { Object.keys(jobsApplied).map((key) => (
-            <JobCard job={ jobsApplied[key] } id={ key } handleToken={ handleToken }/>
-          ))}
+          <Grid item xs={ 12 }>
+            <Paper>
+              <Typography variant="h6" gutterBottom className={classes.category}>
+                Applied
+              </Typography>
+              { Object.keys(jobsApplied).map((key) => (
+                <JobCard job={ jobsApplied[key] } id={ key } handleToken={ handleToken }/>
+              ))}
+            </Paper>
+          </Grid>
+          <Grid item xs={ 12 }>
+            <Paper>
+            <Typography variant="h6" gutterBottom className={classes.category}>
+              Interviewing
+            </Typography>
+            { Object.keys(jobsApplied).map((key) => (
+              <JobCard job={ jobsApplied[key] } id={ key } handleToken={ handleToken }/>
+            ))}
+            </Paper>
+          </Grid>
+          <Grid item xs={ 12 }>
+            <Paper>
+            <Typography variant="h6" gutterBottom className={classes.category}>
+              Offer Stage
+            </Typography>
+            {Object.keys(jobsApplied).map((key) => (
+              <JobCard job={ jobsApplied[key] } id={ key } handleToken={ handleToken }/>
+            ))}
+            </Paper>
+          </Grid>
+          <Grid item xs={ 12 }>
+            <Paper>
+            <Typography variant="h6" gutterBottom className={classes.category}>
+              Archived
+            </Typography>
+            {Object.keys(jobsApplied).map((key) => (
+              <JobCard job={ jobsApplied[key] } id={ key } handleToken={ handleToken }/>
+            ))}
+            </Paper>
+          </Grid>
         </Grid>
       </div>
     );

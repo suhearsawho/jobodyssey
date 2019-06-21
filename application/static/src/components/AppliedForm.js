@@ -31,6 +31,11 @@ const typesInterviews = [
 		value: 'Onsite Interview',
 		label: 'Onsite Interview',
 	},
+  {
+    value: 'Recruiter Call',
+    label: 'Recruiter Call',
+  },
+
 ];
 
 const typesPositions = [
@@ -50,51 +55,22 @@ const typesPositions = [
 
 const typesOfferStatus = [
   {
-    value: 'Waiting to Hear Back',
-    label: 'Waiting to Hear Back',
+    value: 'Applied',
+    label: 'Applied',
   },
   {
-    value: 'Rejection',
-    label: 'Rejection',
+    value: 'Interviewing',
+    label: 'Interviewing',
   },
   {
-    value: 'Received Offer',
-    label: 'Received Offer',
+    value: 'Offer Stage',
+    label: 'Offer Stage',
   },
   {
-    value: 'Acceptance of Offer',
-    label: 'Acceptance of Offer',
-  },
-  {
-    value: 'Rejection of Offer',
-    label: 'Rejection of Offer',
+    value: 'Archived',
+    label: 'Archived',
   },
 ];
-
-const typesRoles = [
-  {
-    value: 'Full Stack',
-    label: 'Full Stack',
-  },
-  {
-    value: 'Backend',
-    label: 'Backend',
-  },
-  {
-    value: 'Frontend',
-    label: 'Frontend',
-  },
-  {
-    value: 'SRE',
-    label: 'SRE',
-  },
-  {
-    value: 'Dev-Ops',
-    label: 'Dev-Ops',
-  },
-]
-
-const typesLanguages = ['C', 'C++', 'C#', 'CSS', 'HTML', 'Java', 'Javascript', 'Objective-C', 'PHP', 'Python', 'Ruby', 'SQL', 'Swift']
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -176,7 +152,6 @@ export default function AppliedForm(props) {
   const handleSubmit = () => {
     if (values.company.trim() === '' || values.address.trim() === '' ||
         values.jobTitle.trim() === '') { 
-      console.log('passed condition');
       setValues({...values, open: true });
     } else { 
       let url = getUrl('/api/jobs/applied');
@@ -232,48 +207,27 @@ export default function AppliedForm(props) {
         spacing={ 3 }
         justify="center"
       >
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 } sm={ 6 }>
           <TextField
             required
             fullWidth
             id="company"
             variant="outlined"
-            label="Company"
+            label="Company Name"
             value={ values.company }
             onChange={ handleChange('company') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 } sm={ 6 }>
           <TextField
             fullWidth
             required
             id="jobtitle"
             variant="outlined"
             value={ values.jobTitle }
-            label="Position"
+            label="Job Title"
             onChange={ handleChange('jobTitle') }
           />
-        </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
-          <FormControl
-            variant="outlined" 
-            fullWidth
-          >
-            <InputLabel htmlFor="select-multiple">Languages</InputLabel>
-            <Select
-              multiple
-              value={ values.languages }
-              onChange={ handleChange('languages') }
-              input={<OutlinedInput id="select-multiple" />}
-              MenuProps={ MenuProps }
-            >
-              {	typesLanguages.map(name => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </Grid>
         <Grid item xs={ 12 } sm={ 8 }>
           <TextField
@@ -281,7 +235,7 @@ export default function AppliedForm(props) {
             fullWidth
             id="address"
             variant="outlined"
-            label="Address"
+            label="Office Location (City, State, Country)"
             value={ values.address }
             onChange={ handleChange('address') }
           />
@@ -289,7 +243,7 @@ export default function AppliedForm(props) {
             fullWidth
             id="url"
             variant="outlined"
-            label="URL of Job Post"
+            label="URL"
             className={ classes.interior }
             value={ values.jobPostURL }
             onChange={ handleChange('jobPostURL') }
@@ -330,7 +284,7 @@ export default function AppliedForm(props) {
             variant="outlined" 
             fullWidth
           >
-            <InputLabel htmlFor="select-multiple">Interviews Received</InputLabel>
+            <InputLabel htmlFor="select-multiple">Interview Progress</InputLabel>
             <Select
               multiple
               value={ values.interview }
@@ -351,7 +305,7 @@ export default function AppliedForm(props) {
             variant="outlined"
             fullWidth
           >
-            <InputLabel htmlFor="select">Offer Status</InputLabel>
+            <InputLabel htmlFor="select">Status</InputLabel>
             <Select
               value={ values.offerStatus }
               onChange={ handleChange('offerStatus') }
