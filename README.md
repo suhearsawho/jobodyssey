@@ -38,6 +38,7 @@ Job Odyssey attempts to address that by organizing applications and adding visib
 
 That is why we are called Job Odyssey!
 
+A Kanban board on Trello was utilized throughout in order to keep tasks and communication organized.
 The React front end and the way routing was designed, allowed Job Odyssey to have more dynamic features without handcuffing the rest of the project.
 A REST API allowed for this frontend to interact with out backend in a simple and well documented way.
 We decided to use ORM and MySQL because of modularity and familiarity.
