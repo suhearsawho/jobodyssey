@@ -30,7 +30,36 @@ updating the status of previously applied jobs.
 
 ## The Story
 
+At first Job Odyssey was not envisioned as even close to what it is now.
+It originally started as an idea for parsing and aggregating job listings for a user. However this idea was quickly changed because of the difficulty in obtaining job search API access.
+So faced with a road block we actually thought about what would be a product that could prove useful. While the original thought seemed interesting, the usefulness seemed limited.
+So brainstorming led to the insight that with the huge amount of jobs an applicant can go through, organization and motivation could dwindle quickly.
+Job Odyssey attempts to address that by organizing applications and adding visible progression along the journey. We want to be there from the humble beginnings, the ups and downs, to hopefully, the ultimate success.
 
+That is why we are called Job Odyssey!
+
+The React front end and the way routing was designed, allowed Job Odyssey to have more dynamic features without handcuffing the rest of the project.
+A REST API allowed for this frontend to interact with out backend in a simple and well documented way.
+We decided to use ORM and MySQL because of modularity and familiarity.
+
+Front End
+* React components handling routing
+* Material UI for consistent styling
+* API calls to manipulate database
+
+REST API
+* GET, POST, PUT requests handled
+* CRUD manipulation through REST API
+* CSV formatted jobs applied
+
+Relational Database
+* Handled with ORM (SQLAlchemy)
+* Model system with base model handling identification
+* Many to many relationship for users and rewards
+
+Server / Deployment
+* Nginx / Gunicorn
+* AWS EC2 on Ubuntu 16.04
 
 ## Getting Started
 
@@ -66,19 +95,20 @@ user data to be more secure, users are handled completely through authorization 
 ### **Job Search**
 
 This job search feature used the Github Jobs API to search for a job based on user input parameters. The heart button on the left side will save the job as a job interested where pressed and delete it from jobs interested if pressed again.
+The heart button required a lot of work with React states and figuring out the best way to have this dynamically populated list have individual reactions to user actions.
 The message icon on the right side of the listing is a link which will open a new window of the url to the actual job listing.
 
 <img width=75% src="https://i.imgur.com/aTtDNRo.png">
 
 ### **Add Applied**
 
-This form will allow a user to add an applied job to their list of applied jobs. The company, position, address, and date applied are mandatory fields while the drop down forms like language can be manipulated by clicking on one to add, and clicking again to remove the specific option (e.g. click on C and Python to add both, click again on C to remove). 
+This form will allow a user to add an applied job to their list of applied jobs. The company, position, address, and date applied are mandatory fields while the drop down forms like language can be manipulated by clicking on one to add, and clicking again to remove the specific option (e.g. click on C and Python to add both, click again on C to remove). When submitted, the form is sent through a POST request to our REST API updating the database.
 
 <img width=75% src="https://i.imgur.com/hwcvTMM.png">
 
 ### **Applied Jobs**
 
-Jobs applied will be listed on this page with the ability to edit and delete the listing. This allows for updates on the status, notes, or any other information you would like to change later.
+Jobs applied will be listed on this page with the ability to edit and delete the listing. This allows for updates on the status, notes, or any other information you would like to change later. Any updates will be handled by React fetch requests to our REST API.
 
 <img width=75% src="https://i.imgur.com/Hfftp3R.png">
 
@@ -88,7 +118,7 @@ This export to csv button allows you to see your applied jobs in a csv format. T
 
 ### **Rewards**
 
-This rewards feature is a slot machine like spinner which will choose from a constructed group of ten possible rewards. The rewards are populated based on a rarity scale with each color representing a different rarity. The rewards are currently Holberton peers and staff but plans are to make them more general in the future. Each roll is 30 coins and repeats are not added to your total list of rewards. Check the home page to see which rewards you have won!
+This rewards feature is a slot machine like spinner which will choose from a constructed group of ten possible rewards. The rewards are populated based on a rarity scale with each color representing a different rarity. The rewards are currently Holberton peers and staff but plans are to make them more general in the future. Each roll is 30 coins and repeats are not added to your total list of rewards. Check the home page to see which rewards you have won! Figuring out how to set this up on a flask / React web app was challenging but ultimately rewarding with a cute animation for rolling. This feature also required a careful handling of states and prev state when dealing with asynchronous loading.
 
 <img width=75% src="https://i.imgur.com/RRwTdoV.png">
 
