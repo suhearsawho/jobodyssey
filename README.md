@@ -65,7 +65,7 @@ Server / Deployment
 
 Access it on jobodyssey.com and create an account today!
 * Must have a github account to use Job Odyssey
-* To explore features with logging in, check out [Features](#features)
+* To explore features without logging in, check out [Features](#features)
 
 ## Screenshots
 
