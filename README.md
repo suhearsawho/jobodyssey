@@ -140,11 +140,13 @@ the view and formatting of the applied jobs easier to navigate and explore. Alon
 If you have any suggestions or would like to contribute to Job Odyssey, please contact either of us.
 
 ## Authors
-### **Christopher Choe** - [christopherchoe](https://github.com/christopherchoe)
+### **Christopher Choe**
+[christopherchoe](https://github.com/christopherchoe)
 
 Chris hopes to be a backend software engineer, working on the database and REST API for the most part with some fingerprints in the frontend in order to better understand and integrate the backend into the whole picture.
 
-### **Susan Su** - [suhearsawho](https://github.com/suhearsawho)
+### **Susan Su**
+[suhearsawho](https://github.com/suhearsawho)
     
 Susan is an aspiring full stack software engineer who enjoys both backend work and frontend work, taking charge of the design and React portions of Job Odyssey while still being heavily involved in the backend database and API work as well. 
     
