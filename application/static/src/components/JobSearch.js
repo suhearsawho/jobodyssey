@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Form from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import getUrl from './tools/getUrl';
 
 const styles = theme => ({
   nonList: {
@@ -87,12 +88,7 @@ class JobSearch extends Component {
   }
   
   componentDidMount() {
-    let ipAddress = window.location.hostname;
-    let url;
-    if (ipAddress.trim() === '127.0.0.1'.trim())
-      url = 'https://' + ipAddress + ':8000/api/jobs/interested';
-    else
-      url = 'https://'+ ipAddress + '/api/jobs/interested';
+    let url = getUrl('/api/jobs/interested');
     
     $.ajax({
       type: 'GET',
@@ -123,12 +119,7 @@ class JobSearch extends Component {
     this.setState({
       viewList: true
     })
-    let ipAddress = window.location.hostname;
-    let url;
-    if (ipAddress === '127.0.0.1')
-      url = 'https://' + ipAddress + ':8000/api/job_search';
-    else
-      url = 'https://' + ipAddress + '/api/job_search';
+    let url = getUrl('/api/job_search');
     fetch(url, {
       method: 'POST',
       headers: {
@@ -160,13 +151,8 @@ class JobSearch extends Component {
   }
 
   jobFavorite(item) {
-    let ipAddress = window.location.hostname;
-    let url;
+    let url = getUrl('/api/jobs/interested');
     let newList;
-    if (ipAddress === '127.0.0.1')
-      url = 'https://' + ipAddress + ':8000/api/jobs/interested';
-    else
-      url = 'https://' + ipAddress + '/api/jobs/interested';
     
     if (!this.state.jobsInterested.includes(item.id)) {
       fetch(url, {

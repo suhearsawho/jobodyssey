@@ -21,6 +21,8 @@ import { withStyles } from '@material-ui/core';
 import ComingSoon from './components/ComingSoon';
 import NoMatch from './components/NoMatch';
 
+import getUrl from './components/tools/getUrl';
+
 const theme = createMuiTheme({
   palette: {
     secondary: {
@@ -97,14 +99,10 @@ class User extends Component {
   }
 
   handleLogout() {
-    let domain = window.location.hostname;
-    if (domain.trim() === '127.0.0.1'.trim()) {
-      domain = domain.concat(':8000');
-    }
-
+    let url = getUrl('/user/logout');
     $.ajax({
       type: 'GET',
-      url: 'https://' + domain + '/user/logout',
+      url: url,
       success: (data) => {
         if (data.redirect)
           window.location.href = data.redirect;
@@ -112,14 +110,10 @@ class User extends Component {
     });
   }
   componentDidMount() {
-    let domain = window.location.hostname;
-    if (domain.trim() === '127.0.0.1'.trim()) {
-      domain = domain.concat(':8000');
-    }
-    /* Make this part more efficient -> Maybe one api call for just the username and then asynchronous calls to other 2 apis? */
+    let url = getUrl('/api/user');
     $.ajax({
       type: 'GET',
-      url: 'https://' + domain + '/api/user',
+      url: url,
       success: (data) => {
         console.log(data);
         this.setState({

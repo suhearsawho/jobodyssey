@@ -16,6 +16,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
 import { amber } from '@material-ui/core/colors';
+import getUrl from './tools/getUrl';
 
 const typesInterviews = [
   {
@@ -168,12 +169,7 @@ export default function AppliedForm(props) {
         values.jobTitle.trim() === '') { 
       setValues({...values, open: true });
     } else { 
-      let ipAddress = window.location.hostname;
-      let url;
-      if (ipAddress.trim() === '127.0.0.1'.trim())
-        url = 'https://' + ipAddress + ':8000/api/jobs/applied';
-      else
-        url = 'https://'+ ipAddress + '/api/jobs/applied';
+      let url = getUrl('/api/jobs/applied');
       
       const result = {
         date_applied: values.dateApplied,
