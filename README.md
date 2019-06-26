@@ -30,11 +30,11 @@ updating the status of previously applied jobs.
 
 ## The Story
 
-At first Job Odyssey was not envisioned as even close to what it is now.
-It originally started as an idea for parsing and aggregating job listings for a user. However this idea was quickly changed because of the difficulty in obtaining job search API access.
-So faced with a road block we actually thought about what would be a product that could prove useful. While the original thought seemed interesting, the usefulness seemed limited.
-So brainstorming led to the insight that with the huge amount of jobs an applicant can go through, organization and motivation could dwindle quickly.
-Job Odyssey attempts to address that by organizing applications and adding visible progression along the journey. We want to be there from the humble beginnings, the ups and downs, to hopefully, the ultimate success.
+At first, Job Odyssey was envisioned as much different to what it is now.
+It started as an idea for parsing and aggregating job listings for a user. However this idea was quickly changed because of the difficulty in obtaining job search API access.
+So faced with a road block, we actually thought about what would be a useful product. While the original thought seemed interesting, the usefulness seemed limited.
+So brainstorming led to the insight that with the huge amount of jobs a software engineer applicant can go through, organization and motivation could dwindle quickly.
+Job Odyssey attempts to address that by organizing applications and adding visible progression along the journey. We want to be there for support from the humble beginnings, the ups and downs, to hopefully, the ultimate success.
 
 That is why we are called Job Odyssey!
 
