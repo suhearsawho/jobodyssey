@@ -60,7 +60,7 @@ def github_auth():
             if user.user_name == session['username']:
                 session['id'] = user.id
                 return redirect(url_for('user.homepage'))
-        new_user = User(**({'user_name': session.get('username'), 'level_id': '100'}))
+        new_user = User(**({'user_name': session.get('username')}))
         new_user.save()
         session['id'] = new_user.id
         return redirect(url_for('user.homepage'))
