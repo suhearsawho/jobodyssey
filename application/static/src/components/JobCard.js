@@ -26,6 +26,7 @@ const styles = theme => ({
     justifyContent: 'center',
   },
   card: {
+    margin: '2rem',
   },
  	expand: {
     transform: 'rotate(0deg)',
@@ -97,7 +98,7 @@ class JobCard extends Component {
   }
 
   fixUrl(url) {
-    if (!url.startsWith('http', 0)) {
+    if (url && !url.startsWith('http', 0)) {
       url = 'https://' + url;
     }
     console.log('checking');
@@ -110,7 +111,7 @@ class JobCard extends Component {
     const url = this.fixUrl(job.url);
 
     return (
-      <Grid item xs={ 12 } sm={ 6 }>
+      <Grid item xs={ 12 } sm={ 6 } md={ 4 }>
         <Card className={ classes.card } id={ id }>
           <CardHeader
             action={
@@ -127,16 +128,6 @@ class JobCard extends Component {
                 spacing={ 1 }
                 justify="center"
               >
-                <Grid item xs={ 4 } sm={ 4 }>
-                  <Typography variant="body1" color="textSecondary" component="p">
-                    { 'Languages: '}
-                  </Typography>
-                </Grid>
-                <Grid item xs={ 8 } sm={ 8 }>
-                  <Typography variant="body1" color="textSecondary" component="p">
-                    { Object.keys(job.languages).length === 0 ? 'None': job.languages.join(', ') }
-                  </Typography>
-                </Grid>
                 <Grid item xs={ 4 } >
                   <Typography variant="body1" color="textSecondary" component="p">
                     { 'Interviews Received: '}

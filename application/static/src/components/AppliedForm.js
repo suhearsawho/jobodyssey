@@ -106,7 +106,6 @@ export default function AppliedForm(props) {
   const handleSubmit = () => {
     if (values.company.trim() === '' || values.address.trim() === '' ||
         values.jobTitle.trim() === '') { 
-      console.log('passed condition');
       setValues({...values, open: true });
     } else { 
       let url = getUrl('/api/jobs/applied');
@@ -237,6 +236,7 @@ export default function AppliedForm(props) {
             fullWidth
           >
             <InputLabel htmlFor="select">Interview Progress</InputLabel>
+
             <Select
               value={ values.interviewProgress }
               onChange={ handleChange('interviewProgress') }
