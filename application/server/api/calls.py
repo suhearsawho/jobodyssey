@@ -155,6 +155,7 @@ def jobs_applied():
 
         # DELETE: Deletes an entry
         elif request.method == 'DELETE':
+            token = 0
             jobs.pop(job_id)
 
         # TODO: make sure to update how delete and put save the new data! there
@@ -163,6 +164,8 @@ def jobs_applied():
         user.save()
         response['token'] = token
         response['message'] = message
+        response['updated_jobs'] = jobs
+        print('return value from applied', response)
 
     status = 200 if 'success' in response.keys() else 404
     return jsonify(response), status
