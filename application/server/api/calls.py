@@ -8,7 +8,6 @@ import requests
 
 from application.models.user import User, UserReward
 from application.models.reward import Reward
-from application.models.jobs_applied import JobsApplied
 from flask import abort, jsonify, session, request
 import pdb
 import json
@@ -117,13 +116,12 @@ def jobs_applied():
 
     # GET: Return all jobs that user has applied to
     if request.method == 'GET':
-        results = database.userAppliedJobs(session['id']) 
-        return jsonify(results), 200
+        return jsonify(user.jobs_applied), 200
 
     if request.is_json is False:
         return jsonify(error="Not a valid JSON"), 400
 
-#    jobs = json.loads(user.jobs_applied)
+    jobs = json.loads(user.jobs_applied)
     data = request.get_json()
     if request.method != 'POST':
         job_id = data.get('id')
@@ -149,7 +147,9 @@ def jobs_applied():
 
         # POST: Creates a new entry
         elif request.method == 'POST':
-            user.jobs_applied.append(JobsApplied(**data))
+            print(data)
+            job_id = str(uuid.uuid4())
+            jobs[job_id] = data
             token = 30
             user.currency += token
 
@@ -157,9 +157,7 @@ def jobs_applied():
         elif request.method == 'DELETE':
             jobs.pop(job_id)
 
-        # TODO: make sure to update how delete and put save the new data! there
-        # is currently nothing right now
-
+        user.jobs_applied = json.dumps(jobs)
         user.save()
         response['token'] = token
         response['message'] = message

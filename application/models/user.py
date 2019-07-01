@@ -6,7 +6,6 @@ import hashlib
 import os
 from application.models.base_model import BaseModel, Base
 from application import models
-from application.models.jobs_applied import JobsApplied
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Integer, String, Float, ForeignKey,\
     MetaData, Table, JSON
@@ -67,13 +66,12 @@ class User(BaseModel, Base):
     """
     __tablename__ = 'users'
     user_name = Column(String(128), nullable=True)
-    name = Column(String(128), nullable=False)
     currency = Column(Integer, default=0)
-    jobs_applied = relationship("JobsApplied")
+    jobs_applied = Column(JSON, nullable=False)
     jobs_interested = Column(JSON, nullable=False)
     level_id = Column(String(60), ForeignKey('levels.id'))
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
-    
+
     """ Dictionary of all keys in our JSON of jobs applied """
     applied_columns = ['date_applied', 'company', 'url', 'job_title', 'role', 'address', 'status', 'interview']
     sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)",\
@@ -84,6 +82,7 @@ class User(BaseModel, Base):
         instantiates user object
         """
         super().__init__(*args, **kwargs)
+        self.jobs_applied = json.dumps({})
         self.jobs_interested = json.dumps({})
 
     def get_csv(self):
@@ -103,10 +102,3 @@ class User(BaseModel, Base):
                 """ to fit csv formatting notes not included """
             csv_applied += i.get('notes') + '\n'
         return csv_applied
-
-    def get_average_app(self):
-        """
-        Returns a number corresponding to the average number of applications
-        per week
-        """
-        
