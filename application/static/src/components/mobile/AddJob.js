@@ -14,6 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import getUrl from '../tools/getUrl';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,58 +22,13 @@ const useStyles = makeStyles(theme => ({
     color: 'black',
   },
 }));
+
 const typesInterviews = [
-  {
-		value: 'Phone Screening',
-		label: 'Phone Screening',
-	},
-	{
-		value: 'Phone Interview',
-		label: 'Phone Interview',
-	},
-	{
-		value: 'Onsite Interview',
-		label: 'Onsite Interview',
-	},
-  {
-    value: 'Recruiter Call',
-    label: 'Recruiter Call',
-  },
-
-];
-
-const typesPositions = [
-  {
-    value: 'Full Time',
-    label: 'Full Time',
-  },
-  {
-    value: 'Part Time',
-    label: 'Part Time',
-  },
-  {
-    value: 'Internship',
-    label: 'Internship',
-  },
+  'Recruiter Call', 'Onsite', 'Tech Screen', 'Awaiting Decision', 'Phone Interview'
 ];
 
 const typesOfferStatus = [
-  {
-    value: 'Applied',
-    label: 'Applied',
-  },
-  {
-    value: 'Interviewing',
-    label: 'Interviewing',
-  },
-  {
-    value: 'Offer Stage',
-    label: 'Offer Stage',
-  },
-  {
-    value: 'Archived',
-    label: 'Archived',
-  },
+  'Applied', 'Interviewing', 'Offer Stage', 'Archived'
 ];
 
 const ITEM_HEIGHT = 48;
@@ -86,27 +42,74 @@ const MenuProps = {
   },
 };
 
-export default function AddJob() {
-  const classes = useStyles();
-  const [values, setValues] = React.useState({
-    company: '',
-    dateApplied: date,
-    jobTitle: '',
-    interview: [],
-    offerStatus: '',
-    notes: '',
-    jobPostURL: '',
-    address: '',
-    languages: [],
-    open: false,
-  });
-
+function getCurrentDate() {
   let today = new Date();
   let date = today.getFullYear() + '-' + ("0" + (today.getMonth() + 1)).slice(-2) + '-';
   date += ("0" + today.getDate()).slice(-2);
+  return date
+}
+
+export default function AddJob(props) {
+  const classes = useStyles();
+  const date = getCurrentDate();
+  const { handleScreen } = props;
+  const [values, setValues] = React.useState({
+    company: '',
+    jobTitle: '',
+    dateApplied: date,
+    offerStatus: '',
+    url: '',
+    address: '',
+    interviewProgress: '',
+    notes: '',
+  });
+
+  const [open, setOpen] = React.useState(false);
 
   const handleChange = prop => event => {
     setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClose = () => {
+    this.setOpen(!open);
+  };
+
+  const handleSubmit = () => {
+    if (values.company.trim() === '' || values.jobTitle.trim() === ''
+        || values.address.trim() === '') {
+      console.log("didn't fill out mandatory fields");
+      /* Todo : Add a warning here */
+    } else {
+      let url = getUrl('/api/jobs/applied')
+      $.ajax({
+        type: 'POST',
+        url: url,
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          company: values.company,
+          job_title: values.jobTitle,
+          date_applied: values.dateApplied,
+          status: values.offerStatus,
+          url: values.url,
+          location: values.address,
+          interview_progress: values.interviewProgress,
+          notes: values.notes,
+        }),
+        success: () => {
+          setValues({
+            company: '',
+            jobTitle: '',
+            dateApplied: date,
+            offerStatus: '',
+            url: '',
+            address: '',
+            interviewProgress: '',
+            notes: '',
+          });
+        }
+      });
+    }
   };
 
   return (
@@ -115,7 +118,7 @@ export default function AddJob() {
         spacing={ 3 }
         justify="center"
       >
-        <Grid item xs={ 12 } sm={ 6 }>
+        <Grid item xs={ 12 }>
           <TextField
             required
             fullWidth
@@ -126,7 +129,7 @@ export default function AddJob() {
             onChange={ handleChange('company') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 6 }>
+        <Grid item xs={ 12 }>
           <TextField
             fullWidth
             required
@@ -137,7 +140,7 @@ export default function AddJob() {
             onChange={ handleChange('jobTitle') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 8 }>
+        <Grid item xs={ 12 }>
           <TextField
             required
             fullWidth
@@ -147,17 +150,19 @@ export default function AddJob() {
             value={ values.address }
             onChange={ handleChange('address') }
           />
+        </Grid>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             id="url"
             variant="outlined"
             label="URL"
             className={ classes.interior }
-            value={ values.jobPostURL }
-            onChange={ handleChange('jobPostURL') }
+            value={ values.url}
+            onChange={ handleChange('url') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 }>
           <TextField
             fullWidth
             multiline
@@ -173,7 +178,7 @@ export default function AddJob() {
             placeholder="Important Notes (Contact Info, Tips, etc.)"
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 }>
           <TextField
             fullWidth
             id="date"
@@ -187,28 +192,27 @@ export default function AddJob() {
             }}
           />
         </Grid>
-        <Grid item xs={ 6 } sm={ 4 }>
+        <Grid item xs={ 6 }>
           <FormControl
             variant="outlined"
             fullWidth
           >
-            <InputLabel htmlFor="select-multiple">Interview Progress</InputLabel>
+            <InputLabel htmlFor="select">Interview Progress</InputLabel>
             <Select
-              multiple
-              value={ values.interview }
-              onChange={ handleChange('interview') }
-              input={<OutlinedInput id="select-multiple" />}
+              value={ values.interviewProgress }
+              onChange={ handleChange('interviewProgress') }
+              input={<OutlinedInput id="select" />}
               MenuProps={ MenuProps }
             >
               {	typesInterviews.map(name => (
-                <MenuItem key={name.value} value={name.value}>
-                  {name.label}
+                <MenuItem key={name} value={name}>
+                  {name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={ 6 } sm={ 4 }>
+        <Grid item xs={ 6 }>
           <FormControl
             variant="outlined"
             fullWidth
@@ -221,22 +225,35 @@ export default function AddJob() {
               MenuProps={ MenuProps }
             >
               {	typesOfferStatus.map(name => (
-                <MenuItem key={name.value} value={name.value}>
-                  {name.label}
+                <MenuItem key={name} value={name}>
+                  {name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={6}>
           <Button
             fullWidth
-            label="Search"
+            label="Submit"
             primary={true}
             margin="normal"
             variant="contained"
+            onClick={ handleSubmit }
           >
             SUBMIT
+          </Button>
+        </Grid>
+        <Grid item xs={6}>
+          <Button
+            fullWidth
+            label="Cancel"
+            primary={true}
+            margin="normal"
+            variant="contained"
+            onClick={ handleScreen }
+          >
+            CANCEL
           </Button>
         </Grid>
       </Grid>          
