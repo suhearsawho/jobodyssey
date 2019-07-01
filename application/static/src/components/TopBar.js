@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   color: {
-    backgroundImage: "linear-gradient(to right bottom, #8a2387, #e94057, #f27121)",
+    backgroundImage: theme.palette.primary.mainGradient,
   },
   title: {
     fontWeight: 400
@@ -48,7 +48,6 @@ export default function TopBar({ isLoggedIn, handleLogout, color }) {
 
   function callLogout() {
     setAnchorEl(null);
-    console.log('in topbar logout');
     handleLogout();
   }
 

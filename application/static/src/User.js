@@ -20,18 +20,24 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { withStyles } from '@material-ui/core';
 import ComingSoon from './components/ComingSoon';
 import NoMatch from './components/NoMatch';
-
+import TableHistory from './components/TableHistory';
+import VerticalHistory from './components/VerticalHistory';
 import getUrl from './components/tools/getUrl';
+import isMobile from './components/tools/isMobile';
+import Home from './components/mobile/Home';
 
 const theme = createMuiTheme({
   palette: {
     secondary: {
-      main: "#8a2387",
+      main: "#ffc371",
       contrastText: "white"
     },
     primary: {
-      main: "#e94057",
+      main: "#ff5f6d",
+      secondary: '#ff836f',
       contrastText: "white",
+      mainGradient: "linear-gradient(to right bottom, #ff5f6d, #ffc371)",
+      mainTopDownGradient: "linear-gradient(#ff5f6d, #ffc371)",
     }
   },
   typography: {
@@ -109,6 +115,7 @@ class User extends Component {
       }
     });
   }
+
   componentDidMount() {
     let url = getUrl('/api/user');
     $.ajax({
@@ -121,7 +128,6 @@ class User extends Component {
           currency: data.currency,
           jobsApplied: data.jobs_applied,
           jobsInterested: data.jobs_interested,
-          levelId: 'Entry Level',
           rewards: data.rewards,
         });
         $.ajax({
@@ -142,6 +148,7 @@ class User extends Component {
   render() {
     const { open, Transition, token, message } = this.state;
     const { classes } = this.props;
+    const isMobileDevice = isMobile();
 
     return (
       <Router>
@@ -166,6 +173,7 @@ class User extends Component {
             />
         </div>
             <React.Fragment>
+              { !isMobileDevice && (
               <Switch>
               <Route 
                 exact path='/user'
@@ -180,14 +188,22 @@ class User extends Component {
                 render={(props) => <JobsAppliedForm {...props} handleToken={ this.handleClick }/>}
               />
               <Route
-                exact path='/jobs/appliedhistory'
-                render={(props) => <JobsAppliedHistory {...props} handleToken={ this.handleClick }/>}
+                exact path='/jobs/history'
+                render={(props) => <TableHistory {...props} handleToken={ this.handleClick }/>}
               />
               <Route exact path='/rewards' component={ Rewards } />
               <Route exact path='/jobs/saved' component={ ComingSoon } />
-              <Route exact path='/user/community' component={ ComingSoon } />
               <Route component={ NoMatch } />
               </Switch>
+              )}
+              { isMobileDevice && (
+              <Switch>
+              <Route 
+                exact path='/user'
+                render={(props) => <Home {...props} userData={ this.state } />}
+              />
+              </Switch>
+              )}
             </React.Fragment>
         </MuiThemeProvider>
       </Router>
