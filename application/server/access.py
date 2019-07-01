@@ -50,8 +50,9 @@ def github_auth():
         # (using set-cookie on header since cookies is not a valid header on
         # a response?)
         # Because of the secret key, values are stored with cryptography
-
-        session['username'] = get_username(results.get('access_token'))
+        
+        username, name = get_username(results.get('access_token'))
+        session['username'] = username
         session['code'] = request.args.get('code')
 
         # Import the user model and create a new instance of the object
@@ -60,7 +61,8 @@ def github_auth():
             if user.user_name == session['username']:
                 session['id'] = user.id
                 return redirect(url_for('user.homepage'))
-        new_user = User(**({'user_name': session.get('username'), 'level_id': '100'}))
+        new_user = User(**({'user_name': username,
+                            'name': name}))
         new_user.save()
         session['id'] = new_user.id
         return redirect(url_for('user.homepage'))
@@ -91,4 +93,5 @@ def get_username(access_token):
 
     r = requests.get(github_url, headers=headers)
     results = r.json()
-    return results.get('login')
+    print('IN GET_USERNAME FUNCTION', results)
+    return (results.get('login'), results.get('name'))

@@ -24,16 +24,20 @@ import TableHistory from './components/TableHistory';
 import VerticalHistory from './components/VerticalHistory';
 import getUrl from './components/tools/getUrl';
 import isMobile from './components/tools/isMobile';
+import Home from './components/mobile/Home';
 
 const theme = createMuiTheme({
   palette: {
     secondary: {
-      main: "#8a2387",
+      main: "#ffc371",
       contrastText: "white"
     },
     primary: {
-      main: "#e94057",
+      main: "#ff5f6d",
+      secondary: '#ff836f',
       contrastText: "white",
+      mainGradient: "linear-gradient(to right bottom, #ff5f6d, #ffc371)",
+      mainTopDownGradient: "linear-gradient(#ff5f6d, #ffc371)",
     }
   },
   typography: {
@@ -124,7 +128,6 @@ class User extends Component {
           currency: data.currency,
           jobsApplied: data.jobs_applied,
           jobsInterested: data.jobs_interested,
-          levelId: 'Entry Level',
           rewards: data.rewards,
         });
         $.ajax({
@@ -197,7 +200,7 @@ class User extends Component {
               <Switch>
               <Route 
                 exact path='/user'
-                render={(props) => <UserHomepage {...props} userData={ this.state } />}
+                render={(props) => <Home {...props} userData={ this.state } />}
               />
               </Switch>
               )}

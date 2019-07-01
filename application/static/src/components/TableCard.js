@@ -41,8 +41,8 @@ export default function TableCard(props) {
       { title: 'Status', field: 'status' },
       { title: 'URL', field: 'url' },
       { title: 'Notes', field: 'notes' },
-      { title: 'Office Location', field: 'address' },
-      { title: 'Interview Progress', field: 'interview'},
+      { title: 'Office Location', field: 'location' },
+      { title: 'Interview Progress', field: 'interview_progress'},
     ],
     data: values
   });

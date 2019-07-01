@@ -1,22 +1,27 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Snackbar from '@material-ui/core/Snackbar';
-import Grow from '@material-ui/core/Grow';
-import WarningIcon from '@material-ui/icons/Warning';
-import Fade from '@material-ui/core/Fade';
-import Grid from '@material-ui/core/Grid';
-import { amber } from '@material-ui/core/colors';
-import getUrl from './tools/getUrl';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import getUrl from '../tools/getUrl';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    backgroundColor: 'white',
+    color: 'black',
+  },
+}));
 
 const typesInterviews = [
   'Recruiter Call', 'Onsite', 'Tech Screen', 'Awaiting Decision', 'Phone Interview'
@@ -25,48 +30,6 @@ const typesInterviews = [
 const typesOfferStatus = [
   'Applied', 'Interviewing', 'Offer Stage', 'Archived'
 ];
-
-const useStyles = makeStyles(theme => ({
-	root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    height: '100%',
-    paddingLeft: '1rem',
-    paddingRight: '1rem',
-    [theme.breakpoints.up('sm')]: {
-      paddingLeft: '4rem',
-      paddingRight: '4rem',
-    },
-    flexGrow: 1,
-	},
-  company: {
-  },
-  warning: {
-    bottom: '1rem',
-    backgroundColor: amber[700],
-  },
-  menu: {
-    width: 200,
-  },
-  interior: {
-    marginTop: '24px',
-  },
-  button: {
-    width: '75%',
-  },
-  iconVariant: {
-    opcaity: 0.9,
-    marginRight: theme.spacing(1),
-  },
-  icon: {
-    fontSize: 20,
-  },
-  message: {
-    display: 'flex',
-    alignItems: 'center',
-  }
-}));
-
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -79,37 +42,45 @@ const MenuProps = {
   },
 };
 
-function GrowTransition(props) {
-  return <Grow {...props} />;
-}
-
-export default function AppliedForm(props) {
+function getCurrentDate() {
   let today = new Date();
   let date = today.getFullYear() + '-' + ("0" + (today.getMonth() + 1)).slice(-2) + '-';
   date += ("0" + today.getDate()).slice(-2);
-  
+  return date
+}
+
+export default function AddJob(props) {
   const classes = useStyles();
+  const date = getCurrentDate();
+  const { handleScreen } = props;
   const [values, setValues] = React.useState({
     company: '',
-    dateApplied: date,
     jobTitle: '',
-    interview: [],
+    dateApplied: date,
     offerStatus: '',
-    notes: '',
-    jobPostURL: '',
+    url: '',
     address: '',
-    languages: [],
-    open: false,
-    Transition: Grow,
+    interviewProgress: '',
+    notes: '',
   });
 
-  const handleSubmit = () => {
-    if (values.company.trim() === '' || values.address.trim() === '' ||
-        values.jobTitle.trim() === '') { 
-      setValues({...values, open: true });
-    } else { 
-      let url = getUrl('/api/jobs/applied');
+  const [open, setOpen] = React.useState(false);
 
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClose = () => {
+    this.setOpen(!open);
+  };
+
+  const handleSubmit = () => {
+    if (values.company.trim() === '' || values.jobTitle.trim() === ''
+        || values.address.trim() === '') {
+      console.log("didn't fill out mandatory fields");
+      /* Todo : Add a warning here */
+    } else {
+      let url = getUrl('/api/jobs/applied')
       $.ajax({
         type: 'POST',
         url: url,
@@ -136,29 +107,18 @@ export default function AppliedForm(props) {
             interviewProgress: '',
             notes: '',
           });
-          props.handleToken(data.token);
         }
       });
     }
   };
-  
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  
-  function handleClose() {
-    setValues({
-      ...values,
-      open: false,
-    });
-  }
+
   return (
-    <div className={ classes.root }>
+    <div className={classes.root}>
       <Grid container
         spacing={ 3 }
         justify="center"
       >
-        <Grid item xs={ 12 } sm={ 6 }>
+        <Grid item xs={ 12 }>
           <TextField
             required
             fullWidth
@@ -169,7 +129,7 @@ export default function AppliedForm(props) {
             onChange={ handleChange('company') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 6 }>
+        <Grid item xs={ 12 }>
           <TextField
             fullWidth
             required
@@ -180,7 +140,7 @@ export default function AppliedForm(props) {
             onChange={ handleChange('jobTitle') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 8 }>
+        <Grid item xs={ 12 }>
           <TextField
             required
             fullWidth
@@ -190,6 +150,8 @@ export default function AppliedForm(props) {
             value={ values.address }
             onChange={ handleChange('address') }
           />
+        </Grid>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             id="url"
@@ -200,7 +162,7 @@ export default function AppliedForm(props) {
             onChange={ handleChange('url') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 }>
           <TextField
             fullWidth
             multiline
@@ -216,7 +178,7 @@ export default function AppliedForm(props) {
             placeholder="Important Notes (Contact Info, Tips, etc.)"
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 }>
           <TextField
             fullWidth
             id="date"
@@ -230,13 +192,12 @@ export default function AppliedForm(props) {
             }}
           />
         </Grid>
-        <Grid item xs={ 6 } sm={ 4 }>
+        <Grid item xs={ 6 }>
           <FormControl
             variant="outlined"
             fullWidth
           >
             <InputLabel htmlFor="select">Interview Progress</InputLabel>
-
             <Select
               value={ values.interviewProgress }
               onChange={ handleChange('interviewProgress') }
@@ -251,7 +212,7 @@ export default function AppliedForm(props) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={ 6 } sm={ 4 }>
+        <Grid item xs={ 6 }>
           <FormControl
             variant="outlined"
             fullWidth
@@ -271,10 +232,10 @@ export default function AppliedForm(props) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={6}>
           <Button
             fullWidth
-            label="Search"
+            label="Submit"
             primary={true}
             margin="normal"
             variant="contained"
@@ -283,24 +244,19 @@ export default function AppliedForm(props) {
             SUBMIT
           </Button>
         </Grid>
-      </Grid> 
-      <Snackbar
-        open={ values.open }
-        onClose={ handleClose }
-        TransitionComponent={ values.Transition }
-        className={ classes.warning }
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={
-          <React.Fragment>
-            <span id="message-id" className={ classes.message }>
-              <WarningIcon className={ classes.icon, classes.iconVariant } />
-              Please Fill Required Fields
-            </span>
-          </React.Fragment>
-        }
-      />
+        <Grid item xs={6}>
+          <Button
+            fullWidth
+            label="Cancel"
+            primary={true}
+            margin="normal"
+            variant="contained"
+            onClick={ handleScreen }
+          >
+            CANCEL
+          </Button>
+        </Grid>
+      </Grid>          
     </div>
   );
 }

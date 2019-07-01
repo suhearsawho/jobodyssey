@@ -36,14 +36,13 @@ class TableHistory extends Component {
     $.ajax({
       type: 'GET',
       url: url,
-      success: data => {
-        let results = JSON.parse(data);
-        let list = []
+      success: results => {
+        /*let list = []
         Object.keys(results).forEach(key => {
           list.push({ ...results[key], id: key });
-        });
+        });*/
         this.setState({
-          applied: list,
+          applied: results,
         });
       }
     });
