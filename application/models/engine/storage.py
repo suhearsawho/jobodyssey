@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
 from application.models.base_model import Base
 from application.models import base_model, user, level, reward
-
+from application.models.jobs_applied import JobsApplied
 
 class Storage:
     """
@@ -124,3 +124,33 @@ class Storage:
             filter(user.UserReward.user_id == user_id):
             user_rewards.append(self.get('Reward', rewards.reward_id).to_json())
         return user_rewards
+
+    def userWeeklyAvg(self, user_id):
+        """
+        Returns a tuple of the following format:
+        (jobs applied to this week, weekly average)
+        """
+        pass
+
+    def userAppliedJobs(self, user_id):
+        """
+        Queries database for list of jobs associated with user
+        Args:
+            user_id - User's id
+        Return: Dictionary of results -> To maintain consistency with existing Ajax Calls
+        in frontend
+        """
+        jobs = []
+        for job in self.__session.query(JobsApplied).\
+            filter(JobsApplied.user_id == user_id):
+                jobs.append({'id': job.id,
+                             'company': job.company,
+                             'job_title': job.job_title,
+                             'date_applied': job.date_applied,
+                             'status': job.status,
+                             'url': job.url,
+                             'location': job.location,
+                             'interview_progress': job.interview_progress,
+                             'notes': job.notes,
+                             })
+        return jobs

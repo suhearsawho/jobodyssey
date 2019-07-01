@@ -67,6 +67,7 @@ class User(BaseModel, Base):
     """
     __tablename__ = 'users'
     user_name = Column(String(128), nullable=True)
+    name = Column(String(128), nullable=False)
     currency = Column(Integer, default=0)
     jobs_applied = relationship("JobsApplied")
     jobs_interested = Column(JSON, nullable=False)
@@ -102,3 +103,10 @@ class User(BaseModel, Base):
                 """ to fit csv formatting notes not included """
             csv_applied += i.get('notes') + '\n'
         return csv_applied
+
+    def get_average_app(self):
+        """
+        Returns a number corresponding to the average number of applications
+        per week
+        """
+        
