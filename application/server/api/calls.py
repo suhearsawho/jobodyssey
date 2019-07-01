@@ -164,7 +164,7 @@ def jobs_applied():
         user.save()
         response['token'] = token
         response['message'] = message
-        response['updated_jobs'] = jobs
+#        response['updated_jobs'] = jobs
         print('return value from applied', response)
 
     status = 200 if 'success' in response.keys() else 404
