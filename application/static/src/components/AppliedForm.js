@@ -19,82 +19,12 @@ import { amber } from '@material-ui/core/colors';
 import getUrl from './tools/getUrl';
 
 const typesInterviews = [
-  {
-		value: 'Phone Screening',
-		label: 'Phone Screening',
-	},
-	{
-		value: 'Phone Interview',
-		label: 'Phone Interview',
-	},
-	{
-		value: 'Onsite Interview',
-		label: 'Onsite Interview',
-	},
-];
-
-const typesPositions = [
-  {
-    value: 'Full Time',
-    label: 'Full Time',
-  },
-  {
-    value: 'Part Time',
-    label: 'Part Time',
-  },
-  {
-    value: 'Internship',
-    label: 'Internship',
-  },
+  'Recruiter Call', 'Onsite', 'Tech Screen', 'Awaiting Decision', 'Phone Interview'
 ];
 
 const typesOfferStatus = [
-  {
-    value: 'Waiting to Hear Back',
-    label: 'Waiting to Hear Back',
-  },
-  {
-    value: 'Rejection',
-    label: 'Rejection',
-  },
-  {
-    value: 'Received Offer',
-    label: 'Received Offer',
-  },
-  {
-    value: 'Acceptance of Offer',
-    label: 'Acceptance of Offer',
-  },
-  {
-    value: 'Rejection of Offer',
-    label: 'Rejection of Offer',
-  },
+  'Applied', 'Interviewing', 'Offer Stage', 'Archived'
 ];
-
-const typesRoles = [
-  {
-    value: 'Full Stack',
-    label: 'Full Stack',
-  },
-  {
-    value: 'Backend',
-    label: 'Backend',
-  },
-  {
-    value: 'Frontend',
-    label: 'Frontend',
-  },
-  {
-    value: 'SRE',
-    label: 'SRE',
-  },
-  {
-    value: 'Dev-Ops',
-    label: 'Dev-Ops',
-  },
-]
-
-const typesLanguages = ['C', 'C++', 'C#', 'CSS', 'HTML', 'Java', 'Javascript', 'Objective-C', 'PHP', 'Python', 'Ruby', 'SQL', 'Swift']
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -187,28 +117,25 @@ export default function AppliedForm(props) {
         contentType: 'application/json',
         dataType: 'json',
         data: JSON.stringify({
-          date_applied: values.dateApplied,
           company: values.company,
-          url: values.jobPostURL,
           job_title: values.jobTitle,
-          address: values.address,
+          date_applied: values.dateApplied,
           status: values.offerStatus,
-          interview: values.interview,
+          url: values.url,
+          location: values.address,
+          interview_progress: values.interviewProgress,
           notes: values.notes,
-          languages: values.languages,
         }),
-        success: (data) => {
-          console.log(data);
+        success: () => {
           setValues({
             company: '',
-            dateApplied: date,
             jobTitle: '',
-            interview: [],
+            dateApplied: date,
             offerStatus: '',
-            notes: '',
-            jobPostURL: '',
+            url: '',
             address: '',
-            languages: [],
+            interviewProgress: '',
+            notes: '',
           });
           props.handleToken(data.token);
         }
@@ -228,52 +155,31 @@ export default function AppliedForm(props) {
   }
   return (
     <div className={ classes.root }>
-      <Grid container 
+      <Grid container
         spacing={ 3 }
         justify="center"
       >
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 } sm={ 6 }>
           <TextField
             required
             fullWidth
             id="company"
             variant="outlined"
-            label="Company"
+            label="Company Name"
             value={ values.company }
             onChange={ handleChange('company') }
           />
         </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 } sm={ 6 }>
           <TextField
             fullWidth
             required
             id="jobtitle"
             variant="outlined"
             value={ values.jobTitle }
-            label="Position"
+            label="Job Title"
             onChange={ handleChange('jobTitle') }
           />
-        </Grid>
-        <Grid item xs={ 12 } sm={ 4 }>
-          <FormControl
-            variant="outlined" 
-            fullWidth
-          >
-            <InputLabel htmlFor="select-multiple">Languages</InputLabel>
-            <Select
-              multiple
-              value={ values.languages }
-              onChange={ handleChange('languages') }
-              input={<OutlinedInput id="select-multiple" />}
-              MenuProps={ MenuProps }
-            >
-              {	typesLanguages.map(name => (
-                <MenuItem key={name} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </Grid>
         <Grid item xs={ 12 } sm={ 8 }>
           <TextField
@@ -281,7 +187,7 @@ export default function AppliedForm(props) {
             fullWidth
             id="address"
             variant="outlined"
-            label="Address"
+            label="Office Location (City, State, Country)"
             value={ values.address }
             onChange={ handleChange('address') }
           />
@@ -289,10 +195,10 @@ export default function AppliedForm(props) {
             fullWidth
             id="url"
             variant="outlined"
-            label="URL of Job Post"
+            label="URL"
             className={ classes.interior }
-            value={ values.jobPostURL }
-            onChange={ handleChange('jobPostURL') }
+            value={ values.url}
+            onChange={ handleChange('url') }
           />
         </Grid>
         <Grid item xs={ 12 } sm={ 4 }>
@@ -327,20 +233,19 @@ export default function AppliedForm(props) {
         </Grid>
         <Grid item xs={ 6 } sm={ 4 }>
           <FormControl
-            variant="outlined" 
+            variant="outlined"
             fullWidth
           >
-            <InputLabel htmlFor="select-multiple">Interviews Received</InputLabel>
+            <InputLabel htmlFor="select">Interview Progress</InputLabel>
             <Select
-              multiple
-              value={ values.interview }
-              onChange={ handleChange('interview') }
-              input={<OutlinedInput id="select-multiple" />}
+              value={ values.interviewProgress }
+              onChange={ handleChange('interviewProgress') }
+              input={<OutlinedInput id="select" />}
               MenuProps={ MenuProps }
             >
               {	typesInterviews.map(name => (
-                <MenuItem key={name.value} value={name.value}>
-                  {name.label}
+                <MenuItem key={name} value={name}>
+                  {name}
                 </MenuItem>
               ))}
             </Select>
@@ -351,7 +256,7 @@ export default function AppliedForm(props) {
             variant="outlined"
             fullWidth
           >
-            <InputLabel htmlFor="select">Offer Status</InputLabel>
+            <InputLabel htmlFor="select">Status</InputLabel>
             <Select
               value={ values.offerStatus }
               onChange={ handleChange('offerStatus') }
@@ -359,8 +264,8 @@ export default function AppliedForm(props) {
               MenuProps={ MenuProps }
             >
               {	typesOfferStatus.map(name => (
-                <MenuItem key={name.value} value={name.value}>
-                  {name.label}
+                <MenuItem key={name} value={name}>
+                  {name}
                 </MenuItem>
               ))}
             </Select>
@@ -375,11 +280,11 @@ export default function AppliedForm(props) {
             variant="contained"
             onClick={ handleSubmit }
           >
-            SUBMIT  
+            SUBMIT
           </Button>
         </Grid>
-      </Grid>
- 			<Snackbar
+      </Grid> 
+      <Snackbar
         open={ values.open }
         onClose={ handleClose }
         TransitionComponent={ values.Transition }
