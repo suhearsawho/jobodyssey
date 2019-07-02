@@ -68,6 +68,7 @@ class User(BaseModel, Base):
     __tablename__ = 'users'
     user_name = Column(String(128), nullable=True)
     name = Column(String(128), nullable=False)
+    email = Column(String(254), nullable=True)
     currency = Column(Integer, default=0)
     jobs_applied = relationship("JobsApplied")
     jobs_interested = Column(JSON, nullable=False)

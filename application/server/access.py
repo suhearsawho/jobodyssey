@@ -27,6 +27,13 @@ def community():
 
     return redirect(url_for('index'))
 
+@bp.route('/account', methods=('GET', 'POST'))
+def account():
+    if 'username' in session:
+        resp = make_response(render_template('user.html'))
+        return resp
+
+    return redirect(url_for('index'))
 
 @bp.route('/auth', methods=('GET', 'POST'))
 def github_auth():
