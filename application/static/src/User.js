@@ -21,7 +21,6 @@ import { withStyles } from '@material-ui/core';
 import ComingSoon from './components/ComingSoon';
 import NoMatch from './components/NoMatch';
 import TableHistory from './components/TableHistory';
-import VerticalHistory from './components/VerticalHistory';
 import getUrl from './components/tools/getUrl';
 import isMobile from './components/tools/isMobile';
 import Home from './components/mobile/Home';
