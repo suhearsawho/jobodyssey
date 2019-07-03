@@ -95,7 +95,7 @@ class User extends Component {
       open: false,
       token: 0,
       email: '',
-      noEmail: true,
+      noEmail: false,
     };
 
     this.handleLogout = this.handleLogout.bind(this);
