@@ -18,13 +18,17 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Slide from '@material-ui/core/Slide';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { withStyles } from '@material-ui/core';
+import { FaTimes } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
+import IconButton from '@material-ui/core/IconButton';
+import { FaEnvelope } from 'react-icons/fa';
 import ComingSoon from './components/ComingSoon';
 import NoMatch from './components/NoMatch';
 import TableHistory from './components/TableHistory';
-import VerticalHistory from './components/VerticalHistory';
 import getUrl from './components/tools/getUrl';
 import isMobile from './components/tools/isMobile';
 import Home from './components/mobile/Home';
+import AccountPage from './components/AccountPage';
 
 const theme = createMuiTheme({
   palette: {
@@ -59,6 +63,17 @@ const styles = theme => ({
   message: {
     display: 'flex',
     alignItems: 'center',
+  },
+  noEmailIcon: {
+    fontSize: '1rem',
+  },
+  emailMessage: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  mobileSnackBar: {
+    position: 'fixed',
+    bottom: '80px',
   }
 });
 
@@ -79,6 +94,8 @@ class User extends Component {
       Transition: Slide,
       open: false,
       token: 0,
+      email: '',
+      noEmail: false,
     };
 
     this.handleLogout = this.handleLogout.bind(this);
@@ -129,6 +146,7 @@ class User extends Component {
           jobsApplied: data.jobs_applied,
           jobsInterested: data.jobs_interested,
           rewards: data.rewards,
+          email: data.email,
         });
         $.ajax({
           type: 'GET',
@@ -146,7 +164,7 @@ class User extends Component {
   }
 
   render() {
-    const { open, Transition, token, message } = this.state;
+    const { open, Transition, token, message, noEmail } = this.state;
     const { classes } = this.props;
     const isMobileDevice = isMobile();
 
@@ -155,7 +173,7 @@ class User extends Component {
         <MuiThemeProvider theme={ theme }>
           <CssBaseline />
           <TopBar isLoggedIn={this.state.isLoggedIn} handleLogout={this.handleLogout} color={ true } />
-          <div>
+          <div className={ classes.mobileSnackbar }>
             <Snackbar
               open={ open }
               autoHideDuration={ 3000 }
@@ -170,6 +188,38 @@ class User extends Component {
                   You Earned { token } Coins! { message }
                 </span>
               }
+            />
+            <Snackbar
+              open={ noEmail }
+              TransitionComponent={ Transition }
+              autoHideDuration={ 10000 }
+              ContentProps={{
+                'aria-describedby': 'no-email',
+              }}
+              message={
+                <span id="client-snackbar" className={classes.emailMessage}>
+                  <FaEnvelope className={ classes.icon, classes.iconVariant } />
+                  Sign up for weekly emails?
+                </span>
+              }
+              action={[
+                <IconButton
+                  key="yes"
+                  aria-label="yes"
+                  color="inherit"
+                  className={classes.noEmailIcon}
+                >
+                  <FaCheck />
+                </IconButton>,
+                <IconButton
+                  key="close"
+                  aria-label="Close"
+                  color="inherit"
+                  className={classes.noEmailIcon}
+                >
+                  <FaTimes />
+                </IconButton>
+              ]}
             />
         </div>
             <React.Fragment>
@@ -193,6 +243,10 @@ class User extends Component {
               />
               <Route exact path='/rewards' component={ Rewards } />
               <Route exact path='/jobs/saved' component={ ComingSoon } />
+              <Route
+                exact path='/user/account'
+                render={(props) => <AccountPage {...props} email={ this.state.email } />}
+              />
               <Route component={ NoMatch } />
               </Switch>
               )}
@@ -201,6 +255,10 @@ class User extends Component {
               <Route 
                 exact path='/user'
                 render={(props) => <Home {...props} userData={ this.state } />}
+              />
+              <Route
+                exact path='/user/account'
+                render={(props) => <AccountPage {...props} email={ this.state.email } />}
               />
               </Switch>
               )}
