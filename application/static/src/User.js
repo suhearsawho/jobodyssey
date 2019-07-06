@@ -80,9 +80,9 @@ const styles = theme => ({
 class User extends Component {
   constructor(props) {
     super(props);
-    console.log("in the constructor")
     this.state = {
       isLoggedIn: true,
+      id: '',
       username: '',
       currency: '',
       jobsApplied: [],
@@ -101,10 +101,10 @@ class User extends Component {
     this.handleLogout = this.handleLogout.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleEmail = this.handleEmail.bind(this);
   }
  
   handleClick(value, message) {
-    console.log('handle click!');
     if (message === undefined || message === null)
       message = ''
     this.setState({
@@ -115,7 +115,6 @@ class User extends Component {
   };
 
   handleClose() {
-    console.log("in close");
     this.setState({
       open: false,
     });
@@ -133,14 +132,23 @@ class User extends Component {
     });
   }
 
+  handleEmail(email) {
+    console.log("update");
+    this.setState({
+      email: email,
+    });
+  }
+
   componentDidMount() {
     let url = getUrl('/api/user');
     $.ajax({
       type: 'GET',
       url: url,
+      //async: false,
       success: (data) => {
         console.log(data);
         this.setState({
+          id: data.id,
           username: data.user_name,
           currency: data.currency,
           jobsApplied: data.jobs_applied,
@@ -151,8 +159,8 @@ class User extends Component {
         $.ajax({
           type: 'GET',
           url: 'https://api.github.com/users/' + this.state.username,
+          //async: false,
           success: (data) => {
-            console.log(data);
             this.setState({
               profilePicture: data.avatar_url,
               bio: data.bio
@@ -164,6 +172,7 @@ class User extends Component {
   }
 
   render() {
+    console.log('in User render');
     const { open, Transition, token, message, noEmail } = this.state;
     const { classes } = this.props;
     const isMobileDevice = isMobile();
@@ -245,7 +254,7 @@ class User extends Component {
               <Route exact path='/jobs/saved' component={ ComingSoon } />
               <Route
                 exact path='/user/account'
-                render={(props) => <AccountPage {...props} email={ this.state.email } />}
+                render={(props) => <AccountPage {...props} userData={ this.state }/>}
               />
               <Route component={ NoMatch } />
               </Switch>
@@ -258,7 +267,7 @@ class User extends Component {
               />
               <Route
                 exact path='/user/account'
-                render={(props) => <AccountPage {...props} email={ this.state.email } />}
+                render={(props) => <AccountPage {...props} userData={ this.state }/>}
               />
               </Switch>
               )}

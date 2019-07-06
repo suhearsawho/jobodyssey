@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -9,6 +9,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
+import getUrl from './tools/getUrl';
+import { checkEmail } from './tools/userTools.js';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -40,26 +42,44 @@ const useStyles = makeStyles(theme => ({
 
 export default function AccountPage(props) {
   const classes = useStyles();
+  const { userData } = props;
+  let lastValidEmail = userData.email;
 
-  const [editEmail, toggleEditEmail] = useState(false);
-  const [account, setAccount] = useState({
-    email: props.email
+  const [editEmail, toggleEditEmail] = React.useState(false);
+  const [account, setAccount] = React.useState({
+    email: userData.email,
   });
+  const [emailError, setEmailError] = React.useState(false);
 
   const handleChangeEmailScreen = () => {
     toggleEditEmail(!editEmail);
   };
-
+  
   const handleChange = name => event => {
+    setEmailError(false);
     setAccount({...account, [name]: event.target.value });
   };
 
   const submitEmail = () => {
-    /*
-    $.ajax({
-      type: 'PUT', 
-    });
-    */
+    const url = getUrl('/api/user/email/') + userData.id;
+    
+    if (checkEmail(account.email)) {
+      $.ajax({
+        url: url,
+        type: 'PUT',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          email: account.email,
+        }),
+        success: (data => {
+          lastValidEmail = data.email;
+        }),
+      });
+      handleChangeEmailScreen();
+    } else {
+      setEmailError(true);  
+    }
   }
 
   return (
@@ -79,14 +99,29 @@ export default function AccountPage(props) {
                 <Typography variant="h6" gutterBottom>
                   Your email
                 </Typography>
-                { account.email === '' && 
-                  <Typography variant="body1" gutterBottom>
-                    No registered email.
-                  </Typography>
-                }
+                {/* Warning! The following is a quick fix for the following problem:
+                  When the user refreshes the page, account.email will not show on the page even if
+                  user has a valid email. My theory is that it comes from async behavior -> the account hooks
+                  is updating before the call to /user is finished and data can be passed to prop.
+                  Therefore, to fix this behavior, I added three loops for the different conditions that may
+                  ensue to guarantee that the user's email will show even when the user refreshes the page.
+                  This is not the best fix! 
+                  This falls under one of the anti-patterns of react (using a prop to initialize state that will
+                  change
+                 */}
                 { account.email !== '' &&
                   <Typography variant="body1" gutterBottom>
-                    { props.email }
+                    { account.email }
+                  </Typography>
+                }
+                { account.email === '' && userData.email !== ''&& 
+                  <Typography variant="body1" gutterBottom>
+                    { userData.email }
+                  </Typography>
+                }
+                { account.email === '' && userData.email === '' &&
+                  <Typography variant="body1" gutterBottom>
+                    No registered email.
                   </Typography>
                 }
               </Grid>
@@ -114,6 +149,7 @@ export default function AccountPage(props) {
                   value={account.email}
                   onChange={handleChange('email')}
                   margin="normal"
+                  error={emailError}
                 />
               </Grid>
               <Grid item xs={12} sm={2}>
@@ -150,7 +186,6 @@ export default function AccountPage(props) {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              
             </Grid>
           </Grid>
         </ListItem>
