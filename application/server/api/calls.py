@@ -57,10 +57,11 @@ def rewards():
 def user_info():
     """
     API call for returning a user for userpage
-    :return:
-    JSON formatted user information
+    Return:
+        JSON formatted user information
     """
     user = database.get('User', session['id'])
+    print(user.to_json())
     return jsonify(user.to_json())
 
 
@@ -178,41 +179,28 @@ def jobs_interested():
     :return:
     A user's jobs_interested for valid GET request, error, or status code for valid non GET requests
     """
-    user = database.get('User', session['id'])
-    # GET: Return all jobs that user is interested in
-    if request.method == 'GET':
-        return jsonify(user.jobs_interested), 200
+    #TODO this function is not in use at the moment.
+    pass
 
-    if request.is_json is False:
-        return jsonify(error="Not a valid JSON"), 400
-
-    jobs = json.loads(user.jobs_interested)
-    data = request.get_json()
-    job_id = data.get('id')
-    if ((request.method == 'DELETE' or request.method == 'PUT') and
-        (job_id not in jobs)):
-        response = {'error': 'Not a valid job ID'}
-    else:
-        # PUT: Change an existing entry
-        if request.method == 'PUT':
-            for key, value in data.items():
-                if key != 'id':
-                    jobs[job_id][key] = value
-            user.currency += 10
-        # POST: Creates a new entry
-        elif request.method == 'POST':
-            if job_id not in jobs:
-                data.pop('id')
-                jobs[job_id] = data
-                user.currency += 10
-
-        # DELETE: Deletes an entry
-        elif request.method == 'DELETE':
-            jobs.pop(job_id)
-
-        user.jobs_interested = json.dumps(jobs)
+@api_views.route('/user/email/<user_id>', methods=['GET', 'PUT'])
+def user_email(user_id):
+    """Used to retrieve, add and update user's email
+    Assumptions:
+        All checks to verify if email is valid will be performed on frontend side
+        User id should exist in database
+    Args:
+        Params: user_id should be specified in url
+        Response Body:
+            Put Request - Should contain new email address
+    Returns:
+        Email address of the user.
+    """
+    user = database.get('User', user_id)
+    if request.method == 'PUT':
+        body = request.get_json()
+        print(body)
+        user.email = body.get('email')
+        print(user.__dict__)
         user.save()
-        response = {'success': True}
 
-    status = 200 if 'success' in response else 404
-    return jsonify(response), status
+    return jsonify(email=user.email), 200

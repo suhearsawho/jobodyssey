@@ -17,7 +17,8 @@ class Storage:
     CLASS_DICT = {
         'User': user.User,
         'Level': level.Level,
-        'Reward': reward.Reward
+        'Reward': reward.Reward,
+        'JobsApplied': JobsApplied,
     }
 
     __engine = None
@@ -98,6 +99,22 @@ class Storage:
             all_obj = self.all(cls)
             return all_obj.get(obj_str)
         return None
+    
+    def get_associated(self, primary_cls, foreign_key, foreign_id):
+        """Queries the database for cls that are associated with the foreign key.
+        Args:
+            primary_cls: string with name of table to query
+            foreign_key: string of the foreign_key name
+            foreign_id: id (string) of the foreign key to find in the primary table.
+        Return: List of dictionaries containing matches. Each dictionary represents
+        a matched object in the database.
+        """
+        results = []
+        query_filter = "{}.{} == '{}'".format(primary_cls, foreign_key, foreign_id)
+        for result in self.__session.query(eval(primary_cls)).\
+            filter(eval(query_filter)):
+            results.append(result)
+        return results
 
     def count(self, cls=None):
         """
@@ -119,38 +136,9 @@ class Storage:
         """
         returns a list of associated user rewards
         """
+        #TODO talk to chris about deleting this method and using get_associated instead
         user_rewards = []
         for rewards in self.__session.query(user.UserReward).\
             filter(user.UserReward.user_id == user_id):
             user_rewards.append(self.get('Reward', rewards.reward_id).to_json())
         return user_rewards
-
-    def userWeeklyAvg(self, user_id):
-        """
-        Returns a tuple of the following format:
-        (jobs applied to this week, weekly average)
-        """
-        pass
-
-    def userAppliedJobs(self, user_id):
-        """
-        Queries database for list of jobs associated with user
-        Args:
-            user_id - User's id
-        Return: Dictionary of results -> To maintain consistency with existing Ajax Calls
-        in frontend
-        """
-        jobs = []
-        for job in self.__session.query(JobsApplied).\
-            filter(JobsApplied.user_id == user_id):
-                jobs.append({'id': job.id,
-                             'company': job.company,
-                             'job_title': job.job_title,
-                             'date_applied': job.date_applied,
-                             'status': job.status,
-                             'url': job.url,
-                             'location': job.location,
-                             'interview_progress': job.interview_progress,
-                             'notes': job.notes,
-                             })
-        return jobs

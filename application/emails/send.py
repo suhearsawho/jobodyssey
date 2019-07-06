@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 from email import encoders
 from application.models import database
 import json
+import os
 from os import getenv
 
 def user_list(main_workbook):
@@ -31,7 +32,8 @@ def make_message(user, main_workbook):
     # Create sheets for student's workbook and main_workbook (staff) 
     worksheet = workbook.add_worksheet()
     main_worksheet = main_workbook.add_worksheet(name)
-    applied_jobs = database.userAppliedJobs(user.id)
+    applied_jobs = user.get_jobs_applied()
+#    applied_jobs = database.userAppliedJobs(user.id)
     message = ['{} Weekly Report\n'.format(user.name)]
     message.append('Number Applied this Week: {}\n\n'.format(2))
 
@@ -89,8 +91,9 @@ def send_email(user_email, email_address, email_pwd, email_body, email_excel):
     with smtplib.SMTP_SSL(host='smtp.gmail.com', port=465) as s:
         s.login(email_address, email_pwd)
         s.send_message(msg)
-    
+
     del msg
+    os.remove(email_excel)
 
 def main():
     email_address = getenv('JO_EMAIL')
@@ -105,7 +108,7 @@ def main():
 
     users = user_list(main_workbook)
     for user in users:
-        send_email(user['email'], email_address, email_pwd, user['message'], user['excel'])
+#        send_email(user['email'], email_address, email_pwd, user['message'], user['excel'])
         total_report.append(user['message'])
 
     main_workbook.close()
