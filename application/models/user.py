@@ -84,6 +84,10 @@ class User(BaseModel, Base):
         """
         instantiates user object
         """
+        print('HIIII THERE')
+        if 'name' not in kwargs or not kwargs['name']:
+            print('successfully entered')
+            kwargs['name'] = kwargs['user_name']
         super().__init__(*args, **kwargs)
         self.jobs_interested = json.dumps({})
 
@@ -110,4 +114,25 @@ class User(BaseModel, Base):
         Returns a number corresponding to the average number of applications
         per week
         """
-        
+        pass
+
+    def get_jobs_applied(self, **kwargs):
+        """Queries database for jobs_applied table for entries associated with user
+        Args:
+        Returns:
+            List of dictionary results
+        """
+        jobs = []
+        query_results = models.database.get_associated('JobsApplied', 'user_id', self.id)
+        for job in query_results:
+            jobs.append({'id': job.id,
+                         'company': job.company,
+                         'job_title': job.job_title,
+                         'date_applied': job.date_applied,
+                         'status': job.status,
+                         'url': job.url,
+                         'location': job.location,
+                         'interview_progress': job.interview_progress,
+                         'notes': job.notes,
+                         })
+        return jobs
