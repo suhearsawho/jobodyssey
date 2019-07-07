@@ -45,7 +45,7 @@ def rewards():
     data = request.get_json()
     user = database.get('User', data['user_id'])
     """ Checks database for duplicate user_reward entry """
-    if database.duplicateUserReward(data['user_id'], data['reward_id']) is False:
+    if user.check_duplicate_reward(data['reward_id']) is False:
         new_user_reward = UserReward(**data)
         new_user_reward.save()
     user.currency -= 30
@@ -118,7 +118,7 @@ def jobs_applied():
 
     # GET: Return all jobs that user has applied to
     if request.method == 'GET':
-        results = database.userAppliedJobs(session['id']) 
+        results = user.get_jobs_applied()
         return jsonify(results), 200
 
     if request.is_json is False:

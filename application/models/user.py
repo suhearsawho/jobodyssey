@@ -50,7 +50,7 @@ class UserReward(Base):
         """
         models.database.new(self)
         models.database.save()
-    
+
     def to_json(self):
         return {'user_id': self.user_id, 'reward_id': self.reward_id}
 
@@ -74,7 +74,7 @@ class User(BaseModel, Base):
     jobs_interested = Column(JSON, nullable=False)
     level_id = Column(String(60), ForeignKey('levels.id'))
     rewards = relationship('Reward', secondary='user_reward', viewonly=False)
-    
+
     """ Dictionary of all keys in our JSON of jobs applied """
     applied_columns = ['date_applied', 'company', 'url', 'job_title', 'role', 'address', 'status', 'interview']
     sheets_columns = '"Date of Application","Company Name","URL to Job Post","Job Title (As Listed in Job Posting)",\
@@ -84,7 +84,6 @@ class User(BaseModel, Base):
         """
         instantiates user object
         """
-        print('HIIII THERE')
         if 'name' not in kwargs or not kwargs['name']:
             print('successfully entered')
             kwargs['name'] = kwargs['user_name']
@@ -136,3 +135,28 @@ class User(BaseModel, Base):
                          'notes': job.notes,
                          })
         return jobs
+
+    def get_user_rewards(self, **kwargs):
+        """Queries database for user rewards table for entries associated with user
+        Args:
+        Returns:
+            List of dictionary results
+        """
+        user_rewards = []
+        query_results = models.database.get_associated('UserReward', 'user_id', self.id)
+        for reward in query_results:
+            user_rewards.append(models.database.get('Reward', reward.reward_id).to_json())
+        return user_rewards
+
+    def check_duplicate_reward(self, reward_id):
+        """Queries database for user rewards table for entries that match user and reward id
+        Args:
+            reward_id the id of the reward being checked
+        Returns:
+            Boolean indicating presence of reward
+        """
+        user_rewards = self.get_user_rewards()
+        for reward in user_rewards:
+            if reward.get('id') == reward_id:
+                return True
+        return False

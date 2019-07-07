@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from application.models.base_model import Base
 from application.models import base_model, user, level, reward
 from application.models.jobs_applied import JobsApplied
+from application.models.user import UserReward
 
 class Storage:
     """
@@ -99,7 +100,7 @@ class Storage:
             all_obj = self.all(cls)
             return all_obj.get(obj_str)
         return None
-    
+
     def get_associated(self, primary_cls, foreign_key, foreign_id):
         """Queries the database for cls that are associated with the foreign key.
         Args:
@@ -121,24 +122,3 @@ class Storage:
         returns count of all objects
         """
         return (len(self.all(cls)))
-
-    def duplicateUserReward(self, user_id, reward_id):
-        """
-        checks for a duplicate of the user reward
-        """
-        for duplicate in self.__session.query(user.UserReward).\
-            filter(user.UserReward.user_id == user_id).\
-            filter(user.UserReward.reward_id == reward_id):
-            return True
-        return False
-
-    def userRewards(self, user_id):
-        """
-        returns a list of associated user rewards
-        """
-        #TODO talk to chris about deleting this method and using get_associated instead
-        user_rewards = []
-        for rewards in self.__session.query(user.UserReward).\
-            filter(user.UserReward.user_id == user_id):
-            user_rewards.append(self.get('Reward', rewards.reward_id).to_json())
-        return user_rewards
