@@ -92,7 +92,8 @@ def user_rewards():
     """
     return all rewards associated with a user
     """
-    return jsonify(database.userRewards(session['id']))
+    user = database.get('User', session['id'])
+    return jsonify(user.get_user_rewards())
 
 
 @api_views.route('/job_search', methods=['POST'])

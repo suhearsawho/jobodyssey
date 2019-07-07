@@ -15,8 +15,8 @@ class Reward(BaseModel, Base):
     """
     __tablename__ = 'rewards'
     name = Column(String(128), nullable=True)
-    rarity = Column(String(128), nullable=False)
     image = Column(String(128), nullable=False)
+    rarity = Column(String(128), nullable=False)
     user_rewards = relationship('UserReward', backref='rewards', cascade='delete')  # might have to adjust this based on our system and whether this relationship is true
 
     def __init__(self, *args, **kwargs):
