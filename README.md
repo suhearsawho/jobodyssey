@@ -1,5 +1,9 @@
 # Job Odyssey
 
+Job Odyssey has also been incorporated into the Holberton School of Software Engineering for use
+as an internal tool for students. Visit the revamped version here 
+[Job Odyssey for Holberton](https://jobodyssey.hbtn.io) and the Github repo here
+[Job Odyssey for Holberton - Github](https://github.com/christopherchoe/jobodyssey_hbtn).
 <a href="https://jobodyssey.com">
     <img src="https://i.imgur.com/Z9dBwqq.png" alt="jobodyssey" title="JobOdyssey">
 </a>
