@@ -97,7 +97,7 @@ export default function TopBar({ isLoggedIn, handleLogout, color }) {
           )
           }
           {!isLoggedIn && (
-            <Button className={classes.button}>
+            <Button href="https://github.com/suhearsawho/jobodyssey" className={classes.button}>
               Learn More
               </Button>
           )
