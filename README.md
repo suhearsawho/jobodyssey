@@ -26,6 +26,7 @@ updating the status of previously applied jobs.
     - [Applied Jobs](#applied-jobs)
     - [Rewards](#rewards)
 - [Built With](#built-with)
+- [API](#api)
 - [Future](#future)
 - [Authors](#authors)
     - [Christopher Choe](#christopher-choe)
@@ -136,6 +137,48 @@ This rewards feature is a slot machine like spinner which will choose from a con
 * [React](https://reactjs.org) - Javascript Library
 * [Material UI](https://material-ui.com) - Pre-Built React components
 
+## API
+
+The API can be found in application/server/api/calls.py and to use any call, use jobodyssey.com/api/...
+
+/api/rewards
+
+GET: Returns a randomized array of ten rewards based on rarity for a user to win based on a roll POST: Takes a user id and reward id and adds that to the user rewards table
+
+/api/user
+
+GET: Returns the user's information based on session id
+
+/api/user/currency
+
+GET: Returns the user's currency based on session id
+
+/api/csv
+
+GET: Returns csv representation of jobs applied
+
+/api/user/rewards
+
+GET: Returns all rewards associated with a user
+
+/api/job_search
+
+POST: Returns job's matching the parameters through Github Jobs API
+
+/api/jobs/interested
+
+GET: Returns all the jobs marked as interested from job searches 
+POST: Modify information related to an interested job 
+PUT: Create a new interested job from a job search call 
+DELETE: Delete an existing interested job
+
+/api/jobs/applied
+
+GET: Returns all jobs asscoiated with a user 
+POST: Create a new user job 
+PUT: Modify an existing user job
+DELETE: Delete an existing user job
+
 ## Future
 
 There are plenty of features that we would love to implement into Job Odyssey.
@@ -148,7 +191,7 @@ If you have any suggestions or would like to contribute to Job Odyssey, please c
 ### **Christopher Choe**
 [christopherchoe](https://github.com/christopherchoe)
 
-Chris is a backend software engineer, working on the database and REST API for the most part with some fingerprints in the frontend in order to better understand and integrate the backend into the whole picture.
+Chris is a backend software engineer, working on the system design, database, and REST API for the most part with some fingerprints in the frontend in order to better understand and integrate the backend into the whole picture.
 
 ### **Susan Su**
 [suhearsawho](https://github.com/suhearsawho)
